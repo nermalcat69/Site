@@ -1,0 +1,11 @@
+<svg width="55" height="46" viewBox="0 0 55 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="3.61414" y="11.5966" width="44.9174" height="33.9083" rx="10" transform="rotate(-11 3.61414 11.5966)" fill="#2F3237"/>
+<rect x="1.17244" y="9.94963" width="42.9174" height="31.9083" rx="7" transform="rotate(-11 1.17244 9.94963)" fill="#2F3237" stroke="#2DE09E" stroke-width="2"/>
+<path d="M9.1709 14.7966L14.948 18.0553L10.8123 23.2408" stroke="#2DE09E" stroke-width="3"/>
+<path d="M18.5046 21.9361L26.41 20.3995" stroke="#2DE09E" stroke-width="3"/>
+<circle cx="39.4388" cy="6.65166" r="1.10092" transform="rotate(-11 39.4388 6.65166)" fill="#FF4C4C"/>
+<ellipse cx="35.9807" cy="7.32387" rx="1.10092" ry="1.10092" transform="rotate(-11 35.9807 7.32387)" fill="#FFDB5C"/>
+<ellipse cx="32.5224" cy="7.99608" rx="1.10092" ry="1.10092" transform="rotate(-11 32.5224 7.99608)" fill="#2DE09E"/>
+<rect x="11.1177" y="29.4282" width="31.7064" height="1.3211" transform="rotate(-11 11.1177 29.4282)" fill="#238D66"/>
+<rect x="11.8739" y="33.3187" width="9.82452" height="1.3211" transform="rotate(-11 11.8739 33.3187)" fill="#238D66"/>
+</svg>
