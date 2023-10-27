@@ -15,6 +15,10 @@ export interface FooterLink {
   icon: string;
   url: string;
 }
+export interface Card {
+  description: string;
+  url: string;
+}
 
 export interface NavItem {
   title: string;
