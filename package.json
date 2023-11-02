@@ -4,9 +4,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
+    "nermalize": "astro dev",
+    "nermal": "astro dev",
+    "wermalize": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier --write **/*.astro .",
