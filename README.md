@@ -5,7 +5,6 @@
   Site
 </h1>
 
-Astro Cactus is a simple opinionated starter built with the Astro framework. Use it to create an easy-to-use blog or website.
 
 ## Table Of Contents
 
