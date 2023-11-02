@@ -1,7 +1,6 @@
 {
-	"name": "astro-cactus",
-	"version": "3.5.0",
-	"private": false,
+	"name": "arjunaditya",
+	"version": "0.0.1",
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
