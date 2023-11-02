@@ -2,9 +2,9 @@
 	"name": "arjunaditya",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "astro dev",
-		"start": "astro dev",
-		"build": "astro build",
+		"nermalize": "astro dev",
+		"nermal": "astro dev",
+		"wermalize": "astro build",
 		"postbuild": "pagefind --site dist",
 		"preview": "astro preview",
 		"format": "prettier -w --cache .",
