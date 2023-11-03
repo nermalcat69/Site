@@ -1,6 +1,6 @@
 <div align="center">
   
-![cover-image](cover.png)
+![cover-image](header.png)
 
 </div>
 <h1 align="center">
