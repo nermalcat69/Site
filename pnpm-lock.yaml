@@ -44,8 +44,8 @@ dependencies:
     specifier: ^3.0.13
     version: 3.0.13(@types/node@20.6.0)
   astro-eslint-parser:
-    specifier: ^0.15.0
-    version: 0.15.0
+    specifier: ^0.16.0
+    version: 0.16.0
   eslint-plugin-markdown:
     specifier: ^3.0.1
     version: 3.0.1(eslint@8.49.0)
@@ -2013,8 +2013,8 @@ packages:
     hasBin: true
     dev: false
 
-  /astro-eslint-parser@0.15.0:
-    resolution: {integrity: sha512-iC3VvAS/o6TX92Frwp5Yht/AO3a2tQhCnOe9CdbiICwy+ZYTH/ZOiBxeXI2I5qE1YlbtP2wvBLr+SCgwOAEZvg==}
+  /astro-eslint-parser@0.16.0:
+    resolution: {integrity: sha512-k9ASvY8pa6qttM+fvNJCILxxjftfNg/ou5cjd25SVHsc7moplezGGM9fgMUyf24SRYt8ShO603oHRDn2KqwxMg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     dependencies:
       '@astrojs/compiler': 2.1.0
