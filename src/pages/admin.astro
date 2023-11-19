@@ -15,7 +15,7 @@ const posts = await Astro.glob<PostFrontmatter>("../../posts/**/*.mdx");
     <h1>OG Images</h1>
     <ul class="flex flex-col">
       {
-        linksToOGImages.map((href) => (
+        posts.map((href) => (
           <li class="w-full">
             <Link
               href={href}

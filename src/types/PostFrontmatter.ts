@@ -1,42 +1,60 @@
-import type { ReadTimeResults } from "reading-time";
+import type { ReadTimeResults } from 'reading-time';
 
+/**
+ * Interface representing the frontmatter of a blog post.
+ */
 export interface PostFrontmatter {
+  /** Tags associated with the post. */
   tags: string[];
+  
+  /** Href values for the post. */
+  href: string[];
+
+  /** Source values for the post. */
+  src: string[];
+
   /**
    * Optional description for the post, visible in Open Graph cards.
    */
   description?: string;
+
   /**
    * Optional URL to a picture or a dict of URLs to pictures.
-   * */
-  img?:
-    | string
-    | {
-        /** Image for the Open Graph social card. */
-        og?: string;
-        /** Image for the post header.` */
-        src?: string;
-      };
+   */
+  img?: string | {
+    /** Image for the Open Graph social card. */
+    og?: string;
+    /** Image for the post header. */
+    src?: string;
+  };
+
   /**
-   * @computed by derivedTitleAndDatePlugin from file name
-   *           if not given
+   * Title of the post.
+   * Computed by derivedTitleAndDatePlugin from the file name if not given.
    */
   title: string;
+
   /**
-   * @computed by derivedTitleAndDatePlugin from git commit time
-   *           if not given
+   * Date of the post.
+   * Computed by derivedTitleAndDatePlugin from the git commit time if not given.
    */
   date: string;
+
   /**
-   * @computed by defaultLayoutPlugin
+   * Layout of the post.
+   * Computed by defaultLayoutPlugin.
    */
   layout?: string;
+
   /**
-   * @computed by urlOutsideOfPagesDirPlugin
+   * Path of the post.
+   * Computed by urlOutsideOfPagesDirPlugin.
    */
   path: string;
+
   /**
-   * @computed by readingTimePlugin
+   * Reading time information for the post.
+   * Computed by readingTimePlugin.
    * @example
    * {
    *   text: '1 min read',
@@ -46,5 +64,7 @@ export interface PostFrontmatter {
    * }
    */
   readingTime: ReadTimeResults;
+
+  /** Indicates whether the post is a draft. */
   draft?: boolean;
 }
