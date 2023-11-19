@@ -1,7 +1,6 @@
 ---
 import type { MarkdownLayoutProps } from "astro";
 
-import { createOgImageLink } from "../lib/createOgImageLink";
 import { formatDate } from "../lib/formatDate";
 import Image from "../lib/prose/Image.astro";
 import TableOfContents from "../lib/TableOfContents/TableOfContents.astro";
@@ -17,7 +16,6 @@ interface Props extends Omit<MarkdownLayoutProps<{}>, "frontmatter"> {
 
 const { frontmatter, headings } = Astro.props;
 
-const ogImage = createOgImageLink(frontmatter);
 const readingTime = frontmatter.readingTime;
 const date = new Date(frontmatter.date);
 const imgSrc =
@@ -25,7 +23,7 @@ const imgSrc =
 const description = frontmatter.description || ""
 ---
 
-<BaseLayout title={frontmatter.title} ogImage={ogImage} description={description}>
+<BaseLayout title={frontmatter.title} description={description}>
   <main class="zaduma-prose py-4">
     <header
       class="flex justify-between items-start sm:items-center flex-col sm:flex-row"

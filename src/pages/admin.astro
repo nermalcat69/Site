@@ -1,14 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { createOgImageLink } from "../lib/createOgImageLink";
 import { Link } from "../lib/Link";
 import type { PostFrontmatter } from "../types";
 
 const posts = await Astro.glob<PostFrontmatter>("../../posts/**/*.mdx");
 
-const linksToOGImages = posts.map((post) =>
-  createOgImageLink(post.frontmatter),
-);
 ---
 
 <BaseLayout

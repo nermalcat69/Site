@@ -7,7 +7,6 @@ import { Commands } from "../lib/Commands";
 import GrainOverlay from "../lib/GrainOverlay/GrainOverlay.astro";
 import { Link } from "../lib/Link";
 import ScrollbarStyles from "../lib/ScrollbarStyles.astro";
-import SocialCardMetaTags from "../lib/SocialCardMetaTags.astro";
 import type { PostFrontmatter } from "../types";
 
 import "../global-styles/base.css";
@@ -55,7 +54,6 @@ posts.sort((a, b) => {
       ))
     }
 
-    <SocialCardMetaTags ogImage={ogImage} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
