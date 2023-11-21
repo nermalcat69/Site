@@ -20,17 +20,17 @@ posts.sort((a, b) => {
 ---
 
 <BaseLayout
-  title="zaduma"
+  title="Arjun Aditya"
   description="Astro starter template for understated personal websites using Solid.js, Tailwind CSS, and MDX."
 >
-  <h1 slot="header-content" class="text-gray-600 dark:text-gray-500">zaduma</h1>
+  <h1 slot="header-content" class="text-gray-800 dark:text-gray-400">arjun aditya</h1>
   <main class="zaduma-prose py-10">
     <Paragraph>
       <small class="text-gray-600 dark:text-gray-500"
-        >IPA /zaˈdu.ma/ — reverie, musing</small
+        > AR-jun / — <a class="font-medium dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-400  duration-100" href="">mythological warrior (south-asian subcontinent)</a></small
       >
       <br />
-       is an Astro starter template for understated personal websites
+       description
     </Paragraph>
     <Paragraph class="mt-6">
       Learn about it by reading the articles below, take a look at the
@@ -39,7 +39,12 @@ posts.sort((a, b) => {
         {"create a new repository"}
       </Link>. I wish you a pleasant journey.
     </Paragraph>
+      <div>
+    <h3 class="text-gray-600 dark:text-gray-400 text-lg font-medium">Experience</h3>
+    
+    </div>
   </main>
+  <h3 class="text-gray-600 dark:text-gray-400 text-lg font-medium pb-4">My Thoughts</h3>
   <ul>
     {
       posts.map(({ frontmatter }) => {
@@ -52,12 +57,12 @@ posts.sort((a, b) => {
               class="flex flex-row justify-between gap-2"
               noUnderline
             >
-              <h2 class="font-sans text-gray-800 dark:text-gray-300">
+              <h2 class="font-sans text-gray-800 dark:text-gray-400">
                 {frontmatter.title}
               </h2>
               <time
                 datetime={date.toISOString()}
-                class="shrink-0 tabular-nums tracking-tighter text-gray-600 dark:text-gray-400"
+                class="shrink-0 tabular-nums tracking-tighter text-gray-600 dark:text-gray-500"
               >
                 {formatDate(date)}
               </time>
