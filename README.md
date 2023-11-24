@@ -1,1 +1,1 @@
-Starter from [hasparus/zaduma](https://github.com/hasparus/zaduma)
+personal website and blog of nermalcat69. inspired from [nexxel](https://github.com/nexxeln/nexxel.dev).

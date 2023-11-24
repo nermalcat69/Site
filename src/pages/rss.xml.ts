@@ -1,27 +1,27 @@
-import rss from "@astrojs/rss";
+import rss from "@astrojs/rss"
+import type { APIContext } from "astro"
+import { getCollection } from "astro:content"
+import sanitizeHtml from "sanitize-html"
+import MarkdownIt from "markdown-it"
+import { sortPostsByDate } from "../lib/date"
 
-import type { PostProps } from "../types";
+const parser = new MarkdownIt()
 
-const postImportResult = import.meta.glob<PostProps>("../../posts/**/*.mdx", {
-  eager: true,
-});
-const posts = Object.values(postImportResult);
+export async function get({ site }: APIContext) {
+  const posts = sortPostsByDate(await getCollection("blog"))
 
-export const get = () =>
-  rss({
-    // `<title>` field in output xml
-    title: "",
-    // `<description>` field in output xml
-    description: "",
-    // base URL for RSS <item> links
-    // SITE will use "site" from your project's astro.config.
-    site: "https://haspar.us",
-    // list of `<item>`s in output xml
-    // simple example: generate items for every md file in /src/pages
-    // see "Generating items" section for required frontmatter and advanced use cases
-    items: posts.map(({ frontmatter }) => ({
-      title: frontmatter.title,
-      link: frontmatter.path,
-      pubDate: new Date(frontmatter.date),
+  return rss({
+    title: "nexxel’s blog",
+    description: "Writings on programming and technology.",
+    site: String(site),
+    stylesheet: "/rss/styles.xsl",
+    items: posts.map(({ body, slug, data: { title, description, date: pubDate } }) => ({
+      title,
+      description,
+      pubDate,
+      link: `/blog/${slug}`,
+      content: sanitizeHtml(parser.render(body)),
     })),
-  });
+    customData: "<language>en-us</language>",
+  })
+}

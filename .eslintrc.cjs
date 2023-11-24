@@ -1,17 +1,17 @@
-module.exports = {
-  parser: "@typescript-eslint/parser",
-  extends: ["@edgeandnode"],
-  settings: { react: { version: '999.999.999' } },
-  rules: {},
+/* eslint-disable quote-props */
+process.env.ESLINT_TSCONFIG = "tsconfig.json"
+
+/** @type {import("eslint").Linter.Config} */
+const config = {
+  root: true,
+  extends: ["@antfu", "@unocss", "plugin:astro/recommended"],
   overrides: [
     {
-      files: ["*.ts", "*.tsx"],
-      parserOptions: {
-        project: require.resolve("./tsconfig.json"),
-      },
+      files: ["*"],
       rules: {
-        "react/jsx-key": "off",
-        "react/style-prop-object": "off",
+        quotes: ["error", "double"],
+        "@typescript-eslint/quotes": ["error", "double"],
+        "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       },
     },
     {
@@ -21,7 +21,8 @@ module.exports = {
         parser: "@typescript-eslint/parser",
         extraFileExtensions: [".astro"],
       },
-      rules: {},
     },
   ],
-};
+}
+
+module.exports = config

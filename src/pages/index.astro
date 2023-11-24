@@ -1,83 +1,73 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { formatDate } from "../lib/formatDate";
-import { Link } from "../lib/Link";
-import { Paragraph } from "../lib/prose/Paragraph";
-import type { PostFrontmatter } from "../types";
+import { getCollection } from "astro:content"
+import { sortPostsByDate } from "../lib/date"
+import Link from "../components/Link.vue"
+import Base from "../layouts/Base.astro"
+import Project from "../components/Project.astro"
+import PostRow from "../components/PostRow.astro"
+import { getProjects } from "../lib/projects"
+import { ArrowUpRight } from 'lucide-react';
 
-let posts = await Astro.glob<PostFrontmatter>("../../posts/**/*.mdx");
 
-if (import.meta.env.PROD) {
-  posts = posts.filter((post) => !post.frontmatter.draft);
-}
+// const projects = await getProjects(6)
+const projects = await getProjects()
+const posts = sortPostsByDate(
+  await getCollection("blog", ({ data }) => data.isDraft !== true),
+).slice(0, 4)
 
-posts.sort((a, b) => {
-  return (
-    new Date(b.frontmatter.date).getTime() -
-    new Date(a.frontmatter.date).getTime()
-  );
-});
+const title = "nexxel • home";
 ---
 
-<BaseLayout
-  title="Arjun Aditya"
-  description="Astro starter template for understated personal websites using Solid.js, Tailwind CSS, and MDX."
+<Base
+  {title}
+  description="Personal website and blog of Shoubhit Dash aka nexxel."
+  image="https://og.nxl.sh/home"
 >
-  <h1 slot="header-content" class="text-gray-800 dark:text-gray-400">arjun aditya</h1>
-  <main class="zaduma-prose py-10">
-    <Paragraph>
-      <small class="text-gray-600 dark:text-gray-500"
-        > AR-jun / — <a class="font-medium dark:text-gray-500 hover:text-gray-900 dark:hover:text-gray-400  duration-100" href="">mythological warrior (south-asian subcontinent)</a></small
+  <h1 slot="header-content" class="text-neutral-300 font-medium text-2xl">
+    Arjun Aditya
+  </h1>
+      <small class="text-neutral-500 text-md"
+        >AR-jun / — mythological warrior (south-asian subcontinent)</small
       >
-      <br />
-       description
-    </Paragraph>
-    <Paragraph class="mt-6">
-      Learn about it by reading the articles below, take a look at the
-      <Link href="https://github.com/hasparus/zaduma">readme</Link>, or boldly
-      <Link href="https://github.com/hasparus/zaduma/generate">
-        {"create a new repository"}
-      </Link>. I wish you a pleasant journey.
-    </Paragraph>
-      <div>
-    <h3 class="text-gray-600 dark:text-gray-400 text-lg font-medium">Experience</h3>
-    
-    </div>
-  </main>
-  <h3 class="text-gray-600 dark:text-gray-400 text-lg font-medium pb-4">My Thoughts</h3>
-  <ul>
-    {
-      posts.map(({ frontmatter }) => {
-        const date = new Date(frontmatter.date);
+  <main class="prose leading-6">
+    <p class="text-lg">
+      Well hello there, I'm <strong>Arjun Aditiya</strong> also known by my internet alias "<strong>nermal</strong>" or "<strong>nermalcat69</strong>". I enjoy <strong>web development</strong>, <strong>App Development Using Tauri</strong>, <strong>Building User Interfaces and Graphics on Figma</strong>, and a lot of stuff.
+    </p>
+    <p class="text-lg">My life started with my love for <strong>phones and computers, at age 10 (unity software)</strong>. I began <strong>programming</strong> after some time, then discovered my passion for <strong>finance</strong> and entered the <strong>financial markets at age 15</strong>. My interests also include <strong>economics, international relations, graphic design, video editing, and photography with Rebel T6i</strong>.</p>
+    <p class="text-lg">
+      Right now I'm working at 
+        <a class="text-neutral-400 hover:text-neutral-300 px-1 rounded-md underline duration-75"
+          href="https://gluo.xyz"
+          target="_blank"
+        >
+			Gluo</a>, building a privacy oriented social media.
 
-        return (
-          <li>
-            <Link
-              href={frontmatter.path}
-              class="flex flex-row justify-between gap-2"
-              noUnderline
-            >
-              <h2 class="font-sans text-gray-800 dark:text-gray-400">
-                {frontmatter.title}
-              </h2>
-              <time
-                datetime={date.toISOString()}
-                class="shrink-0 tabular-nums tracking-tighter text-gray-600 dark:text-gray-500"
-              >
-                {formatDate(date)}
-              </time>
-            </Link>
-          </li>
-        );
-      })
-    }
-  </ul>
-  <style>
-    ul:hover li:not(:hover) :where(h2, time) {
-      @apply text-gray-600 transition-colors;
-      :global(.dark) & {
-        @apply text-gray-500;
-      }
-    }
-  </style>
-</BaseLayout>
+    </p>
+
+    <!-- <div class="mt-12 border-t-2 border-neutral-700">
+      <h2>Projects</h2>
+        <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
+         {projects.map(project => <Project {project} />)}
+      </div>
+    </div> -->
+    <!-- <div class="mt-12 border-t-2 border-neutral-700">
+      <h2>Blog</h2>
+        <div class="flex flex-col gap-4">
+            {posts.map(post => <PostRow {post} />)}
+          <span>
+            <Link href="/blog">All posts →</Link>
+          </span>
+      </div>
+    </div> -->
+  </main>
+</Base>
+
+
+<style>
+  .arjunaditya {
+    background: linear-gradient(180deg, #6C6C6C 0%, #040711 100%);
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+  }
+</style>
