@@ -11,7 +11,7 @@ export async function get({ site }: APIContext) {
   const posts = sortPostsByDate(await getCollection("blog"))
 
   return rss({
-    title: "nexxel’s blog",
+    title: "nermal's blog",
     description: "Writings on programming and technology.",
     site: String(site),
     stylesheet: "/rss/styles.xsl",
