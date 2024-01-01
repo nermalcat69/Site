@@ -10,7 +10,7 @@
     "astro": "astro",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format:write": "npx prettier --write ./src/content/blog"
+    "format:write": "prettier --write \"**/*.{css,js,json,jsx,ts,tsx}\""
   },
   "dependencies": {
     "@astrojs/mdx": "^1.1.5",
@@ -23,6 +23,8 @@
     "astro": "^3.6.4",
     "lucide-react": "^0.292.0",
     "markdown-it": "^13.0.2",
+    "prettier": "^3.1.1",
+    "prettier-plugin-tailwindcss": "^0.5.10",
     "sanitize-html": "^2.11.0",
     "solid-js": "^1.8.7",
     "vue": "^3.4.3",
