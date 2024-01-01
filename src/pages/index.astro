@@ -6,7 +6,7 @@ import Base from "../layouts/Base.astro"
 // import PostRow from "../components/PostRow.astro"
 import { getProjects } from "../lib/projects"
 import Skillset from "../components/skillset.astro"
-import Experience from "../components/experience.astro"
+import ExperienceCard from "./experiencecard.astro";
 
 
 // const projects = await getProjects(6)
@@ -44,8 +44,21 @@ const title = "Arjun • home";
 
     </p>
     <Skillset />
-    <Experience />
-    <!-- <div class="mt-12 border-t-2 border-neutral-700">
+<div class="my-8">
+    <h2 class="text-white">Experience</h2>
+    <div class="my-4 space-y-12">
+        <ExperienceCard 
+        Time="Sep 2023 - Present" 
+        Company="Gluo" 
+        Title=" Full Stack Developer" 
+        Description="Working on creating an advanced communication platform with AI support to digitize society and make it accessible to people worldwide, regardless of their location or background. The goal is to simplify communication across various industries, and districts and municipalities working on city digitization efforts can benefit from the technologies we provide to streamline communication." 
+        SkillOne="Typescript"
+        SkillTwo="Sveltekit"
+        SkillThree="Tailwind"
+        SkillFour="Figma"
+        />
+    </div>
+</div>    <!-- <div class="mt-12 border-t-2 border-neutral-700">
       <h2>Projects</h2>
         <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
          {projects.map(project => <Project {project} />)}

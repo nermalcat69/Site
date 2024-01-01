@@ -10,7 +10,7 @@
     "astro": "astro",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format:content": "npx prettier --write ./src/content/blog"
+    "format:write": "npx prettier --write ./src/content/blog"
   },
   "dependencies": {
     "@astrojs/mdx": "^1.1.5",
