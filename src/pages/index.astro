@@ -7,7 +7,8 @@ import Project from "../components/Project.astro"
 import PostRow from "../components/PostRow.astro"
 import { getProjects } from "../lib/projects"
 import { ArrowUpRight } from 'lucide-react';
-import Skillset from "../components/skillset.astro"
+import Skillset from "../components/Skillset.astro"
+import Experience from "../components/Experience.astro"
 
 
 // const projects = await getProjects(6)
@@ -45,6 +46,7 @@ const title = "Arjun • home";
 
     </p>
     <Skillset />
+    <Experience />
     <!-- <div class="mt-12 border-t-2 border-neutral-700">
       <h2>Projects</h2>
         <div class="grid grid-cols-2 gap-4 md:grid-cols-3">
