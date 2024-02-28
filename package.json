@@ -1,49 +1,24 @@
 {
-  "name": "blog",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format:write": "prettier --write \"**/*.{css,js,json,jsx,ts,tsx}\""
-  },
-  "dependencies": {
-    "@astrojs/mdx": "^1.1.5",
-    "@astrojs/rss": "^3.0.0",
-    "@astrojs/sitemap": "^3.0.4",
-    "@astrojs/solid-js": "^3.0.3",
-    "@astrojs/vercel": "^5.2.0",
-    "@astrojs/vue": "^3.0.4",
-    "@loglib/tracker": "^0.8.0",
-    "astro": "^3.6.4",
-    "lucide-react": "^0.292.0",
-    "markdown-it": "^13.0.2",
-    "prettier": "^3.1.1",
-    "prettier-plugin-tailwindcss": "^0.5.10",
-    "sanitize-html": "^2.11.0",
-    "solid-js": "^1.8.7",
-    "vue": "^3.4.3",
-    "zod": "^3.22.4"
-  },
-  "devDependencies": {
-    "@antfu/eslint-config": "1.0.0-beta.18",
-    "@iconify-json/mdi": "^1.1.63",
-    "@iconify-json/radix-icons": "^1.1.14",
-    "@iconify-json/tabler": "^1.1.102",
-    "@types/markdown-it": "^13.0.7",
-    "@types/sanitize-html": "^2.9.5",
-    "@typescript-eslint/parser": "^6.16.0",
-    "@unocss/eslint-config": "^0.56.5",
-    "@unocss/reset": "^0.56.5",
-    "eslint": "^8.56.0",
-    "eslint-plugin-astro": "^0.29.1",
-    "eslint-plugin-jsx-a11y": "^6.8.0",
-    "tailwindcss": "^3.4.0",
-    "unocss": "^0.56.5"
-  }
+	"name": "sveltekit-on-the-edge",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "svelte-check --tsconfig ./jsconfig.json --watch",
+		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. .",
+		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-vercel": "^2.1.0",
+		"@sveltejs/kit": "^1.8.3",
+		"prettier": "^2.8.4",
+		"prettier-plugin-svelte": "^2.9.0",
+		"svelte": "^3.55.1",
+		"svelte-check": "^3.0.3",
+		"typescript": "~4.9.5",
+		"vite": "^4.1.3"
+	},
+	"type": "module"
 }
