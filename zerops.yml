@@ -18,8 +18,8 @@ zerops:
 
       # build your application
       buildCommands:
-        - bun install
-        - bun run build
+        - npm install
+        - npm run build
 
       # select which files / folders to deploy
       # after the build succesfully finished
