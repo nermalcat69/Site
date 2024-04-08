@@ -1,4 +1,4 @@
-import WorkinProgress from "@components/"
+// import WorkinProgress from "@components/"
 
 export default function Home() {
   return (

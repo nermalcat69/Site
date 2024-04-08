@@ -18,8 +18,8 @@ zerops:
 
       # build your application
       buildCommands:
-        - npm i
-        - npm run build
+        - bun install
+        - bun run build
 
       # select which files / folders to deploy
       # after the build succesfully finished
@@ -29,13 +29,13 @@ zerops:
       # itself, either way make sure your nginx
       # config points to the correct folder
       deploy:
-        - 'dist/~'
+        - '.next/~'
 
       # *optional*: which files / folders
       # to cache for the next use
       cache:
         - node_modules
-        - package-lock.json
+        - bun.lockb
 
     # ==== how to run your application ====
     # (usually no changes needed for a Static apps)
