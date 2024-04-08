@@ -29,13 +29,13 @@ zerops:
       # itself, either way make sure your nginx
       # config points to the correct folder
       deploy:
-        - '.next/~'
+        - '.next/server/app/~'
 
       # *optional*: which files / folders
       # to cache for the next use
       cache:
         - node_modules
-        - bun.lockb
+        - package-lock.json
 
     # ==== how to run your application ====
     # (usually no changes needed for a Static apps)
