@@ -29,7 +29,7 @@ zerops:
       # itself, either way make sure your nginx
       # config points to the correct folder
       deploy:
-        - '.next/server/~'
+        - '.next/~'
 
       # *optional*: which files / folders
       # to cache for the next use
