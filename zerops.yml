@@ -1,8 +1,8 @@
 zerops:
-  - setup: arjunadityasite
+  - setup: personalsite
     build:
       base: nodejs@18
       buildCommands:
-        - npm i
+        - npm install
         - npm run build
       deploy: ./
