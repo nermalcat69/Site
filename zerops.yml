@@ -1,8 +1,14 @@
 zerops:
-  - setup: personalsite
+  - setup: site
     build:
-      base: nodejs@18
+      base: nodejs@20
       buildCommands:
-        - npm install
-        - npm run build
-      deploy: ./
+        - yarn
+        - yarn build
+      deploy:
+        - ./
+      cache:
+        - node_modules
+        - yarn.lock
+    run:
+      start: yarn start
