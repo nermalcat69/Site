@@ -1,40 +1,74 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 const navItems = {
-  '/': {
-    name: 'home',
+  "/": {
+    name: "home",
   },
-  '/blog': {
-    name: 'blog',
+  "/blog": {
+    name: "blog",
   },
-  'https://vercel.com/templates/next.js/portfolio-starter-kit': {
-    name: 'deploy',
+  "https://vercel.com/templates/next.js/portfolio-starter-kit": {
+    name: "deploy",
   },
-}
+};
 
 export function Navbar() {
   return (
-    <aside className="-ml-[8px] mb-16 tracking-tight">
-      <div className="lg:sticky lg:top-20">
-        <nav
-          className="flex flex-row items-start relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative"
-          id="nav"
+    <div>
+      <div className="absolute top-5 hidden w-full justify-between px-5 sm:flex">
+        <a
+          href="/"
+          target="_blank"
+          className="rounded-lg p-2 transition-colors duration-200 hover:bg-stone-100 sm:bottom-auto"
         >
-          <div className="flex flex-row space-x-0 pr-10">
-            {Object.entries(navItems).map(([path, { name }]) => {
-              return (
-                <Link
-                  key={path}
-                  href={path}
-                  className="transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2 m-1"
-                >
-                  {name}
-                </Link>
-              )
-            })}
-          </div>
-        </nav>
+          <svg
+            width="22"
+            viewBox="0 0 76 76"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="#000000"></path>
+          </svg>
+        </a>
+        <a
+          href="https://github.com/nermalcat69/Site"
+          target="_blank"
+          className="rounded-lg p-2 transition-colors duration-200 hover:bg-stone-100 sm:bottom-auto"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+          </svg>
+        </a>
       </div>
-    </aside>
-  )
+    </div>
+  );
 }
+
+// <aside className="-ml-[8px] mb-16 tracking-tight">
+//   <div className="lg:sticky lg:top-20">
+//     <nav
+//       className="flex flex-row items-start relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative"
+//       id="nav"
+//     >
+//       <div className="flex flex-row space-x-0 pr-10">
+//         {Object.entries(navItems).map(([path, { name }]) => {
+//           return (
+//             <Link
+//               key={path}
+//               href={path}
+//               className="transition-all hover:text-neutral-800 flex align-middle relative py-1 px-2 m-1"
+//             >
+//               {name}
+//             </Link>
+//           )
+//         })}
+//       </div>
+//     </nav>
+//   </div>
+// </aside>
