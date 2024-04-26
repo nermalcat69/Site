@@ -25,8 +25,6 @@ yarn build
 yarn dev
 ```
 
-You can choose from one of the following two methods to use this repository:
-
 ### Deployment
 
-This project is deployed on [Zerops](https://zerops.io), check out their [Documentation](https://docs.zerops.io) for more info
+This project is deployed on [Zerops](https://zerops.io), check out their [Documentation](https://docs.zerops.io) for more info.
