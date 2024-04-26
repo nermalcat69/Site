@@ -1,3 +1,4 @@
+import { WorkInProgress } from "./components/workinprogress";
 import { BlogPosts } from "app/components/posts";
 
 export default function Page() {
@@ -16,6 +17,7 @@ export default function Page() {
       <div className="my-8">
         <BlogPosts />
       </div>
+      <WorkInProgress />
     </section>
   );
 }
