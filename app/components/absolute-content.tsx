@@ -12,12 +12,12 @@ const navItems = {
   },
 };
 
-export function Navbar() {
+export function Absolute() {
   return (
     <div>
       <div className="absolute top-5 hidden w-full justify-between px-5 sm:flex">
         <a
-          href="/"
+          href="http"
           target="_blank"
           className="rounded-lg p-2 transition-colors duration-200 hover:bg-stone-200 sm:bottom-auto"
         >
