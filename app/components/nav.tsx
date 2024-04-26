@@ -7,7 +7,7 @@ const navItems = {
   "/blog": {
     name: "blog",
   },
-  "https://vercel.com/templates/next.js/portfolio-starter-kit": {
+  "https://zerops.io/": {
     name: "deploy",
   },
 };
@@ -19,21 +19,19 @@ export function Navbar() {
         <a
           href="/"
           target="_blank"
-          className="rounded-lg p-2 transition-colors duration-200 hover:bg-stone-100 sm:bottom-auto"
+          className="rounded-lg p-2 transition-colors duration-200 hover:bg-stone-200 sm:bottom-auto"
         >
-          <svg
-            width="22"
-            viewBox="0 0 76 76"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="#000000"></path>
-          </svg>
+        <svg width="25" viewBox="0 0 53 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24.736 0.32959L3.18447 8.65807C2.24469 9.03061 1.43797 9.68122 0.869807 10.5248C0.301648 11.3684 -0.00150052 12.3658 5.58481e-06 13.3864V34.3534L9.90443 28.5983V16.8091L26.5037 10.3694V0C25.8997 0.00131553 25.3008 0.112972 24.736 0.32959Z" fill="#323232"/>
+          <path d="M10.0799 47.2802L26.5037 37.7094V26.1484L1.12835 40.942C0.78677 41.1443 0.503128 41.433 0.305298 41.7797C0.107467 42.1264 0.00225512 42.5192 0 42.9195V50.6649C0.00852938 51.6768 0.316353 52.6631 0.883864 53.4967C1.45137 54.3303 2.2526 54.9732 3.18446 55.3425L24.736 63.671C25.3008 63.8876 25.8997 63.9993 26.5037 64.0006V53.6312L10.0799 47.2802Z" fill="#323232"/>
+          <path d="M51.9115 22.8558C52.2354 22.6683 52.5038 22.3966 52.689 22.069C52.8741 21.7414 52.9693 21.3696 52.9647 20.9923V13.3864C52.9662 12.3658 52.663 11.3684 52.0949 10.5248C51.5267 9.68121 50.72 9.0306 49.7802 8.65807L28.2162 0.32959C27.6553 0.114468 27.0608 0.00283646 26.4609 0V10.3694L42.7593 16.7077L26.4609 26.2024V37.7634L51.9115 22.8558Z" fill="#1A1A1A"/>
+          <path d="M28.2513 63.676L49.8154 55.3475C50.7472 54.9781 51.5485 54.3353 52.116 53.5017C52.6835 52.668 52.9913 51.6818 52.9998 50.6698V29.4873L43.0954 35.2678V47.2218L26.4961 53.6361V64.0056C27.096 64.0027 27.6904 63.8911 28.2513 63.676Z" fill="#1A1A1A"/>
+        </svg>
         </a>
         <a
           href="https://github.com/nermalcat69/Site"
           target="_blank"
-          className="rounded-lg p-2 transition-colors duration-200 hover:bg-stone-100 sm:bottom-auto"
+          className="rounded-lg p-2 transition-colors duration-200 hover:bg-stone-200 sm:bottom-auto"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
