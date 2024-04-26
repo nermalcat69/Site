@@ -27,4 +27,4 @@ yarn dev
 
 ### Deployment
 
-This project is deployed on [Zerops](https://zerops.io), check out their [Documentation](https://docs.zerops.io) for more info.
+This project is deployed on [Zerops](https://zerops.io), check out their [Documentation](https://docs.zerops.io) and [Discord](https://discord.gg/5XbgYA5rqk) for more info.
