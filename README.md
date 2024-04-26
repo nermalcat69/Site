@@ -1,4 +1,4 @@
-# Portfolio Blog Starter
+# Site
 
 This is a porfolio site template complete with a blog. Includes:
 
@@ -12,6 +12,18 @@ This is a porfolio site template complete with a blog. Includes:
 - Geist font
 
 ## How to Use
+
+```Bash
+yarn
+```
+
+```Bash
+yarn build
+```
+
+```Bash
+yarn dev
+```
 
 You can choose from one of the following two methods to use this repository:
 
