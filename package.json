@@ -1,31 +1,30 @@
 {
+  "name": "nuxt-app",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "@tailwindcss/postcss": "4.0.0-alpha.13",
-    "@types/node": "20.11.17",
-    "@types/react": "18.2.55",
-    "@types/react-dom": "18.2.19",
-    "@vercel/analytics": "^1.1.3",
-    "@vercel/speed-insights": "^1.0.9",
-    "framer-motion": "^11.1.7",
-    "geist": "1.2.2",
-    "next": "canary",
-    "next-mdx-remote": "^4.4.1",
-    "postcss": "^8.4.35",
-    "preact": "^10.21.0",
-    "preact-compat": "^3.19.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "sugar-high": "^0.6.0",
-    "tailwindcss": "4.0.0-alpha.13",
-    "typescript": "5.3.3"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "prettier": "3.2.5"
+    "@nuxt/content": "^2.10.0",
+    "@nuxt/devtools": "1.0.5",
+    "@nuxthq/studio": "1.0.6",
+    "@nuxtjs/fontaine": "^0.4.1",
+    "@nuxtjs/google-fonts": "3.1.1",
+    "nuxt": "3.9.1",
+    "nuxt-icon": "0.6.7",
+    "prettier": "3.1.1",
+    "prettier-plugin-tailwindcss": "0.5.9",
+    "yarn-upgrade-all": "^0.7.2"
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "1.1.145",
+    "@nuxt/image": "1.1.0",
+    "@nuxt/ui": "2.11.1",
+    "postcss-custom-properties": "^13.3.10",
+    "vue-use-fixed-header": "^2.0.0"
   }
 }
