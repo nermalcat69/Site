@@ -20,7 +20,7 @@ const isDark = computed({
       <Icon
         aria-hidden="true"
         :name="isDark ? 'solar:sun-2-outline' : 'solar:moon-outline'"
-        class="w-5 h-5"
+        class="w-5 h-5 hover:rotate-12 duration-300 active:rotate-90"
       />
       <span class="sr-only">Toggle theme</span>
     </button>

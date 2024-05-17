@@ -3,8 +3,8 @@
     <h2 class="uppercase text-xs font-semibold text-gray-400 mb-4">FIND ME ON</h2>
     <div class="flex gap-5">
       <NuxtLink v-for="link in links" :key="link.icon" :to="link.url" target="_blank" external
-        class="text-black dark:text-white  dark:hover:bg-gray-900 duration-75 rounded-lg p-2">
-        <Icon :name="link.icon" class="w-7 h-7"></Icon>
+        class="text-black hover:bg-gray-100 hover:-translate-y-0.5 active:bg-gray-200 dark:text-white  dark:hover:bg-gray-900 dark:active:bg-gray-800 duration-150 rounded-lg p-2">
+        <Icon :name="link.icon" class="w-8 h-8 hover:rotate-12 duration-150"></Icon>
       </NuxtLink>
     </div>
   </div>
