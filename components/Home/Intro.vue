@@ -1,9 +1,9 @@
 <template>
   <div class="space-y-6">
-    <NuxtImg src="/avatar.png" alt="nermalcat69"
+    <NuxtImg src="/avatar.webp" alt="nermalcat69"
       draggable="false"
       class="ring-2 border ring-gray-200 border-gray-300 hover:rotate-6 dark:ring-white/30 dark:border-gray-800 hover:ring-4 transition-all duration-300 bg-gray-200 dark:bg-gray-900 rounded-full h-12 w-12 sm:h-16 sm:w-16"
-      sizes="48px sm:64px" placeholder format="webp" />
+      sizes="48px sm:64px" format="webp" />
     <h1 class="text-xl font-bold tracking-tight text-gray-800 dark:text-gray-100">
       Arjun Aditya
     </h1>

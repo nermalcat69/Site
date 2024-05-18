@@ -6,6 +6,7 @@
       <HomeFeaturedProjects />
       <HomeFeaturedArticles />
       <HomeNewsletter />
+      <HomeDiscordServer />
     </div>
   </main>
 </template>
