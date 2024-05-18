@@ -1,6 +1,9 @@
 <template>
   <NuxtLoadingIndicator />
-  <div class="z-50">
+  <ClientOnly>
+    <component :is="ArtComponent" v-if="ArtComponent" class="art-background" />
+  </ClientOnly>
+  <div class="z-50 relative">
     <div class="py-10">
       <AppNavbar />
     </div>
@@ -27,4 +30,36 @@
   opacity: 0;
   transform: translateY(5px);
 }
+
+.art-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  /* Ensures the background is behind other content */
+  pointer-events: none;
+  /* Makes the background non-interactive */
+}
 </style>
+
+<script>
+import { computed, defineAsyncComponent } from 'vue'
+
+export default {
+  setup() {
+    const frontmatter = { art: 'dots' } // Assume this is imported or passed as a prop
+    const ArtComponent = computed(() => {
+      if (typeof window !== 'undefined' && frontmatter.art === 'dots') {
+        return defineAsyncComponent(() => import('/pages/ArtDots.vue'))
+      }
+      return null
+    })
+
+    return {
+      ArtComponent
+    }
+  }
+}
+</script>

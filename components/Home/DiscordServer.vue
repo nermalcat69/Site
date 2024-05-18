@@ -40,13 +40,12 @@
                     </svg>
                 </div>
             </a>
-            <a class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-semibold outline-none transition duration-300 focus:ring-2 focus:ring-purple-400 bg-white text-black shadow-2xl shadow-stone-800/30 pl-[1.75rem] pr-[1.75rem]"
+            <a class="group relative inline-flex items-center justify-center overflow-hidden rounded-lg px-4 py-3 text-sm font-semibold outline-none transition duration-500 focus:ring-2 focus:ring-purple-400 bg-white text-black shadow-2xl shadow-stone-800/30 pl-[1.75rem] pr-[1.75rem]"
                 href="https://discord.gg/D2TK3g9Djs" target="_blank" aria-label="Download for Mac">
-                <div class="ease translate-x-0 transition duration-300 group-hover:-translate-x-24">69x Devs
+                <div class="ease translate-x-0 transition duration-300 group-hover:-translate-x-2">69x Devs
                 </div>
                 <div
-                    class="ease absolute right-1.5 translate-x-full opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100 flex flex-row">
-                    <p>Join Server</p>
+                    class="ease absolute right-3 translate-x-full opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100">
                     <svg class="h-5 w-5 stroke-current stroke-2 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"></path>
