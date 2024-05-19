@@ -1,7 +1,8 @@
 <template>
   <NuxtLoadingIndicator />
   <ClientOnly>
-    <component :is="ArtComponent" v-if="ArtComponent" class="art-background" />
+    <component :is="DotsBg" v-if="DotsBg" class="background" />
+    <AppBg />
   </ClientOnly>
   <div class="z-50 relative">
     <div class="py-10">
@@ -31,7 +32,7 @@
   transform: translateY(5px);
 }
 
-.art-background {
+.background {
   position: fixed;
   top: 0;
   left: 0;
@@ -50,15 +51,15 @@ import { computed, defineAsyncComponent } from 'vue'
 export default {
   setup() {
     const frontmatter = { art: 'dots' } // Assume this is imported or passed as a prop
-    const ArtComponent = computed(() => {
+    const DotsBg = computed(() => {
       if (typeof window !== 'undefined' && frontmatter.art === 'dots') {
-        return defineAsyncComponent(() => import('/pages/ArtDots.vue'))
+        return defineAsyncComponent(() => import('/pages/Dots.vue'))
       }
       return null
     })
 
     return {
-      ArtComponent
+      DotsBg
     }
   }
 }

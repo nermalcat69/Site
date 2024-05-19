@@ -17,15 +17,15 @@ import { computed, defineAsyncComponent } from 'vue'
 export default {
   setup() {
     const frontmatter = { art: 'dots' } // Assume this is imported or passed as a prop
-    const ArtComponent = computed(() => {
+    const DotsBg = computed(() => {
       if (typeof window !== 'undefined' && frontmatter.art === 'dots') {
-        return defineAsyncComponent(() => import('./ArtDots.vue'))
+        return defineAsyncComponent(() => import('./Dots.vue'))
       }
       return null
     })
 
     return {
-      ArtComponent
+      DotsBg
     }
   }
 }
