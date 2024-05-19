@@ -1,5 +1,5 @@
 <template>
-    <span class="index max-w-[377px] -left-96 duration-1000 absolute hidden dark:block">
+    <span class="index max-w-[377px] -left-96 duration-1000 absolute hidden lg:block">
         <svg width="871" height="656" viewBox="0 0 871 656" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_f_431_22)">
                 <path
