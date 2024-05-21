@@ -15,4 +15,4 @@ zerops:
         - node_modules
         - yarn.lock
     run:
-      start: yarn start
+      start: node .output/server/index.mjs
