@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="space-y-24">
+    <div class="space-y-24 md:transform-gpu">
       <HomeIntro />
       <HomeSocialLinks />
       <HomeFeaturedProjects />
