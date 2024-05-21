@@ -46,21 +46,21 @@
 </style>
 
 <script>
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from "vue";
 
 export default {
   setup() {
-    const frontmatter = { art: 'dots' } // Assume this is imported or passed as a prop
+    const frontmatter = { art: "dots" }; // Assume this is imported or passed as a prop
     const DotsBg = computed(() => {
-      if (typeof window !== 'undefined' && frontmatter.art === 'dots') {
-        return defineAsyncComponent(() => import('/pages/Dots.vue'))
+      if (typeof window !== "undefined" && frontmatter.art === "dots") {
+        return defineAsyncComponent(() => import("/pages/Dots.vue"));
       }
-      return null
-    })
+      return null;
+    });
 
     return {
-      DotsBg
-    }
-  }
-}
+      DotsBg,
+    };
+  },
+};
 </script>
