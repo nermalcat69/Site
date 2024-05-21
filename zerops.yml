@@ -1,14 +1,18 @@
 zerops:
-  - setup: site
+  - setup: sitedev
     build:
       base: nodejs@20
       buildCommands:
         - yarn
         - yarn build
       deploy:
-        - ./
+        - .nuxt
+        - .output
+        - node_modules
+        - package.json
+        - yarn.lock
       cache:
         - node_modules
         - yarn.lock
     run:
-      start: yarn start
+      start: node .output/server/index.mjs
