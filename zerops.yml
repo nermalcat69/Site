@@ -6,7 +6,8 @@ zerops:
         - yarn
         - yarn build
       deploy:
-        - ./
+        - .nuxt
+        - .output
       cache:
         - node_modules
         - yarn.lock
