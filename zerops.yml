@@ -8,6 +8,8 @@ zerops:
       deploy:
         - .nuxt
         - .output
+        - package.json
+        - yarn.lock
       cache:
         - node_modules
         - yarn.lock
