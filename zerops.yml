@@ -7,7 +7,7 @@ zerops:
         - yarn build
       deploy:
         - .nuxt
-        - .output
+        - .output/~
         - package.json
         - yarn.lock
       cache:
