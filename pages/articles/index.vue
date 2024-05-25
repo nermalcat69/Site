@@ -1,5 +1,5 @@
 <template>
-  <main class="min-h-screen">
+  <main class="min-h-screen bg-black/50">
     <AppHeader class="mb-16" title="Articles" :description="description" />
     <ul class="space-y-16">
       <li v-for="(article, id) in articles" :key="id">
