@@ -1,7 +1,7 @@
 <template>
   <main class="min-h-screen">
     <AppHeader class="mb-12" title="Projects" :description="description" />
-    <div class="space-y-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <AppProjectCard
         v-for="(project, id) in projects"
         :key="id"

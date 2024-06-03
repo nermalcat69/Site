@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    class="flex items-end gap-4 group -m-2 rounded-lg space-x-5 hover:bg-gray-100 hover:-translate-y-0.5 active:bg-gray-200 duration-75 hover:duration-300 dark:hover:bg-gray-900 p-5"
+    class="flex items-center gap-4 group -m-2 rounded-lg space-x-5 hover:bg-gray-100 hover:-translate-y-0.5 active:bg-gray-200 duration-75 hover:duration-300 dark:hover:bg-gray-900 p-5"
     :to="project.url"
     target="_blank"
     external

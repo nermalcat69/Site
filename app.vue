@@ -1,9 +1,5 @@
 <template>
   <NuxtLoadingIndicator />
-  <ClientOnly>
-    <component :is="DotsBg" v-if="DotsBg" class="background" />
-    <AppBg />
-  </ClientOnly>
   <div class="z-50 relative">
     <div class="py-10">
       <AppNavbar />
@@ -17,6 +13,11 @@
 </template>
 
 <style>
+
+body {
+    font-family: Inter, sans-serif;
+}
+
 .page-enter-active,
 .page-leave-active {
   transition: all 0.2s;
@@ -46,21 +47,4 @@
 </style>
 
 <script>
-import { computed, defineAsyncComponent } from "vue";
-
-export default {
-  setup() {
-    const frontmatter = { art: "dots" }; // Assume this is imported or passed as a prop
-    const DotsBg = computed(() => {
-      if (typeof window !== "undefined" && frontmatter.art === "dots") {
-        return defineAsyncComponent(() => import("/pages/Dots.vue"));
-      }
-      return null;
-    });
-
-    return {
-      DotsBg,
-    };
-  },
-};
 </script>
