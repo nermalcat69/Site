@@ -1,14 +1,18 @@
 zerops:
   - setup: site
     build:
-      base: nodejs@20
+      base: nodejs@22
       buildCommands:
-        - yarn
-        - yarn build
+        - pnpm i
+        - pnpm run build
       deploy:
-        - ./
-      cache:
+        - build
+        - server.js
+        - package.json
         - node_modules
-        - yarn.lock
     run:
-      start: yarn start
+      base: nodejs@20
+      ports:
+        - port: 3000
+          httpSupport: true
+      start: pnpm start
