@@ -1,18 +1,18 @@
 zerops:
-  - setup: sitedev
+  - setup: mpsaver
     build:
-      base: nodejs@20
+      base: nodejs@22
       buildCommands:
-        - yarn
-        - yarn build
-      deploy:
-        - .nuxt
-        - .output
-        - node_modules
+        - pnpm i
+        - pnpm run build
+      deployFiles:
+        - build
+        - server.js
         - package.json
-        - yarn.lock
-      cache:
         - node_modules
-        - yarn.lock
     run:
-      start: node .output/server/index.mjs
+      base: nodejs@20
+      ports:
+        - port: 3000
+          httpSupport: true
+      start: pnpm start
