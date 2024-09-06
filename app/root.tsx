@@ -32,7 +32,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className='flex flex-col'>
         <NavigationSwitcher />
       <BG
         className="absolute inset-0 z-20 animate-fade-in"
