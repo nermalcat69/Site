@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
+import { motion } from "framer-motion"
 
 const WindowSize = () => {
   const [width, setWidth] = React.useState<number>(0);
@@ -17,7 +18,9 @@ const WindowSize = () => {
 
   return (
     <>
+      <motion.div>
       <p className="sm:visible bottom-8 left-8 fixed hidden sm:block font-mono text-xs text-neutral-700">{`${width}X${height}`}</p>
+      </motion.div>
     </>
   );
 };

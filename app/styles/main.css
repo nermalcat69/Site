@@ -95,17 +95,7 @@ body a:focus-visible {
   text-decoration: none;
 }
 
-main {
-  display: flex;
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  overflow: hidden;
-}
+
 
 /* footer */
 
@@ -120,13 +110,8 @@ footer {
   text-align: center;
   padding: 48px;
   box-sizing: border-box;
-  font-size: 16px;
 }
 
-footer p {
-  line-height: 20px;
-  color: var(--accents-7);
-}
 
 footer a {
   height: fit-content;
@@ -140,7 +125,7 @@ footer .details {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  font-size: inherit;
+  font-size: 12px;
   color: var(--fg);
 }
 
@@ -284,13 +269,11 @@ nav:after {
 }
 
 .nav-stroke {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0),
-    var(--accents-4) 20%,
-    var(--accents-2) 67.19%,
-    rgba(0, 0, 0, 0)
-  );
+  background: linear-gradient(90deg,
+      rgba(0, 0, 0, 0),
+      var(--accents-4) 20%,
+      var(--accents-2) 67.19%,
+      rgba(0, 0, 0, 0));
   height: 1px;
   position: absolute;
   top: -1px;
@@ -354,11 +337,9 @@ nav:after {
   }
 
   .nav-pill {
-    background: radial-gradient(
-      132.5% 137.28% at 69.9% 88.75%,
-      #dadada 0%,
-      #f1f1f1 100%
-    );
+    background: radial-gradient(132.5% 137.28% at 69.9% 88.75%,
+        #dadada 0%,
+        #f1f1f1 100%);
   }
 
   .nav-link {
@@ -476,7 +457,7 @@ a {
 }
 
 .ButtonLink {
-    text-wrap: nowrap;
+  text-wrap: nowrap;
   transition: 300ms;
   @apply hover:translate-x-0.5 hover:duration-300;
 

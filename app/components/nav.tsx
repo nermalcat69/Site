@@ -66,7 +66,7 @@ export default function NavigationSwitcher() {
 
   return (
     <>
-      <nav className='max-w-full'>
+      <nav className='max-w-full z-30'>
         <div className='navbar max-w-[1240px] flex mx-auto'>
           <div className="logo-with-text">
         <a href='/' className='text-nowrap'>Arjun Aditya</a>

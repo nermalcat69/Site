@@ -1,8 +1,6 @@
 // import { Suspense } from 'react';
 // import { Await, useLoaderData } from '@remix-run/react';
 
-import { Footer } from '~/components/footer';
-
 type Props = {
   children: React.ReactNode
 }
@@ -15,8 +13,6 @@ export default function Team({children}: Props) {
       {/* {children} */}
       </main>
 
-      <Footer>
-      </Footer>
     </>
   );
 }
