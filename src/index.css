@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    max-width: 1100px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+}
+
+html {
+    background: #0E0E0E;
+}
+
+body {
+    color: rgb(var(--foreground-rgb));
+    background: #0E0E0E;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+::selection {
+    @apply bg-[#949494];
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+/* p {
+    color: #121212;
+    text-wrap: wrap;
+} */
+
+h1 {
+    color: #070707;
+}
+
+.ttl {
+    font-size: 16.5px;
+    font-weight: 400;
+}
+
+.ttlb {
+    font-weight: 400;
+}
+
+.txt {
+    color: rgb(181, 179, 173);
+    line-height: 1.65;
+    word-spacing: 0.25px;
+    letter-spacing: 0.3px;
+    font-size: 16px;
+    font-weight: 300;
+    @apply py-2.5;
+}
+
+h3 {
+    padding-bottom: 0.5rem;
+    color: #EAEAE7;
+    font-weight: 500;
+}
+
+.section {
+    @apply py-5 md:py-8;
+}
+
+a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.register {
+    color: rgb(181, 179, 173);
+}

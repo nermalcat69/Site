@@ -1,15 +1,16 @@
 zerops:
-  - setup: mpsaver
+  - setup: site
     build:
-      base: nodejs@22
+      base: nodejs@20
       buildCommands:
         - pnpm i
-        - pnpm run build
+        - pnpm build
       deployFiles:
-        - build
-        - server.js
-        - package.json
+        - public
         - node_modules
+        - dist
+        - package.json
+        - server.js
     run:
       base: nodejs@20
       ports:

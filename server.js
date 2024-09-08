@@ -1,54 +1,71 @@
-import { createRequestHandler } from "@remix-run/express";
-import { installGlobals } from "@remix-run/node";
-import compression from "compression";
-import express from "express";
-import morgan from "morgan";
+import { readFile } from 'node:fs/promises';
+import express from 'express';
 
-installGlobals();
+// Constants
+const isProduction = process.env.NODE_ENV === 'production';
+const port = process.env.PORT || 3000;
+const base = process.env.BASE || '/';
 
-const viteDevServer =
-  process.env.NODE_ENV === "production"
-    ? undefined
-    : await import("vite").then((vite) =>
-        vite.createServer({
-          server: { middlewareMode: true },
-        }),
-      );
+// Cached production assets
+const templateHtml = isProduction
+  ? await readFile('./dist/client/index.html', 'utf-8')
+  : '';
+const ssrManifest = isProduction
+  ? await readFile('./dist/client/.vite/ssr-manifest.json', 'utf-8')
+  : undefined;
 
-const remixHandler = createRequestHandler({
-  build: viteDevServer
-    ? () => viteDevServer.ssrLoadModule("virtual:remix/server-build")
-    : await import("./build/server/index.js"),
-});
-
+// Create http server
 const app = express();
 
-app.use(compression());
-
-// http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
-app.disable("x-powered-by");
-
-// handle asset requests
-if (viteDevServer) {
-  app.use(viteDevServer.middlewares);
+// Add Vite or respective production middlewares
+let vite;
+if (!isProduction) {
+  const { createServer } = await import('vite');
+  vite = await createServer({
+    server: { middlewareMode: true },
+    appType: 'custom',
+    base
+  });
+  app.use(vite.middlewares);
 } else {
-  // Vite fingerprints its assets so we can cache forever.
-  app.use(
-    "/assets",
-    express.static("build/client/assets", { immutable: true, maxAge: "1y" }),
-  );
+  const compression = (await import('compression')).default;
+  const sirv = (await import('sirv')).default;
+  app.use(compression());
+  app.use(base, sirv('./dist/client', { extensions: [] }));
 }
 
-// Everything else (like favicon.ico) is cached for an hour. You may want to be
-// more aggressive with this caching.
-app.use(express.static("build/client", { maxAge: "1h" }));
+// Serve HTML
+app.use('*', async (req, res) => {
+  try {
+    const url = req.originalUrl.replace(base, '');
 
-app.use(morgan("tiny"));
+    let template;
+    let render;
+    if (!isProduction) {
+      // Always read fresh template in development
+      template = await readFile('./index.html', 'utf-8');
+      template = await vite.transformIndexHtml(url, template);
+      render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
+    } else {
+      template = templateHtml;
+      render = (await import('./dist/server/entry-server.js')).render;
+    }
 
-// handle SSR requests
-app.all("*", remixHandler);
+    const rendered = await render(url, ssrManifest);
 
-const port = process.env.PORT || 3000;
-app.listen(port, () =>
-  console.log(`Express server listening at http://localhost:${port}`),
-);
+    const html = template
+      .replace(`<!--app-head-->`, rendered.head ?? '')
+      .replace(`<!--app-html-->`, rendered.html ?? '');
+
+    res.status(200).set({ 'Content-Type': 'text/html' }).send(html);
+  } catch (e) {
+    vite?.ssrFixStacktrace(e);
+    console.log(e.stack);
+    res.status(500).end(e.stack);
+  }
+});
+
+// Start http server
+app.listen(port, () => {
+  console.log(`Server started at http://localhost:${port}`);
+});
