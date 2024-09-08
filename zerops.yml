@@ -1,15 +1,16 @@
 zerops:
   - setup: site
     build:
-      base: nodejs@22
+      base: nodejs@20
       buildCommands:
         - pnpm i
-        - pnpm run build
-      deploy:
-        - build
-        - server.js
-        - package.json
+        - pnpm build
+      deployFiles:
+        - public
         - node_modules
+        - dist
+        - package.json
+        - server.js
     run:
       base: nodejs@20
       ports:
