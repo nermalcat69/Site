@@ -34,7 +34,7 @@ function App() {
                 <div className="section">
                     <h3 className="ttl">Socials</h3>
                     <p className="txt font-thin">
-                        Checkout my <a href="https://x.com/zNermo" target="_blank">Twitter</a> and <a href="https://github.com/nermalcat69" target="_blank">Github</a>. I use Zerops, btw.
+                        Checkout my <a href="https://x.com/zNermo" target="_blank">Twitter</a>, <a href="https://github.com/nermalcat69" target="_blank">Github</a>, <a href="https://unsplash.com/@arjunaditya" target="_blank">Unsplash</a> and <a href="https://instagram.com/nermalcat69" target="_blank">Instagram</a>.
                     </p>
                 </div>
                 <SomeComponent />
