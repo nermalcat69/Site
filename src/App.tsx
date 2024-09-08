@@ -1,5 +1,5 @@
 import "./App.css";
-import { Register } from "./components/register";
+import { Levitate } from "./components/levitating";
 // import { Steps } from "./components/steps";
 import WindowSize from "./components/WindowSize";
 import SomeComponent from "./components/SomeComponent";
@@ -22,7 +22,7 @@ function App() {
                         I started my programming journey in 2015 when I wanted to create my own version of Minecraft because that 90-minute free trial used to ruin my mood. Spent Some time while investing as well.
                     </p>
                     <p className="txt">
-                        Currently, I work as a full-stack developer at Zerops, but I like to dabble in whatever comes my way.
+                        Currently, I work as a full-stack developer at <a href="https://zerops.io/" target="_blank">Zerops</a>, but I like to dabble in whatever comes my way.
                     </p>
                 </div>
                 <div className="section">
@@ -34,12 +34,12 @@ function App() {
                 <div className="section">
                     <h3 className="ttl">Socials</h3>
                     <p className="txt font-thin">
-                        Checkout my <a href="https://x.com/">Twitter</a> and <a href="">Github</a>. I use Zerops, btw.
+                        Checkout my <a href="https://x.com/zNermo" target="_blank">Twitter</a> and <a href="https://github.com/nermalcat69" target="_blank">Github</a>. I use Zerops, btw.
                     </p>
                 </div>
                 <SomeComponent />
             </div>
-            <Register />
+            <Levitate />
             <WindowSize />
         </div>
     );
