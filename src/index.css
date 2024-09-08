@@ -75,8 +75,9 @@ h3 {
 }
 
 .rectangle {
-    box-shadow: 0px 3px 4px rgba(255, 255, 255, 0.05);
+box-shadow: 0px 3px 24.1px rgba(255, 255, 255, 0.08);
 }
+
 .navbtn {
     align-items: center;
 }
