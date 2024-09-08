@@ -65,11 +65,18 @@ h3 {
     @apply py-5 md:py-8;
 }
 
-a {
+.ext {
     text-decoration: underline;
     text-underline-offset: 3px;
 }
 
 .register {
     color: rgb(181, 179, 173);
+}
+
+.rectangle {
+    box-shadow: 0px 3px 4px rgba(255, 255, 255, 0.05);
+}
+.navbtn {
+    align-items: center;
 }
