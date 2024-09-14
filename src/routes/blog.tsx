@@ -5,7 +5,7 @@ import "../App.css";
 // import SomeComponent from "../components/SomeComponent";
 import { Nav } from "../components/nav";
 
-function Experience() {
+function Blog() {
     return (
         <>
             <div className="mx-auto max-w-2xl py-16 px-6">
@@ -16,4 +16,4 @@ function Experience() {
     );
 }
 
-export default Experience;
+export default Blog;

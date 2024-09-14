@@ -9,18 +9,18 @@
 }
 
 html {
-    background: #0E0E0E;
+    background: #ededed;
 }
 
 body {
     color: rgb(var(--foreground-rgb));
-    background: #0E0E0E;
+    background: #ededed;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
 
 ::selection {
-    @apply bg-[#949494];
+    @apply bg-[#c6c6c6];
 }
 
 body::-webkit-scrollbar {
@@ -37,8 +37,8 @@ h1 {
 }
 
 .ttl {
-    font-size: 16.5px;
-    font-weight: 400;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .ttlb {
@@ -46,7 +46,7 @@ h1 {
 }
 
 .txt {
-    color: rgb(181, 179, 173);
+    color: #222;
     line-height: 1.65;
     word-spacing: 0.25px;
     letter-spacing: 0.3px;
@@ -57,7 +57,7 @@ h1 {
 
 h3 {
     padding-bottom: 0.5rem;
-    color: #EAEAE7;
+    color: #111;
     font-weight: 500;
 }
 
@@ -71,7 +71,7 @@ h3 {
 }
 
 .register {
-    color: rgb(181, 179, 173);
+    color: #666;
 }
 
 .rectangle {

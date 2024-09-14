@@ -8,7 +8,7 @@ export function Nav() {
     const currentPath = window.location.pathname;
 
     const items: NavItem[] = [
-        { label: "guests", href: "/guestbook", icon: "/guestbook.svg" },
+        { label: "guests", href: "/guests", icon: "/guestbook.svg" },
         { label: "exp", href: "/experience", icon: "/experience.svg" },
         { label: "me", href: "/me", icon: "/profile.svg" },
         { label: "blog",href: "/blog", icon: "/blog.svg" },
@@ -16,7 +16,7 @@ export function Nav() {
 
     return (
         <>
-            <div className="absolute top-20 hover:rotate-0 rotate-12 -right-20 hover:right-0 duration-[600ms] mx-6 flex justify-center rounded-full bg-neutral-900 border border-[#392A32]  items-center">
+            <div className="fixed top-20 hover:rotate-0 rotate-12 -right-20 hover:right-0 duration-[600ms] mx-6 flex justify-center rounded-full bg-neutral-900 border border-[#392A32]  items-center">
                 {items.map((item, index) => {
                     const isActive = currentPath === item.href;
                     return (
@@ -33,7 +33,7 @@ export function Nav() {
                     );
                 })}
             </div>
-            <div className="absolute top-20 -rotate-12 hover:rotate-0 -left-10 hover:-left-3 duration-[600ms] mx-6 flex justify-center rounded-full bg-neutral-900 border border-[#392A32] items-center">
+            <div className="fixed top-20 -rotate-12 hover:rotate-0 -left-10 hover:-left-3 duration-[600ms] mx-6 flex justify-center rounded-full bg-neutral-900 border border-[#392A32] items-center">
                 <a
                     href="/"
                     className={`text-[#EEEEEE] ${currentPath === '/' ? 'border border-[#D01B68]' : 'hover:bg-neutral-800'
