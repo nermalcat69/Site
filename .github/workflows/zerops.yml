@@ -1,0 +1,27 @@
+name: Deploy to Zerops
+on: [push]
+jobs:
+  foo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache zcli binary
+        id: cache-zcli
+        uses: actions/cache@v3
+        with:
+          path: /usr/local/bin/zcli
+          key: zcli-linux-amd64-$(date +%Y%m%d)
+          restore-keys: zcli-linux-amd64
+
+      - name: Install zcli
+        if: steps.cache-zcli.outputs.cache-hit != 'true'
+        run: |
+          BINARY="zcli-linux-amd64"
+          echo "Downloading $BINARY..."
+          wget -q https://github.com/zeropsio/zcli/releases/latest/download/$BINARY -O /usr/local/bin/zcli
+          chmod +x /usr/local/bin/zcli
+          echo "zcli installed successfully."
+      - name: Verify zcli installation
+        run: zcli version
