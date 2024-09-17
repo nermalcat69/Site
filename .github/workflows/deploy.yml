@@ -15,4 +15,4 @@ jobs:
         uses: nermalcat69/test-action@v0.0.4
         with:
           access-token: ${{ secrets.ZEROPS_ACCESS_TOKEN }}
-          service-id: ${{ secrets.ZEROPS_SERVICE_ID }}
+          service-id: r83A9lP7TBiv4Axx2lsZFg
