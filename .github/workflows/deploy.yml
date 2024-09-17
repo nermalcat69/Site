@@ -7,9 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/vscode/devcontainers/python:3.10-alpine
+    runs-on: alpine-latest
 
     steps:
       - name: Checkout code
