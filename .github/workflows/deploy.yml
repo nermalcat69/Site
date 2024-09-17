@@ -5,10 +5,6 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-  deployments: write
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,12 +12,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
-      - name: Echo ZEROPS_TOKEN
-        run: echo ${{ secrets.ZEROPS_TOKEN }}
 
       - name: Deploy with Zerops
-        uses: nermalcat69/test-action@v0.0.6
+        uses: zeropsio/actions@v1
         with:
           access-token: ${{ secrets.ZEROPS_TOKEN }}
-          service-id: r83A9lP7TBiv4Axx2lsZFg
+          service-id: ${{ secrets.ZEROPS_SERVICE_ID }}
