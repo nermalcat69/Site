@@ -10,8 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: check version
-        run: zcli --version
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -20,4 +23,3 @@ jobs:
         with:
           service-id: ${{ secrets.ZEROPS_SERVICE_ID }}
           access-token: ${{ secrets.ZEROPS_ACCESS_TOKEN }}
-
