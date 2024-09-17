@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
       - name: Echo ZEROPS_TOKEN
         run: echo $ZEROPS_TOKEN
@@ -25,5 +23,7 @@ jobs:
       - name: Deploy with Zerops
         uses: nermalcat69/test-action@v0.0.6
         with:
-          access-token: ${{ secrets.ZEROPS_TOKEN }}
+          access-token: $ZEROPS_TOKEN
           service-id: r83A9lP7TBiv4Axx2lsZFg
+        env:
+          ZEROPS_TOKEN: ${{ secrets.ZEROPS_TOKEN }}
