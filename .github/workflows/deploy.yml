@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Deploy Test Action
+      - name: Deploy with Zerops
         uses: nermalcat69/test-action@v0.0.4
         with:
           service-id: ${{ secrets.ZEROPS_SERVICE_ID }}
