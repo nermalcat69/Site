@@ -10,10 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-
+    
       - name: Deploy with Zerops
         uses: nermalcat69/test-action@v0.0.4
         with:
