@@ -1,27 +1,25 @@
-name: Deploy to Zerops
-on: [push]
+name: Deploy with Zerops
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
-  foo:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Cache zcli binary
-        id: cache-zcli
-        uses: actions/cache@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          path: /usr/local/bin/zcli
-          key: zcli-linux-amd64-$(date +%Y%m%d)
-          restore-keys: zcli-linux-amd64
+          node-version: '20'
 
-      - name: Install zcli
-        if: steps.cache-zcli.outputs.cache-hit != 'true'
-        run: |
-          BINARY="zcli-linux-amd64"
-          echo "Downloading $BINARY..."
-          wget -q https://github.com/zeropsio/zcli/releases/latest/download/$BINARY -O /usr/local/bin/zcli
-          chmod +x /usr/local/bin/zcli
-          echo "zcli installed successfully."
-      - name: Verify zcli installation
-        run: zcli version
+      - name: Deploy Test Action
+        uses: nermalcat69/test-action@v0.0.3
+        with:
+          service-id: ${{ secrets.ZEROPS_SERVICE_ID }}
+          access-token: ${{ secrets.ZEROPS_ACCESS_TOKEN }}
