@@ -14,5 +14,4 @@ jobs:
       - name: Deploy with Zerops
         uses: nermalcat69/test-action@v0.0.4
         with:
-          service-id: ${{ secrets.ZEROPS_SERVICE_ID }}
           access-token: ${{ secrets.ZEROPS_ACCESS_TOKEN }}
