@@ -7,8 +7,8 @@ import SomeComponent from "./components/SomeComponent";
 function App() {
     return (
         <div className="mx-auto max-w-2xl py-16 px-6">
-            <h2 className="ttl text-[#1a1a1a]">Arjun Aditya</h2>
-            <p className="text-[#a7a7a7] ttlb">Programmer / Designer</p>
+            <h2 className="text-2xl font-medium text-[#1a1a1a]">Arjun Aditya</h2>
+            <p className="text-[#a7a7a7] text-sm">Programmer / Designer</p>
             <div className="py-16">
                 <div className="section">
                     <h3 className="ttl">Myself</h3>
@@ -19,7 +19,7 @@ function App() {
                         The point is, I enjoy almost everything from ui/ux design (despite being colorblind) to programming, marketing, writing, and finances.
                     </p>
                     <p className="txt">
-                        I started my programming journey in 2015 when I wanted to create my own version of Minecraft because that 90-minute free trial used to ruin my mood. Spent Some time while investing as well.
+                        I started my programming journey in 2015 when I wanted to create my own version of Minecraft because that 90-minute free trial used to ruin my mood. Spent Some time in financial markets as well.
                     </p>
                     <p className="txt">
                         Currently, I work as a full-stack developer at <a href="https://zerops.io/" target="_blank">Zerops</a>, but I like to dabble in whatever comes my way.
