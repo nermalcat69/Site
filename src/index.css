@@ -9,18 +9,18 @@
 }
 
 html {
-    background: #0E0E0E;
+    background: #ffffff;
 }
 
 body {
     color: rgb(var(--foreground-rgb));
-    background: #0E0E0E;
+    background: #ffffff;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
 
 ::selection {
-    @apply bg-[#949494];
+    @apply bg-[#edffc0];
 }
 
 body::-webkit-scrollbar {
@@ -46,18 +46,18 @@ h1 {
 }
 
 .txt {
-    color: rgb(181, 179, 173);
+    color: rgb(80, 80, 80);
     line-height: 1.65;
     word-spacing: 0.25px;
     letter-spacing: 0.3px;
     font-size: 16px;
-    font-weight: 300;
+    font-weight: 400;
     @apply py-2.5;
 }
 
 h3 {
     padding-bottom: 0.5rem;
-    color: #EAEAE7;
+    color: #1a1a1a;
     font-weight: 500;
 }
 
@@ -71,5 +71,5 @@ a {
 }
 
 .register {
-    color: rgb(181, 179, 173);
+    color: rgb(229, 229, 229);
 }

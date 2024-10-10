@@ -7,8 +7,8 @@ import SomeComponent from "./components/SomeComponent";
 function App() {
     return (
         <div className="mx-auto max-w-2xl py-16 px-6">
-            <h2 className="ttl text-[#EAEAE7]">Arjun Aditya</h2>
-            <p className="text-[#A6A49D] ttlb">Programmer / Designer</p>
+            <h2 className="ttl text-[#1a1a1a]">Arjun Aditya</h2>
+            <p className="text-[#a7a7a7] ttlb">Programmer / Designer</p>
             <div className="py-16">
                 <div className="section">
                     <h3 className="ttl">Myself</h3>
