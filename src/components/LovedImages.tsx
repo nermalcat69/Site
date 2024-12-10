@@ -1,6 +1,6 @@
-import IMGs from "./IMGs";
+import ImageGallery from "./Images";
 
-const IMGs = [
+const Images = [
     {
         src: "https://res.cloudinary.com/dyndvyaiu/IMG/upload/f_auto,q_auto/jurckpoqu6mkjdsol0xw",
         webp: "IMG_1.webp",
@@ -51,10 +51,10 @@ const IMGs = [
     }
 ];
 
-export default function LovedIMGs() {
+export default function LovedImages() {
     return (
         <div className="py-12  select-none">
-            <IMGs IMGs={IMGs} />
+            <ImageGallery images={Images} />
         </div>
     );
 }
