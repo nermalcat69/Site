@@ -32,13 +32,13 @@ function App() {
                             Currently, I work as a full-stack developer at <a href="https://zerops.io/" target="_blank">Zerops</a>, but I like to dabble in whatever comes my way.
                         </p>
                     </div>
+
                     <div className="section">
                         <h3 className="ttl">My Work Stack</h3>
                         <p className="txt font-thin">
                             Being blunt, I use almost everything. :3
                         </p>
                     </div>
-                    <LovedImages />
                     <div className="section">
                         <h3 className="ttl">Socials</h3>
                         <p className="txt font-thin">
@@ -46,6 +46,8 @@ function App() {
                         </p>
                     </div>
                     <SomeComponent />
+                    <LovedImages />
+
                 </div>
                 {/* <Levitate /> */}
                 <WindowSize />
