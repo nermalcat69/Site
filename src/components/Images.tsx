@@ -6,6 +6,7 @@ interface ImageItem {
     height: number;
     alt: string;
     rotate?: number;
+    webp?: string;
 }
 
 interface ImagesProps {
@@ -51,12 +52,22 @@ export default function Images({ images }: ImagesProps) {
                             }}
                             onClick={() => handleClick(index)}
                         >
-                            <img
-                                src={image.src}
-                                className="rounded-md w-full h-full object-cover"
-                                draggable="false"
-                                alt={image.alt}
-                            />
+                            <picture>
+                                {image.webp && (
+                                    <source
+                                        srcSet={image.webp}
+                                        type="image/webp"
+                                    />
+                                )}
+                                <img
+                                    src={image.src}
+                                    className="rounded-md w-full h-full object-cover"
+                                    loading="lazy"
+                                    decoding="async"
+                                    draggable="false"
+                                    alt={image.alt}
+                                />
+                            </picture>
                         </div>
                     ))}
                 </div>

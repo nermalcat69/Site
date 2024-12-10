@@ -3,6 +3,7 @@ import Images from "./Images";
 const images = [
     { 
         src: "IMG_1.png", 
+        webp: "IMG_1.webp",
         width: 200, 
         height: 200, 
         alt: "Image 1",
@@ -10,6 +11,7 @@ const images = [
     },
     { 
         src: "IMG_2.png", 
+        webp: "IMG_2.webp",
         width: 200, 
         height: 200, 
         alt: "Image 2",
@@ -17,6 +19,7 @@ const images = [
     },
     { 
         src: "IMG_3.png", 
+        webp: "IMG_3.webp",
         width: 200, 
         height: 200, 
         alt: "Image 3",
@@ -24,6 +27,7 @@ const images = [
     },
     { 
         src: "IMG_4.png", 
+        webp: "IMG_4.webp",
         width: 200, 
         height: 200, 
         alt: "Image 4",
@@ -31,6 +35,7 @@ const images = [
     },
     { 
         src: "IMG_5.png", 
+        webp: "IMG_5.webp",
         width: 200, 
         height: 200, 
         alt: "Image 5",
@@ -38,6 +43,7 @@ const images = [
     },
     { 
         src: "IMG_6.png", 
+        webp: "IMG_6.webp",
         width: 200, 
         height: 200, 
         alt: "Image 6",
