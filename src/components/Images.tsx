@@ -20,12 +20,10 @@ interface WindowSize {
 
 export default function Images({ images }: ImagesProps) {
     const [clickedIndex, setClickedIndex] = useState<number | null>(null);
-    const [windowSize, setWindowSize] = useState<WindowSize>({
-        width: window.innerWidth,
-        height: window.innerHeight,
-    });
+    const [windowSize, setWindowSize] = useState<WindowSize | null>(null);
 
     useEffect(() => {
+        // This will only run on the client
         const handleResize = () => {
             setWindowSize({
                 width: window.innerWidth,
@@ -33,12 +31,15 @@ export default function Images({ images }: ImagesProps) {
             });
         };
 
+        // Set initial window size on the client
+        handleResize();
+
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     const handleClick = (index: number) => {
-        if (windowSize.width < 640) return; // Disable click for small screens
+        if (!windowSize || windowSize.width < 640) return; // Check for client-side windowSize
 
         if (clickedIndex === index) {
             setClickedIndex(null);
@@ -65,7 +66,7 @@ export default function Images({ images }: ImagesProps) {
                         <div
                             key={index}
                             className={`image-card bg-white p-1.5 border border-[#E7E7E7] rounded-md mx-auto sm:mx-0
-                ${windowSize.width >= 640 ? "cursor-pointer" : ""} 
+                ${windowSize && windowSize.width >= 640 ? "cursor-pointer" : ""} 
                 ${clickedIndex === index ? "selected z-50" : "z-0"}`}
                             style={{
                                 transform:
@@ -90,9 +91,6 @@ export default function Images({ images }: ImagesProps) {
                                         decoding="async"
                                         draggable="false"
                                         alt={image.alt}
-                                        onLoad={() => {
-                                            /* WebP image loaded */
-                                        }}
                                     />
                                 )}
                                 <img
@@ -103,9 +101,6 @@ export default function Images({ images }: ImagesProps) {
                                     decoding="async"
                                     draggable="false"
                                     alt={image.alt}
-                                    onLoad={() => {
-                                        /* PNG image loaded */
-                                    }}
                                 />
                             </div>
                         </div>
