@@ -2,48 +2,42 @@ import Images from "./Images";
 
 const images = [
     {
-        src: "IMG_1.png",
-        webp: "IMG_1.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/jurckpoqu6mkjdsol0xw",
         width: 200,
         height: 200,
         alt: "Image 1",
         rotate: -25
     },
     {
-        src: "IMG_2.png",
-        webp: "IMG_2.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/bj2qxhyacuzvijj62dre",
         width: 200,
         height: 200,
         alt: "Image 2",
         rotate: 10
     },
     {
-        src: "IMG_3.png",
-        webp: "IMG_3.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/dp6wqeppvoy96iz8yvhg",
         width: 200,
         height: 200,
         alt: "Image 3",
         rotate: -15
     },
     {
-        src: "IMG_4.png",
-        webp: "IMG_4.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/wdv33hxli0ihsa1onpe0",
         width: 200,
         height: 200,
         alt: "Image 4",
         rotate: 20
     },
     {
-        src: "IMG_5.png",
-        webp: "IMG_5.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/rf2mi9wzr9rzkx0byyjc",
         width: 200,
         height: 200,
         alt: "Image 5",
         rotate: -7
     },
     {
-        src: "IMG_6.png",
-        webp: "IMG_6.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/jxwwea8piulz4qvwyr0c",
         width: 200,
         height: 200,
         alt: "Image 6",
