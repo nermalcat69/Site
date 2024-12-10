@@ -90,7 +90,7 @@ export default function Images({ images }: ImagesProps) {
                                     ${clickedIndex === index ? 'selected z-50' : 'z-0'}`}
                                 style={{
                                     transform: clickedIndex === index
-                                        ? 'scale(1.5) rotate(0deg)'
+                                        ? 'scale(2.5) rotate(0deg)'
                                         : image.rotate
                                             ? `rotate(${image.rotate}deg)`
                                             : 'none',
