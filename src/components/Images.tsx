@@ -16,9 +16,17 @@ interface ImagesProps {
 export default function Images({ images }: ImagesProps) {
     const [clickedIndex, setClickedIndex] = useState<number | null>(null);
     const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>({});
+    const [webpLoaded, setWebpLoaded] = useState<{ [key: string]: boolean }>({});
 
-    const handleImageLoad = (src: string) => {
+    const handlePngLoad = (src: string) => {
         setLoadedImages(prev => ({
+            ...prev,
+            [src]: true
+        }));
+    };
+
+    const handleWebpLoad = (src: string) => {
+        setWebpLoaded(prev => ({
             ...prev,
             [src]: true
         }));
@@ -67,10 +75,11 @@ export default function Images({ images }: ImagesProps) {
                                         className={`rounded-md w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${
                                             loadedImages[image.src] ? 'opacity-0' : 'opacity-100'
                                         }`}
-                                        loading="lazy"
+                                        loading="eager"
                                         decoding="async"
                                         draggable="false"
                                         alt={image.alt}
+                                        onLoad={() => handleWebpLoad(image.src)}
                                     />
                                 )}
                                 <img
@@ -78,11 +87,11 @@ export default function Images({ images }: ImagesProps) {
                                     className={`rounded-md w-full h-full object-cover transition-opacity duration-300 ${
                                         loadedImages[image.src] ? 'opacity-100' : 'opacity-0'
                                     }`}
-                                    loading="lazy"
+                                    loading={webpLoaded[image.src] ? 'eager' : 'lazy'}
                                     decoding="async"
                                     draggable="false"
                                     alt={image.alt}
-                                    onLoad={() => handleImageLoad(image.src)}
+                                    onLoad={() => handlePngLoad(image.src)}
                                 />
                             </div>
                         </div>
