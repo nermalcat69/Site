@@ -83,27 +83,28 @@ export default function Images({ images }: ImagesProps) {
             >
               <div className="relative w-full h-full">
                 {image.webp && (
+                  <picture>
+                    <source srcSet={image.webp} type="image/webp" />
+                    <img
+                      src={image.src}
+                      className="rounded-md w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                      draggable="false"
+                      alt={image.alt}
+                    />
+                  </picture>
+                )}
+                {!image.webp && (
                   <img
-                    src={image.webp}
-                    className={`rounded-md w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${
-                      clickedIndex === index ? "opacity-100" : "opacity-100"
-                    }`}
+                    src={image.src}
+                    className="rounded-md w-full h-full object-cover"
                     loading="lazy"
                     decoding="async"
                     draggable="false"
                     alt={image.alt}
                   />
                 )}
-                <img
-                  src={image.src}
-                  className={`rounded-md w-full h-full object-cover transition-opacity duration-300 ${
-                    clickedIndex !== index && image.webp ? "opacity-0" : "opacity-100"
-                  }`}
-                  loading="lazy"
-                  decoding="async"
-                  draggable="false"
-                  alt={image.alt}
-                />
               </div>
             </div>
           ))}
