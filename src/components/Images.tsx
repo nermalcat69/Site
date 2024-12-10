@@ -25,7 +25,6 @@ export default function Images({ images }: ImagesProps) {
   const [loadedWebpImages, setLoadedWebpImages] = useState<Set<number>>(new Set());
 
   useEffect(() => {
-    // This will only run on the client
     const handleResize = () => {
       setWindowSize({
         width: window.innerWidth,
@@ -33,42 +32,39 @@ export default function Images({ images }: ImagesProps) {
       });
     };
 
-    // Set initial window size on the client
     handleResize();
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleClick = (index: number) => {
-    if (!windowSize || windowSize.width < 640) return; // Check for client-side windowSize
+    if (!windowSize || windowSize.width < 640) return;
 
     if (clickedIndex === index) {
       setClickedIndex(null);
-      document.body.style.overflow = "auto"; // Restore scrolling
+      document.body.style.overflow = "auto";
     } else {
       setClickedIndex(index);
-      document.body.style.overflow = "hidden"; // Prevent scrolling
+      document.body.style.overflow = "hidden";
     }
   };
 
-  const preloadOriginalImage = (src: string, index: number) => {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => {
+  const handleImageLoad = (index: number, type: 'webp' | 'original') => {
+    if (type === 'webp') {
+      setLoadedWebpImages(prev => new Set(prev).add(index));
+      // Start loading the original image after WebP is loaded
+      const img = new Image();
+      img.src = images[index].src;
+      img.onload = () => {
+        setLoadedSrcImages(prev => new Set(prev).add(index));
+      };
+    } else {
       setLoadedSrcImages(prev => new Set(prev).add(index));
-    };
-  };
-
-  const handleWebpLoaded = (index: number, src: string) => {
-    setLoadedWebpImages(prev => new Set(prev).add(index));
-    // Start loading the original image in the background
-    preloadOriginalImage(src, index);
+    }
   };
 
   return (
     <>
-      {/* Overlay for clicked image */}
       {clickedIndex !== null && (
         <div
           className="fixed inset-0 bg-black/40 z-40 transition-opacity duration-300"
@@ -111,7 +107,7 @@ export default function Images({ images }: ImagesProps) {
                   />
                 )}
 
-                {/* Show WebP while original is loading */}
+                {/* Show WebP until original is loaded */}
                 {!loadedSrcImages.has(index) && image.webp && (
                   <img
                     src={image.webp}
@@ -120,7 +116,7 @@ export default function Images({ images }: ImagesProps) {
                     decoding="async"
                     draggable="false"
                     alt={image.alt}
-                    onLoad={() => handleWebpLoaded(index, image.src)}
+                    onLoad={() => handleImageLoad(index, 'webp')}
                   />
                 )}
 
@@ -133,7 +129,7 @@ export default function Images({ images }: ImagesProps) {
                     decoding="async"
                     draggable="false"
                     alt={image.alt}
-                    onLoad={() => setLoadedSrcImages(prev => new Set(prev).add(index))}
+                    onLoad={() => handleImageLoad(index, 'original')}
                   />
                 )}
               </div>
