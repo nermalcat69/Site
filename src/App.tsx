@@ -1,6 +1,5 @@
 import "./App.css";
-import { Levitate } from "./components/levitating";
-// import { Steps } from "./components/steps";
+// import { Levitate } from "./components/levitating";
 import WindowSize from "./components/WindowSize";
 import SomeComponent from "./components/SomeComponent";
 import LovedImages from "./components/LovedImages";
@@ -38,7 +37,7 @@ function App() {
                 </div>
                 <SomeComponent />
             </div>
-            <Levitate />
+            {/* <Levitate /> */}
             <WindowSize />
         </div>
     );
