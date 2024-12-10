@@ -1,60 +1,60 @@
-import Images from "./Images";
+import IMGs from "./IMGs";
 
-const images = [
+const IMGs = [
     {
-        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/jurckpoqu6mkjdsol0xw",
-        webp: "Image_1.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/IMG/upload/f_auto,q_auto/jurckpoqu6mkjdsol0xw",
+        webp: "IMG_1.webp",
         width: 200,
         height: 200,
-        alt: "Image 1",
+        alt: "IMG 1",
         rotate: -25
     },
     {
-        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/bj2qxhyacuzvijj62dre",
-        webp: "Image_2.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/IMG/upload/f_auto,q_auto/bj2qxhyacuzvijj62dre",
+        webp: "IMG_2.webp",
         width: 200,
         height: 200,
-        alt: "Image 2",
+        alt: "IMG 2",
         rotate: 10
     },
     {
-        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/dp6wqeppvoy96iz8yvhg",
-        webp: "Image_3.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/IMG/upload/f_auto,q_auto/dp6wqeppvoy96iz8yvhg",
+        webp: "IMG_3.webp",
         width: 200,
         height: 200,
-        alt: "Image 3",
+        alt: "IMG 3",
         rotate: -15
     },
     {
-        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/wdv33hxli0ihsa1onpe0",
-        webp: "Image_4.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/IMG/upload/f_auto,q_auto/wdv33hxli0ihsa1onpe0",
+        webp: "IMG_4.webp",
         width: 200,
         height: 200,
-        alt: "Image 4",
+        alt: "IMG 4",
         rotate: 20
     },
     {
-        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/rf2mi9wzr9rzkx0byyjc",
-        webp: "Image_5.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/IMG/upload/f_auto,q_auto/rf2mi9wzr9rzkx0byyjc",
+        webp: "IMG_5.webp",
         width: 200,
         height: 200,
-        alt: "Image 5",
+        alt: "IMG 5",
         rotate: -7
     },
     {
-        src: "https://res.cloudinary.com/dyndvyaiu/image/upload/f_auto,q_auto/jxwwea8piulz4qvwyr0c",
-        webp: "Image_6.webp",
+        src: "https://res.cloudinary.com/dyndvyaiu/IMG/upload/f_auto,q_auto/jxwwea8piulz4qvwyr0c",
+        webp: "IMG_6.webp",
         width: 200,
         height: 200,
-        alt: "Image 6",
+        alt: "IMG 6",
         rotate: 15
     }
 ];
 
-export default function LovedImages() {
+export default function LovedIMGs() {
     return (
         <div className="py-12  select-none">
-            <Images images={images} />
+            <IMGs IMGs={IMGs} />
         </div>
     );
 }
