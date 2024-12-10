@@ -90,3 +90,13 @@ a {
 .image-card img {
     will-change: opacity;
 }
+
+@media (max-width: 640px) {
+    .image-card {
+        transform: scale(1.5);
+    }
+
+    .image-card.selected {
+        transform: scale(2.5) !important;
+    }
+}
