@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface ImageItem {
     src: string;
@@ -20,8 +20,6 @@ interface WindowSize {
 
 export default function Images({ images }: ImagesProps) {
     const [clickedIndex, setClickedIndex] = useState<number | null>(null);
-    const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>({});
-    const [webpLoaded, setWebpLoaded] = useState<{ [key: string]: boolean }>({});
     const [windowSize, setWindowSize] = useState<WindowSize>({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -35,42 +33,30 @@ export default function Images({ images }: ImagesProps) {
             });
         };
 
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const handlePngLoad = (src: string) => {
-        setLoadedImages(prev => ({
-            ...prev,
-            [src]: true
-        }));
-    };
-
-    const handleWebpLoad = (src: string) => {
-        setWebpLoaded(prev => ({
-            ...prev,
-            [src]: true
-        }));
-    };
-
     const handleClick = (index: number) => {
-        if (windowSize.width < 640) return;
+        if (windowSize.width < 640) return; // Disable click for small screens
 
         if (clickedIndex === index) {
             setClickedIndex(null);
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = "auto"; // Restore scrolling
         } else {
             setClickedIndex(index);
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = "hidden"; // Prevent scrolling
         }
     };
 
     return (
         <>
+            {/* Overlay for clicked image */}
             {clickedIndex !== null && (
                 <div
                     className="fixed inset-0 bg-black/40 z-40 transition-opacity duration-300"
                     onClick={() => handleClick(clickedIndex)}
+                    aria-hidden="true"
                 />
             )}
             <div className="flex justify-center px-4 sm:px-0">
@@ -79,17 +65,18 @@ export default function Images({ images }: ImagesProps) {
                         <div
                             key={index}
                             className={`image-card bg-white p-1.5 border border-[#E7E7E7] rounded-md mx-auto sm:mx-0
-                                ${windowSize.width >= 640 ? 'cursor-pointer' : ''} 
-                                ${clickedIndex === index ? 'selected z-50' : 'z-0'}`}
+                ${windowSize.width >= 640 ? "cursor-pointer" : ""} 
+                ${clickedIndex === index ? "selected z-50" : "z-0"}`}
                             style={{
-                                transform: clickedIndex === index
-                                    ? 'scale(1.7) rotate(0deg)'
-                                    : image.rotate
-                                        ? `rotate(${image.rotate}deg)`
-                                        : 'none',
+                                transform:
+                                    clickedIndex === index
+                                        ? "scale(1.7) rotate(0deg)"
+                                        : image.rotate
+                                            ? `rotate(${image.rotate}deg)`
+                                            : "none",
                                 width: image.width,
                                 height: image.height,
-                                maxWidth: '100%'
+                                maxWidth: "100%",
                             }}
                             onClick={() => handleClick(index)}
                         >
@@ -97,24 +84,28 @@ export default function Images({ images }: ImagesProps) {
                                 {image.webp && (
                                     <img
                                         src={image.webp}
-                                        className={`rounded-md w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${loadedImages[image.src] ? 'opacity-0' : 'opacity-100'
+                                        className={`rounded-md w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${clickedIndex === index ? "opacity-100" : "opacity-0"
                                             }`}
-                                        loading="eager"
+                                        loading="lazy"
                                         decoding="async"
                                         draggable="false"
                                         alt={image.alt}
-                                        onLoad={() => handleWebpLoad(image.src)}
+                                        onLoad={() => {
+                                            /* WebP image loaded */
+                                        }}
                                     />
                                 )}
                                 <img
                                     src={image.src}
-                                    className={`rounded-md w-full h-full object-cover transition-opacity duration-300 ${loadedImages[image.src] ? 'opacity-100' : 'opacity-0'
+                                    className={`rounded-md w-full h-full object-cover transition-opacity duration-300 ${clickedIndex !== index && image.webp ? "opacity-0" : "opacity-100"
                                         }`}
-                                    loading={webpLoaded[image.src] ? 'eager' : 'lazy'}
+                                    loading="lazy"
                                     decoding="async"
                                     draggable="false"
                                     alt={image.alt}
-                                    onLoad={() => handlePngLoad(image.src)}
+                                    onLoad={() => {
+                                        /* PNG image loaded */
+                                    }}
                                 />
                             </div>
                         </div>
