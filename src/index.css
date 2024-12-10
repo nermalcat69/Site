@@ -62,7 +62,7 @@ h3 {
 }
 
 .section {
-    @apply py-5 md:py-8;
+    @apply py-5 md:py-6;
 }
 
 a {
@@ -70,6 +70,19 @@ a {
     text-underline-offset: 3px;
 }
 
-.register {
-    color: rgb(229, 229, 229);
+.fixed {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.image-card {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+
+.image-card:hover:not(.selected) {
+    transform: scale(1.02);
+}
+
+.image-card.selected {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
