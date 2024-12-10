@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface ImageItem {
     src: string;
@@ -15,6 +15,14 @@ interface ImagesProps {
 
 export default function Images({ images }: ImagesProps) {
     const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+    const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>({});
+
+    const handleImageLoad = (src: string) => {
+        setLoadedImages(prev => ({
+            ...prev,
+            [src]: true
+        }));
+    };
 
     const handleClick = (index: number) => {
         if (clickedIndex === index) {
@@ -52,22 +60,31 @@ export default function Images({ images }: ImagesProps) {
                             }}
                             onClick={() => handleClick(index)}
                         >
-                            <picture>
+                            <div className="relative w-full h-full">
                                 {image.webp && (
-                                    <source
-                                        srcSet={image.webp}
-                                        type="image/webp"
+                                    <img
+                                        src={image.webp}
+                                        className={`rounded-md w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${
+                                            loadedImages[image.src] ? 'opacity-0' : 'opacity-100'
+                                        }`}
+                                        loading="lazy"
+                                        decoding="async"
+                                        draggable="false"
+                                        alt={image.alt}
                                     />
                                 )}
                                 <img
                                     src={image.src}
-                                    className="rounded-md w-full h-full object-cover"
+                                    className={`rounded-md w-full h-full object-cover transition-opacity duration-300 ${
+                                        loadedImages[image.src] ? 'opacity-100' : 'opacity-0'
+                                    }`}
                                     loading="lazy"
                                     decoding="async"
                                     draggable="false"
                                     alt={image.alt}
+                                    onLoad={() => handleImageLoad(image.src)}
                                 />
-                            </picture>
+                            </div>
                         </div>
                     ))}
                 </div>
