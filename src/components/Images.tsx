@@ -17,9 +17,11 @@ export default function Images({ images }: ImagesProps) {
     const [clickedIndex, setClickedIndex] = useState<number | null>(null);
     const [loadedImages, setLoadedImages] = useState<{ [key: string]: boolean }>({});
     const [webpLoaded, setWebpLoaded] = useState<{ [key: string]: boolean }>({});
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [windowWidth, setWindowWidth] = useState(0);
 
     useEffect(() => {
+        setWindowWidth(window.innerWidth);
+
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
@@ -29,9 +31,9 @@ export default function Images({ images }: ImagesProps) {
     }, []);
 
     const getImageDimensions = (originalWidth: number, originalHeight: number) => {
-        if (windowWidth < 640) {
+        if (windowWidth > 0 && windowWidth < 640) {
             const scaleFactor = 1.5;
-            const maxWidth = windowWidth - 32; // 32px for padding
+            const maxWidth = windowWidth - 32;
             const scaledWidth = Math.min(originalWidth * scaleFactor, maxWidth);
             const scaledHeight = (originalHeight * scaleFactor) * (scaledWidth / (originalWidth * scaleFactor));
             
