@@ -21,6 +21,8 @@ interface WindowSize {
 export default function Images({ images }: ImagesProps) {
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const [windowSize, setWindowSize] = useState<WindowSize | null>(null);
+  const [loadedSrcImages, setLoadedSrcImages] = useState<Set<number>>(new Set());
+  const [loadedWebpImages, setLoadedWebpImages] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     // This will only run on the client
@@ -50,6 +52,20 @@ export default function Images({ images }: ImagesProps) {
     }
   };
 
+  const preloadOriginalImage = (src: string, index: number) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      setLoadedSrcImages(prev => new Set(prev).add(index));
+    };
+  };
+
+  const handleWebpLoaded = (index: number, src: string) => {
+    setLoadedWebpImages(prev => new Set(prev).add(index));
+    // Start loading the original image in the background
+    preloadOriginalImage(src, index);
+  };
+
   return (
     <>
       {/* Overlay for clicked image */}
@@ -67,14 +83,15 @@ export default function Images({ images }: ImagesProps) {
               key={index}
               className={`image-card bg-white p-1.5 border border-[#E7E7E7] rounded-md mx-auto sm:mx-0
                 ${windowSize && windowSize.width >= 640 ? "cursor-pointer" : ""} 
-                ${clickedIndex === index ? "selected z-50" : "z-0"}`}
+                ${clickedIndex === index ? "selected z-50" : "z-0"}
+                ${!loadedWebpImages.has(index) ? "animate-pulse" : ""}`}
               style={{
                 transform:
                   clickedIndex === index
                     ? "scale(1.7) rotate(0deg)"
                     : image.rotate
-                    ? `rotate(${image.rotate}deg)`
-                    : "none",
+                      ? `rotate(${image.rotate}deg)`
+                      : "none",
                 width: image.width,
                 height: image.height,
                 maxWidth: "100%",
@@ -82,20 +99,8 @@ export default function Images({ images }: ImagesProps) {
               onClick={() => handleClick(index)}
             >
               <div className="relative w-full h-full">
-                {image.webp && (
-                  <picture>
-                    <source srcSet={image.webp} type="image/webp" />
-                    <img
-                      src={image.src}
-                      className="rounded-md w-full h-full object-cover"
-                      loading="lazy"
-                      decoding="async"
-                      draggable="false"
-                      alt={image.alt}
-                    />
-                  </picture>
-                )}
-                {!image.webp && (
+                {/* Show original image if it's loaded */}
+                {loadedSrcImages.has(index) && (
                   <img
                     src={image.src}
                     className="rounded-md w-full h-full object-cover"
@@ -103,6 +108,32 @@ export default function Images({ images }: ImagesProps) {
                     decoding="async"
                     draggable="false"
                     alt={image.alt}
+                  />
+                )}
+
+                {/* Show WebP while original is loading */}
+                {!loadedSrcImages.has(index) && image.webp && (
+                  <img
+                    src={image.webp}
+                    className="rounded-md w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                    alt={image.alt}
+                    onLoad={() => handleWebpLoaded(index, image.src)}
+                  />
+                )}
+
+                {/* Fallback if no WebP */}
+                {!loadedSrcImages.has(index) && !image.webp && (
+                  <img
+                    src={image.src}
+                    className="rounded-md w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                    alt={image.alt}
+                    onLoad={() => setLoadedSrcImages(prev => new Set(prev).add(index))}
                   />
                 )}
               </div>
