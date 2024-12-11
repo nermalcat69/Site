@@ -19,9 +19,6 @@ export default function Images({ images = [] }: ImagesProps) {
     images.forEach((image) => {
       const webpImage = new Image();
       webpImage.src = `${image.src}.webp`;
-
-      const pngImage = new Image();
-      pngImage.src = `${image.src}.png`;
     });
   }, [images]);
 
