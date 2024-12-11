@@ -31,7 +31,16 @@ if (!isProduction) {
   const compression = (await import('compression')).default;
   const sirv = (await import('sirv')).default;
   app.use(compression());
-  app.use(base, sirv('./dist/client', { extensions: [] }));
+
+  // Serve static files with Cache-Control header for production
+  app.use(base, sirv('./dist/client', {
+    extensions: [],
+    setHeaders: (res, path) => {
+      if (/\.(js|css|jpg|jpeg|png|gif|svg|woff|woff2|eot|ttf|otf|webp|mp4)$/i.test(path)) {
+        res.setHeader('Cache-Control', 'max-age=31536000, immutable');
+      }
+    }
+  }));
 }
 
 // Serve HTML
