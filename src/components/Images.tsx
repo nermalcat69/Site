@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ImageItem {
   src: string;
@@ -14,6 +14,16 @@ interface ImagesProps {
 
 export default function Images({ images = [] }: ImagesProps) {
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    images.forEach((image) => {
+      const webpImage = new Image();
+      webpImage.src = `${image.src}.webp`;
+
+      const pngImage = new Image();
+      pngImage.src = `${image.src}.png`;
+    });
+  }, [images]);
 
   const handleClick = (index: number) => {
     setClickedIndex(clickedIndex === index ? null : index);
