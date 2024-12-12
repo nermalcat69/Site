@@ -1,0 +1,21 @@
+name: Deploy to Zerops
+
+on:
+  push:
+    # Make sure to set this to the branch you want to deploy from
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy with Zerops
+        uses: zeropsio/actions@main
+        with:
+          access-token: ${{ secrets.ZEROPS_TOKEN }} # Make sure to set this in your repository secrets
+          service-id: r83A9lP7TBiv4Axx2lsZFg
