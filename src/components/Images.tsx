@@ -61,6 +61,8 @@ export default function Images({ images = [] }: ImagesProps) {
                 className="rounded-md w-full h-full object-cover"
                 alt={image.alt}
                 draggable="false"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           ))}
