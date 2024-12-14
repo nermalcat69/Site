@@ -57,7 +57,7 @@ export default function Images({ images = [] }: ImagesProps) {
               onClick={() => handleClick(index)}
             >
               <img
-                src={`${image.src}`}
+                src={`${image.src}${clickedIndex === index ? ".png" : ".webp"}`}
                 className="rounded-md w-full h-full object-cover"
                 alt={image.alt}
                 draggable="false"
