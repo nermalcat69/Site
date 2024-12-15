@@ -1,5 +1,4 @@
 import "./App.css";
-import { Helmet } from 'react-helmet';
 // import { Levitate } from "./components/levitating";
 import WindowSize from "./components/WindowSize";
 import SomeComponent from "./components/SomeComponent";
@@ -8,23 +7,6 @@ import LovedImages from "./components/LovedImages";
 function App() {
     return (
         <>
-            <Helmet>
-                <title>Arjun Aditya - Programmer / Designer</title>
-                <meta property="og:title" content="Arjun Aditya - Programmer / Designer" />
-                <meta property="og:description" content="Full-stack developer at Zerops with experience in UI/UX design, programming, marketing, writing, and finances." />
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://arjunaditya.xyz" />
-                <meta property="og:image" content="https://arjunaditya.xyz/og.webp" />
-                <meta property="og:site_name" content="Arjun Aditya Portfolio" />
-                
-                {/* Twitter Card tags */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:creator" content="@arjvnz" />
-                <meta name="twitter:title" content="Arjun Aditya - Programmer / Designer" />
-                <meta name="twitter:description" content="Full-stack developer at Zerops with experience in UI/UX design, programming, marketing, writing, and finances." />
-                <meta name="twitter:image" content="https://arjunaditya.xyz/og.webp" />
-            </Helmet>
-            
             <div
                 className="absolute left-1/2 -translate-x-1/2 grayscale z-10 top-0 h-40 w-screen max-w-[1920px]"
                 style={{
