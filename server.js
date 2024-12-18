@@ -32,17 +32,16 @@ if (!isProduction) {
   const sirv = (await import('sirv')).default;
   app.use(compression());
 
-  // Serve static files with Cache-Control header for production
   app.use(base, sirv('./dist/client', {
     extensions: [],
     setHeaders: (res, path) => {
       if (/\.(js|css|jpg|jpeg|png|gif|svg|woff|woff2|eot|ttf|otf|webp|mp4)$/i.test(path)) {
-        res.setHeader('Cache-Control', 'max-age=31536000, immutable');
+        res.setHeader('Cache-Control', 'no-store'); // No caching
       }
     }
   }));
-}
 
+  
 // Serve HTML
 app.use('*', async (req, res) => {
   try {
