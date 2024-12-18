@@ -30,18 +30,18 @@ if (!isProduction) {
 } else {
   const compression = (await import('compression')).default;
   const sirv = (await import('sirv')).default;
-  app.use(compression());
 
+  // Disable caching for all files
   app.use(base, sirv('./dist/client', {
     extensions: [],
     setHeaders: (res, path) => {
-      if (/\.(js|css|jpg|jpeg|png|gif|svg|woff|woff2|eot|ttf|otf|webp|mp4)$/i.test(path)) {
-        res.setHeader('Cache-Control', 'no-store'); // No caching
-      }
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
     }
   }));
+}
 
-  
 // Serve HTML
 app.use('*', async (req, res) => {
   try {
