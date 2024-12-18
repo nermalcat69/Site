@@ -6,7 +6,14 @@ import LovedImages from "./components/LovedImages";
 
 function App() {
     return (
-        <>
+        <div className="max-w-[1100px] mx-auto pt-5">
+            <div className="absolute top-5 left-0 w-screen overflow-hidden"> 
+                <img 
+                    src="/rickyy.gif" 
+                    alt="Rick"
+                    className="w-[50px] sliding-image" 
+                />
+            </div>
             {/* <div
                 className="absolute left-1/2 -translate-x-1/2 grayscale z-10 top-0 h-40 w-screen max-w-[1920px]"
                 style={{
@@ -52,7 +59,7 @@ function App() {
                 {/* <Levitate /> */}
                 <WindowSize />
             </div>
-        </>
+        </div>
     );
 }
 
