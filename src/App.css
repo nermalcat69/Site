@@ -87,6 +87,7 @@
 .sliding-image {
     position: relative;
     animation: slide 8s linear infinite;
+    animation-delay: 3s;
 }
 
 @keyframes slide {
