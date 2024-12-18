@@ -11,6 +11,7 @@ function App() {
                 <img 
                     src="/rickyy.gif" 
                     alt="Rick"
+                    draggable={false}
                     className="w-[50px] sliding-image" 
                 />
             </div>
