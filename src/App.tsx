@@ -3,18 +3,31 @@ import "./App.css";
 import WindowSize from "./components/WindowSize";
 import SomeComponent from "./components/SomeComponent";
 import LovedImages from "./components/LovedImages";
+import { useState, useEffect } from 'react';
 
 function App() {
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+    useEffect(() => {
+        const img = new Image();
+        img.src = '/rickyy.gif';
+        img.onload = () => {
+            setIsImageLoaded(true);
+        };
+    }, []);
+
     return (
         <div className="max-w-[1100px] mx-auto pt-5">
-            <div className="absolute top-5 left-0 w-screen overflow-hidden"> 
-                <img 
-                    src="/rickyy.gif" 
-                    alt="Rick"
-                    draggable={false}
-                    className="w-[50px] sliding-image" 
-                />
-            </div>
+            {isImageLoaded && (
+                <div className="absolute top-0 left-0 w-screen overflow-hidden"> 
+                    <img 
+                        src="/rickyy.gif" 
+                        alt="Rick"
+                        draggable={false}
+                        className="w-[50px] sliding-image" 
+                    />
+                </div>
+            )}
             {/* <div
                 className="absolute left-1/2 -translate-x-1/2 grayscale z-10 top-0 h-40 w-screen max-w-[1920px]"
                 style={{

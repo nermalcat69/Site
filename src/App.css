@@ -87,7 +87,6 @@
 .sliding-image {
     position: relative;
     animation: slide 8s linear infinite;
-    animation-delay: 3s;
 }
 
 @keyframes slide {
@@ -95,6 +94,20 @@
         left: -100px;
     }
     100% {
+        left: 100%;
+    }
+}
+
+@keyframes fadeInSlide {
+    0% {
+        opacity: 0;
+        left: -100px;
+    }
+    5% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
         left: 100%;
     }
 }
