@@ -36,7 +36,7 @@ export default function Images({ images = [] }: ImagesProps) {
         />
       )}
       <div className="flex justify-center px-4 sm:px-0">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 relative w-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 relative w-auto">
           {images.map((image, index) => (
             <div
               key={index}

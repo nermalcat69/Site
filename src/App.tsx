@@ -59,7 +59,7 @@ function App() {
                     <div className="section">
                         <SomeComponent />
                     </div>
-                    <div className="section overflow-x-hidden">
+                    <div className="section">
                         <LovedImages />
                     </div>
 
