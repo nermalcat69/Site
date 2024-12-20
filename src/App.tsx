@@ -18,7 +18,7 @@ function App() {
     }, []);
 
     return (
-        <div className="max-w-[1100px] mx-auto pt-5">
+        <div className="sm:max-w-[1100px] sm:mx-auto flex justify-center flex-col pt-5">
             {isImageLoaded && (
                 <div className="sm:absolute top-0 left-0 w-screen overflow-hidden"> 
                     <img 
