@@ -13,6 +13,8 @@ zerops:
         - server.js
     run:
       base: nodejs@20
+      envVariables:
+        REDIS_URL: redis://redis:6379
       ports:
         - port: 3000
           httpSupport: true

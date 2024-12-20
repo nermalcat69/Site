@@ -5,11 +5,22 @@ import { readFile } from 'fs/promises';
 import sirv from 'sirv';
 import compression from 'compression';
 import { formatDistanceToNow } from 'date-fns';
+import { createClient } from 'redis';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 3000;
 const base = process.env.BASE || '/';
+
+// Create Redis client
+const redis = createClient({
+  url: process.env.REDIS_URL || 'redis://localhost:6379'
+});
+
+redis.on('error', err => console.error('Redis Client Error', err));
+await redis.connect();
+
+console.log('📌 Connected to Redis');
 
 // Create express app
 const app = express();
@@ -20,10 +31,8 @@ app.use(compression());
 // Serve static files
 app.use(base, sirv('dist/client', { dev: !isProduction }));
 
-// Initialize metrics storage
-const responseMetrics = [];
 const MAX_METRICS = 25;
-const MAX_AGE = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+const MAX_AGE = 2 * 60 * 60; // 2 hours in seconds
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -31,44 +40,68 @@ app.get('/api/health', (req, res) => {
 });
 
 // Store new metric
-app.post('/api/metrics', express.json(), (req, res) => {
-  const now = Date.now();
-  console.log('📥 Received new metric:', req.body);
-  
-  // Clean old metrics
-  const validTime = now - MAX_AGE;
-  while (responseMetrics.length > 0 && responseMetrics[0].timestamp < validTime) {
-    responseMetrics.shift();
+app.post('/api/metrics', express.json(), async (req, res) => {
+  try {
+    const now = Date.now();
+    console.log('📥 Received new metric:', req.body);
+    
+    const metric = {
+      timestamp: now,
+      responseTime: req.body.responseTime,
+      timeAgo: 'just now'
+    };
+
+    // Store in Redis with expiration
+    await redis.zAdd('response_metrics', {
+      score: now,
+      value: JSON.stringify(metric)
+    });
+
+    // Trim to keep only latest 25 entries
+    const count = await redis.zCard('response_metrics');
+    if (count > MAX_METRICS) {
+      await redis.zRemRangeByRank('response_metrics', 0, count - MAX_METRICS - 1);
+    }
+
+    // Remove entries older than 2 hours
+    const oldestAllowed = now - (MAX_AGE * 1000);
+    await redis.zRemRangeByScore('response_metrics', '-inf', oldestAllowed);
+    
+    console.log('📊 Metric stored in Redis');
+    res.json({ success: true });
+  } catch (error) {
+    console.error('❌ Error storing metric:', error);
+    res.status(500).json({ error: 'Failed to store metric' });
   }
-  
-  // Add new metric
-  responseMetrics.push({
-    timestamp: now,
-    responseTime: req.body.responseTime,
-    timeAgo: 'just now'
-  });
-  
-  // Keep only last 25 entries
-  if (responseMetrics.length > MAX_METRICS) {
-    responseMetrics.shift();
-  }
-  
-  console.log('📊 Current metrics count:', responseMetrics.length);
-  res.json({ success: true });
 });
 
 // Get metrics
-app.get('/api/metrics', (req, res) => {
-  const now = Date.now();
-  const metrics = responseMetrics
-    .filter(m => (now - m.timestamp) <= MAX_AGE)
-    .map(m => ({
-      ...m,
-      timeAgo: formatDistanceToNow(m.timestamp, { addSuffix: true })
-    }));
-  
-  console.log('📤 Sending metrics to client:', metrics.length);
-  res.json(metrics);
+app.get('/api/metrics', async (req, res) => {
+  try {
+    const now = Date.now();
+    const oldestAllowed = now - (MAX_AGE * 1000);
+
+    // Get all valid metrics
+    const rawMetrics = await redis.zRangeByScore(
+      'response_metrics',
+      oldestAllowed,
+      '+inf'
+    );
+
+    const metrics = rawMetrics.map(raw => {
+      const metric = JSON.parse(raw);
+      return {
+        ...metric,
+        timeAgo: formatDistanceToNow(metric.timestamp, { addSuffix: true })
+      };
+    });
+    
+    console.log('📤 Sending metrics to client:', metrics.length);
+    res.json(metrics);
+  } catch (error) {
+    console.error('❌ Error fetching metrics:', error);
+    res.status(500).json({ error: 'Failed to fetch metrics' });
+  }
 });
 
 // Serve HTML
@@ -100,6 +133,12 @@ app.use('*', async (req, res) => {
     console.log(e.stack);
     res.status(500).end(e.stack);
   }
+});
+
+// Graceful shutdown
+process.on('SIGTERM', async () => {
+  await redis.quit();
+  process.exit(0);
 });
 
 // Start http server
