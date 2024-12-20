@@ -12,7 +12,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 3000;
 const base = process.env.BASE || '/';
 
-// Create Redis client
 const redis = createClient({
   url: process.env.REDIS_URL || 'redis://localhost:6379'
 });
@@ -22,7 +21,6 @@ await redis.connect();
 
 console.log('📌 Connected to Redis');
 
-// Create express app
 const app = express();
 
 // Add compression
@@ -32,7 +30,7 @@ app.use(compression());
 app.use(base, sirv('dist/client', { dev: !isProduction }));
 
 const MAX_METRICS = 30;
-const MAX_AGE = 24 * 60 * 60; // 24 hours in seconds
+const MAX_AGE = 24 * 60 * 60;
 
 // Health check endpoint
 app.get('/api/health', async (req, res) => {
@@ -52,7 +50,7 @@ app.get('/api/health', async (req, res) => {
     }
     
     const end = process.hrtime.bigint();
-    const responseTime = Number(end - start) / 1_000_000; // Convert to ms
+    const responseTime = Number(end - start) / 1_000_000;
     
     const metric = {
       timestamp: Date.now(),
@@ -152,7 +150,7 @@ app.get('/api/metrics', async (req, res) => {
     });
     
     console.log('📤 Sending metrics to client:', metrics.length);
-    res.json(metrics.slice(0, MAX_METRICS)); // Ensure we only send latest 30
+    res.json(metrics.slice(0, MAX_METRICS));
   } catch (error) {
     console.error('❌ Error fetching metrics:', error);
     res.status(500).json({ error: 'Failed to fetch metrics' });
