@@ -8,16 +8,24 @@ interface Metric {
   url: string;
 }
 
+const INTERVAL_TIME = 30000; // 30 seconds in milliseconds
+
 const ServerMetrics = () => {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [average, setAverage] = useState<number | null>(null);
   const [measuring, setMeasuring] = useState(false);
   const [currentMeasurement, setCurrentMeasurement] = useState(0);
+  const [nextUpdate, setNextUpdate] = useState(0);
 
   const measureServerResponse = async () => {
     try {
+      // Only measure if it's time for the next update
+      const now = Date.now();
+      if (now < nextUpdate) return;
+
       setMeasuring(true);
       setCurrentMeasurement(0);
+      setNextUpdate(now + INTERVAL_TIME);
       
       const start = performance.now();
       const healthResponse = await fetch('/api/health', {
@@ -29,26 +37,28 @@ const ServerMetrics = () => {
       const responseTime = Math.round(end - start);
       
       setCurrentMeasurement(responseTime);
-      setTimeout(() => setMeasuring(false), 1000);
 
       if (healthResponse.ok) {
         const data = await healthResponse.json();
-        console.log('📊 Server response time:', data.processingTime + 'ms');
-      }
-
-      // Fetch latest metrics after measurement
-      const metricsResponse = await fetch('/api/metrics');
-      if (metricsResponse.ok) {
-        const data = await metricsResponse.json() as Metric[];
-        setMetrics(data.slice(0, 30)); // Keep only latest 30
+        console.log('📊 New measurement:', data.processingTime + 'ms');
         
-        if (data.length > 0) {
-          const avg = Math.round(
-            data.reduce((sum: number, m: Metric) => sum + m.responseTime, 0) / 
-            data.length
-          );
-          setAverage(avg);
+        // Fetch updated metrics
+        const metricsResponse = await fetch('/api/metrics');
+        if (metricsResponse.ok) {
+          const metricsData = await metricsResponse.json() as Metric[];
+          setMetrics(metricsData);
+          
+          if (metricsData.length > 0) {
+            const avg = Math.round(
+              metricsData.reduce((sum, m) => sum + m.responseTime, 0) / 
+              metricsData.length
+            );
+            setAverage(avg);
+          }
         }
+
+        // Keep measuring indicator visible briefly
+        setTimeout(() => setMeasuring(false), 2000);
       }
     } catch (error) {
       console.error('Failed to measure server response:', error);
@@ -60,10 +70,7 @@ const ServerMetrics = () => {
     console.log('🚀 Starting server metrics monitoring');
     measureServerResponse(); // Initial measurement
     
-    const interval = setInterval(() => {
-      console.log('📡 Taking new measurement...');
-      measureServerResponse();
-    }, 1000); // Measure every second
+    const interval = setInterval(measureServerResponse, 1000); // Check every second
     
     return () => {
       console.log('Cleaning up metrics monitoring');
@@ -73,11 +80,18 @@ const ServerMetrics = () => {
 
   const maxResponseTime = Math.max(...metrics.map(m => m.responseTime), currentMeasurement);
 
+  // Calculate time until next update
+  const timeUntilNext = Math.max(0, nextUpdate - Date.now());
+  const progressPercent = ((INTERVAL_TIME - timeUntilNext) / INTERVAL_TIME) * 100;
+
   return (
     <div className="text-sm space-y-2">
       <div className="flex items-center gap-2">
         <div className="text-gray-500">Server Response Time:</div>
         <div className="font-medium text-gray-700">{average}ms</div>
+        <div className="text-xs text-gray-400">
+          Next update in {Math.ceil(timeUntilNext / 1000)}s
+        </div>
       </div>
       <div className="flex gap-1.5 h-8">
         {measuring && (
