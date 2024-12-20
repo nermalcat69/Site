@@ -29,7 +29,7 @@ function App() {
                     />
                 </div>
             )}
-            <div className="mx-auto max-w-2xl py-8 sm:py-16 px-4 sm:px-6 relative">
+            <div className="mx-auto text-wrap md:max-w-2xl py-8 sm:py-16 px-4 sm:px-6 relative">
                 <h2 className="text-xl sm:text-2xl font-medium text-[#1a1a1a]">Arjun Aditya</h2>
                 <p className="text-xs sm:text-sm text-[#a7a7a7]">Programmer / Designer</p>
                 <div className="py-4 sm:py-6">
