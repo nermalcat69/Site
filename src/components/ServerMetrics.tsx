@@ -10,6 +10,7 @@ interface Metric {
 const ServerMetrics = () => {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [average, setAverage] = useState<number | null>(null);
+  const [isActive, setIsActive] = useState(false);
 
   const fetchMetrics = async () => {
     console.log('🔄 Fetching metrics from server...');
@@ -85,20 +86,44 @@ const ServerMetrics = () => {
     }
   };
 
+  const startMonitoring = () => {
+    setIsActive(true);
+    measureAndSendResponseTime();
+  };
+
+  const stopMonitoring = () => {
+    setIsActive(false);
+  };
+
   useEffect(() => {
     console.log('🚀 ServerMetrics component mounted');
-    measureAndSendResponseTime();
-    console.log('⏰ Setting up 30-second interval for measurements');
-    const interval = setInterval(measureAndSendResponseTime, 30000);
+    
+    let interval: NodeJS.Timeout;
+    if (isActive) {
+      console.log('⏰ Setting up 30-second interval for measurements');
+      interval = setInterval(measureAndSendResponseTime, 30000);
+    }
+    
     return () => {
-      console.log('💤 ServerMetrics component unmounting, clearing interval');
-      clearInterval(interval);
+      if (interval) {
+        console.log('💤 Clearing measurement interval');
+        clearInterval(interval);
+      }
     };
-  }, []);
+  }, [isActive]);
 
   if (metrics.length === 0) {
-    console.log('⏳ No metrics available yet');
-    return <div className="text-sm text-gray-500">Measuring response times...</div>;
+    return (
+      <div className="space-y-4">
+        <div className="text-sm text-gray-500">No measurements yet</div>
+        <button 
+          onClick={startMonitoring}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Start Monitoring
+        </button>
+      </div>
+    );
   }
 
   const maxResponseTime = Math.max(...metrics.map(m => m.responseTime));
@@ -141,6 +166,19 @@ const ServerMetrics = () => {
             </motion.div>
           ))}
         </AnimatePresence>
+      </div>
+      
+      <div className="mt-4">
+        <button 
+          onClick={isActive ? stopMonitoring : startMonitoring}
+          className={`px-4 py-2 rounded ${
+            isActive 
+              ? 'bg-red-500 hover:bg-red-600' 
+              : 'bg-blue-500 hover:bg-blue-600'
+          } text-white`}
+        >
+          {isActive ? 'Stop Monitoring' : 'Resume Monitoring'}
+        </button>
       </div>
     </div>
   );

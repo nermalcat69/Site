@@ -48,7 +48,8 @@ app.post('/api/metrics', express.json(), async (req, res) => {
     const metric = {
       timestamp: now,
       responseTime: req.body.responseTime,
-      timeAgo: 'just now'
+      timeAgo: 'just now',
+      sessionId: req.body.sessionId
     };
 
     // Store in Redis with expiration
