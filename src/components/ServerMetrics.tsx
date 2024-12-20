@@ -19,14 +19,12 @@ const ServerMetrics = () => {
         console.log('📊 Received server metrics:', data.length, 'entries');
         console.log('Latest response time:', data[0]?.responseTime + 'ms');
         
-        // Sort by timestamp to ensure newest first
-        const sortedData = data.sort((a, b) => b.timestamp - a.timestamp);
-        setMetrics(sortedData);
+        setMetrics(data);
         
-        if (sortedData.length > 0) {
+        if (data.length > 0) {
           const avg = Math.round(
-            sortedData.reduce((sum: number, m: Metric) => sum + m.responseTime, 0) / 
-            sortedData.length
+            data.reduce((sum: number, m: Metric) => sum + m.responseTime, 0) / 
+            data.length
           );
           setAverage(avg);
           console.log('Average response time:', avg + 'ms');
@@ -40,7 +38,6 @@ const ServerMetrics = () => {
   useEffect(() => {
     console.log('🚀 Initializing ServerMetrics');
     fetchMetrics();
-    // Update more frequently (every 5 seconds) to see real-time changes
     const interval = setInterval(fetchMetrics, 5000);
     return () => {
       console.log('Cleaning up ServerMetrics');

@@ -70,7 +70,6 @@ app.get('/api/health', async (req, res) => {
     // Keep only latest 30 entries
     const count = await redis.zCard('response_metrics');
     if (count > MAX_METRICS) {
-      // Remove oldest entries beyond our limit
       await redis.zRemRangeByRank('response_metrics', 0, count - MAX_METRICS - 1);
     }
 
@@ -199,7 +198,7 @@ app.post('/api/latency', express.json(), async (req, res) => {
     console.log('📊 Latency metric stored for user:', userIP);
     res.json({ success: true });
   } catch (error) {
-    console.error('❌ Error storing latency metric:', error);
+    console.error('�� Error storing latency metric:', error);
     res.status(500).json({ error: 'Failed to store latency metric' });
   }
 });
