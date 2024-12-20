@@ -20,7 +20,7 @@ function App() {
     return (
         <div className="max-w-[1100px] mx-auto pt-5">
             {isImageLoaded && (
-                <div className="absolute top-0 left-0 w-screen overflow-hidden"> 
+                <div className="absolute top-0 left-0 w-screen overflow-x-hidden"> 
                     <img 
                         src="/rickyy.gif" 
                         alt="Rick"
@@ -59,7 +59,7 @@ function App() {
                     <div className="section">
                         <SomeComponent />
                     </div>
-                    <div className="section">
+                    <div className="section overflow-x-hidden">
                         <LovedImages />
                     </div>
 
