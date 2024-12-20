@@ -4,7 +4,7 @@ import WindowSize from "./components/WindowSize";
 import SomeComponent from "./components/SomeComponent";
 import LovedImages from "./components/LovedImages";
 import { useState, useEffect } from 'react';
-import UserLatency from "./components/UserLatency";
+import ServerMetrics from "./components/ServerMetrics";
 
 function App() {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -59,7 +59,7 @@ function App() {
                         <p className="txt font-thin">
                             Checkout my <a href="https://x.com/nermalcat69" target="_blank">Twitter</a>, <a href="https://github.com/nermalcat69" target="_blank">Github</a>, <a href="https://unsplash.com/@arjunaditya" target="_blank">Unsplash</a>, <a href="https://read.cv/nermal" target="_blank">Read.cv</a> and <a href="https://instagram.com/nermalcat69" target="_blank">Instagram</a>.
                         </p>
-                        <UserLatency />
+                        <ServerMetrics />
                     </div>
                     <SomeComponent />
                     <LovedImages />
