@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 interface Metric {
   timestamp: number;
@@ -19,26 +20,43 @@ const UserLatency = () => {
         cache: 'no-store'
       });
 
-      if (response.ok) {
-        const end = performance.now();
-        const responseTime = Math.round(end - start);
-        
-        await fetch('/api/user-latency', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ responseTime })
-        });
-        
-        const metricsResponse = await fetch('/api/user-latency');
-        const latencyData = await metricsResponse.json();
-        
-        setMetrics(latencyData);
-        setAverage(Math.round(
-          latencyData.reduce((sum: number, m: Metric) => sum + m.responseTime, 0) / latencyData.length
-        ));
+      if (!response.ok) {
+        console.error('Health check failed:', response.status);
+        return;
       }
+
+      const end = performance.now();
+      const responseTime = Math.round(end - start);
+      
+      const postResponse = await fetch('/api/user-latency', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ responseTime })
+      });
+
+      if (!postResponse.ok) {
+        console.error('Failed to store latency:', postResponse.status);
+        return;
+      }
+      
+      const metricsResponse = await fetch('/api/user-latency');
+      if (!metricsResponse.ok) {
+        console.error('Failed to fetch metrics:', metricsResponse.status);
+        return;
+      }
+
+      const latencyData = await metricsResponse.json();
+      if (!Array.isArray(latencyData) || latencyData.length === 0) {
+        console.error('Invalid metrics data:', latencyData);
+        return;
+      }
+      
+      setMetrics(latencyData);
+      setAverage(Math.round(
+        latencyData.reduce((sum: number, m: Metric) => sum + m.responseTime, 0) / latencyData.length
+      ));
     } catch (error) {
       console.error('Response time measurement failed:', error);
     }
@@ -56,26 +74,59 @@ const UserLatency = () => {
 
   return (
     <div className="text-sm space-y-2">
-      <div className="flex items-center gap-2">
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center gap-2"
+      >
         <div className="text-gray-500">Average Response Time:</div>
-        <div className="font-medium text-gray-700">{average}ms</div>
-      </div>
-      <div className="flex gap-2">
+        <motion.div 
+          key={average}
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}
+          className="font-medium text-gray-700"
+        >
+          {average}ms
+        </motion.div>
+      </motion.div>
+      <div className="flex flex-wrap gap-2">
         {metrics.map((metric, i) => (
-          <div 
+          <motion.div 
             key={metric.timestamp}
-            className="h-8 w-2 bg-gray-200 rounded-full relative group"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 500,
+              damping: 25,
+              delay: i * 0.05
+            }}
+            className="relative group cursor-pointer"
           >
-            <div 
-              className="absolute bottom-0 left-0 right-0 bg-blue-500 rounded-full transition-all duration-300"
-              style={{ 
-                height: `${(metric.responseTime / Math.max(...metrics.map(m => m.responseTime))) * 100}%`
-              }}
-            />
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            <motion.div 
+              className="h-8 w-8 bg-gray-200 rounded"
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <motion.div 
+                className="absolute inset-0 bg-blue-500 rounded"
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: metric.responseTime / Math.max(...metrics.map(m => m.responseTime))
+                }}
+                transition={{ duration: 0.3 }}
+              />
+            </motion.div>
+            <motion.div 
+              className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs pointer-events-none"
+              initial={{ opacity: 0, y: 5 }}
+              whileHover={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+            >
               {metric.responseTime}ms
-            </div>
-          </div>
+              <div className="text-gray-300 text-[10px]">{metric.timeAgo}</div>
+            </motion.div>
+          </motion.div>
         ))}
       </div>
     </div>
