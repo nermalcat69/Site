@@ -33,7 +33,7 @@ app.use(compression());
 // Serve static files
 app.use(base, sirv('dist/client', { dev: !isProduction }));
 
-const MAX_METRICS = 25;
+const MAX_METRICS = 35;
 const MAX_AGE = 2 * 60 * 60; // 2 hours in seconds
 
 // Health check endpoint

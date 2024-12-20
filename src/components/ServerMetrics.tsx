@@ -157,10 +157,10 @@ const ServerMetrics = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3, ease: "easeIn" }}
               >
-                {[...Array(25)].map((_, i) => (
+                {[...Array(35)].map((_, i) => (
                   <div 
                     key={i}
-                    className="w-[6px] h-full bg-gray-200 rounded-full"
+                    className="w-[6px] h-full bg-gray-100 rounded-full"
                   />
                 ))}
               </motion.div>
@@ -237,7 +237,7 @@ const ServerMetrics = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeIn" }}
             >
-              {[...Array(25)].map((_, i) => (
+              {[...Array(35)].map((_, i) => (
                 <div 
                   key={i}
                   className="w-[6px] h-full bg-gray-100 rounded-full"
