@@ -16,43 +16,29 @@ const ServerMetrics = () => {
   const [nextUpdate, setNextUpdate] = useState(Date.now() + INTERVAL_TIME);
   const [timeLeft, setTimeLeft] = useState(INTERVAL_TIME);
 
-  const measureServerResponse = async () => {
+  const fetchMetrics = async () => {
     try {
       const now = Date.now();
       if (now < nextUpdate) return;
 
       setNextUpdate(now + INTERVAL_TIME);
       
-      const start = performance.now();
-      const healthResponse = await fetch('/api/health', {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-        cache: 'no-store'
-      });
-      
-      if (healthResponse.ok) {
-        const data = await healthResponse.json();
-        console.log('📊 New measurement:', data.processingTime + 'ms');
+      const metricsResponse = await fetch('/api/metrics');
+      if (metricsResponse.ok) {
+        const metricsData = await metricsResponse.json() as Metric[];
+        const validMetrics = metricsData.filter(m => m.responseTime > 0);
+        setMetrics(validMetrics);
         
-        // Fetch updated metrics
-        const metricsResponse = await fetch('/api/metrics');
-        if (metricsResponse.ok) {
-          const metricsData = await metricsResponse.json() as Metric[];
-          // Filter out any metrics with 0 or undefined responseTime
-          const validMetrics = metricsData.filter(m => m.responseTime > 0);
-          setMetrics(validMetrics);
-          
-          if (validMetrics.length > 0) {
-            const avg = Math.round(
-              validMetrics.reduce((sum, m) => sum + m.responseTime, 0) / 
-              validMetrics.length
-            );
-            setAverage(avg);
-          }
+        if (validMetrics.length > 0) {
+          const avg = Math.round(
+            validMetrics.reduce((sum, m) => sum + m.responseTime, 0) / 
+            validMetrics.length
+          );
+          setAverage(avg);
         }
       }
     } catch (error) {
-      console.error('Failed to measure server response:', error);
+      console.error('Failed to fetch metrics:', error);
     }
   };
 
@@ -67,10 +53,10 @@ const ServerMetrics = () => {
   }, [nextUpdate]);
 
   useEffect(() => {
-    console.log('🚀 Starting server metrics monitoring');
-    measureServerResponse(); // Initial measurement
+    console.log('🚀 Starting metrics monitoring');
+    fetchMetrics(); // Initial fetch
     
-    const interval = setInterval(measureServerResponse, 5000); // Check every 5 seconds
+    const interval = setInterval(fetchMetrics, INTERVAL_TIME); // Fetch every 30 seconds
     
     return () => {
       console.log('Cleaning up metrics monitoring');

@@ -37,6 +37,7 @@ async function measureServerHealth() {
   const start = process.hrtime.bigint();
   
   try {
+    // Simulate an actual health check by making a self-request
     const end = process.hrtime.bigint();
     const responseTime = Number(end - start) / 1_000_000;
     
@@ -48,12 +49,13 @@ async function measureServerHealth() {
       url: 'server-health'
     };
     
+    // Store in Redis
     await redis.zAdd('response_metrics', {
       score: now,
       value: JSON.stringify(metric)
     });
 
-    // Maintain only the latest metrics
+    // Cleanup old metrics
     const count = await redis.zCard('response_metrics');
     if (count > MAX_METRICS) {
       await redis.zRemRangeByRank('response_metrics', 0, count - MAX_METRICS - 1);
@@ -62,9 +64,9 @@ async function measureServerHealth() {
     const oldestAllowed = now - (MAX_AGE * 1000);
     await redis.zRemRangeByScore('response_metrics', '-inf', oldestAllowed);
 
-    console.log('📊 Auto-measured server response time:', Math.round(responseTime) + 'ms');
+    console.log('📊 Server health measured:', Math.round(responseTime) + 'ms');
   } catch (error) {
-    console.error('❌ Error in auto-measurement:', error);
+    console.error('❌ Error measuring server health:', error);
   }
 }
 
@@ -96,11 +98,6 @@ app.get('/api/metrics', async (req, res) => {
     console.error('❌ Error fetching metrics:', error);
     res.status(500).json({ error: 'Failed to fetch metrics' });
   }
-});
-
-// Add health check endpoint
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'ok' });
 });
 
 // Add latency logging endpoint
