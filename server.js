@@ -104,6 +104,69 @@ app.get('/api/metrics', async (req, res) => {
   }
 });
 
+// Add a new endpoint specifically for latency measurements
+app.post('/api/latency', express.json(), async (req, res) => {
+  try {
+    const now = Date.now();
+    console.log('📥 Received new latency metric:', req.body);
+    
+    const metric = {
+      timestamp: now,
+      responseTime: req.body.responseTime,
+      timeAgo: 'just now'
+    };
+
+    // Store in Redis with a different key for latency
+    await redis.zAdd('latency_metrics', {
+      score: now,
+      value: JSON.stringify(metric)
+    });
+
+    // Trim to keep only latest 25 entries
+    const count = await redis.zCard('latency_metrics');
+    if (count > MAX_METRICS) {
+      await redis.zRemRangeByRank('latency_metrics', 0, count - MAX_METRICS - 1);
+    }
+
+    // Remove entries older than 2 hours
+    const oldestAllowed = now - (MAX_AGE * 1000);
+    await redis.zRemRangeByScore('latency_metrics', '-inf', oldestAllowed);
+    
+    console.log('📊 Latency metric stored in Redis');
+    res.json({ success: true });
+  } catch (error) {
+    console.error('❌ Error storing latency metric:', error);
+    res.status(500).json({ error: 'Failed to store latency metric' });
+  }
+});
+
+app.get('/api/latency', async (req, res) => {
+  try {
+    const now = Date.now();
+    const oldestAllowed = now - (MAX_AGE * 1000);
+
+    const rawMetrics = await redis.zRangeByScore(
+      'latency_metrics',
+      oldestAllowed,
+      '+inf'
+    );
+
+    const metrics = rawMetrics.map(raw => {
+      const metric = JSON.parse(raw);
+      return {
+        ...metric,
+        timeAgo: formatDistanceToNow(metric.timestamp, { addSuffix: true })
+      };
+    });
+    
+    console.log('📤 Sending latency metrics to client:', metrics.length);
+    res.json(metrics);
+  } catch (error) {
+    console.error('❌ Error fetching latency metrics:', error);
+    res.status(500).json({ error: 'Failed to fetch latency metrics' });
+  }
+});
+
 // Serve HTML
 app.use('*', async (req, res) => {
   try {

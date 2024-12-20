@@ -5,11 +5,11 @@ interface Metric {
   responseTime: number;
 }
 
-const YourServerResponse = () => {
+const UserLatency = () => {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [average, setAverage] = useState<number | null>(null);
 
-  const measureResponseTime = async () => {
+  const measureLatency = async () => {
     try {
       const start = performance.now();
       const response = await fetch('/api/health', {
@@ -20,20 +20,20 @@ const YourServerResponse = () => {
 
       if (response.ok) {
         const end = performance.now();
-        const responseTime = Math.round(end - start);
+        const latency = Math.round(end - start);
         
         await fetch('/api/latency', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ responseTime })
+          body: JSON.stringify({ responseTime: latency })
         });
         
         setMetrics(prev => {
           const newMetrics = [...prev, { 
             timestamp: Date.now(),
-            responseTime 
+            responseTime: latency 
           }].slice(-5);
           
           const avg = Math.round(
@@ -45,24 +45,24 @@ const YourServerResponse = () => {
         });
       }
     } catch (error) {
-      console.error('Response time measurement failed:', error);
+      console.error('Latency measurement failed:', error);
     }
   };
 
   useEffect(() => {
-    measureResponseTime();
-    const interval = setInterval(measureResponseTime, 10000);
+    measureLatency();
+    const interval = setInterval(measureLatency, 10000);
     return () => clearInterval(interval);
   }, []);
 
   if (metrics.length === 0) {
-    return <div className="text-sm text-gray-500">Measuring response times...</div>;
+    return <div className="text-sm text-gray-500">Measuring connection latency...</div>;
   }
 
   return (
     <div className="text-sm space-y-2">
       <div className="flex items-center gap-2">
-        <div className="text-gray-500">Average Response Time:</div>
+        <div className="text-gray-500">Average Latency:</div>
         <div className="font-medium text-gray-700">{average}ms</div>
       </div>
       <div className="flex gap-2">
@@ -87,4 +87,4 @@ const YourServerResponse = () => {
   );
 };
 
-export default YourServerResponse; 
+export default UserLatency; 
