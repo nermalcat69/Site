@@ -7,25 +7,19 @@ import { useState, useEffect } from 'react';
 import ServerMetrics from "./components/ServerMetrics";
 
 function App() {
-    // const [isImageLoaded, setIsImageLoaded] = useState(false);
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-    // useEffect(() => {
-    //     const img = new Image();
-    //     img.src = '/rickyy.gif';
-    //     img.onload = () => {
-    //         setIsImageLoaded(true);
-    //     };
-    // }, []);
+    useEffect(() => {
+        const img = new Image();
+        img.src = '/rickyy.gif';
+        img.onload = () => {
+            setIsImageLoaded(true);
+        };
+    }, []);
 
     return (
         <div className="max-w-[1100px] mx-auto pt-5">
-            <div className="mx-auto max-w-2xl py-16 px-6 relative">
-                <div className="section">
-                    <ServerMetrics />
-                </div> 
-            </div>
-
-            {/* {isImageLoaded && (
+            {isImageLoaded && (
                 <div className="absolute top-0 left-0 w-screen overflow-hidden"> 
                     <img 
                         src="/rickyy.gif" 
@@ -35,8 +29,9 @@ function App() {
                     />
                 </div>
             )}
-            {} */}
-            {/* <div className="mx-auto max-w-2xl py-16 px-6 relative">
+            {<div>
+            </div>}
+            <div className="mx-auto max-w-2xl py-16 px-6 relative">
                 <h2 className="text-2xl font-medium text-[#1a1a1a]">Arjun Aditya</h2>
                 <p className="text-[#a7a7a7] text-sm">Programmer / Designer</p>
                 <div className="py-6">
@@ -69,8 +64,9 @@ function App() {
                     </div>
 
                 </div>
+                {/* <Levitate /> */}
                 <WindowSize />
-            </div> */}
+            </div>
         </div>
     );
 }
