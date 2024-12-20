@@ -97,10 +97,13 @@ const ServerMetrics = () => {
       console.log('💤 Clearing measurement interval');
       clearInterval(interval);
     };
-  }, []); // Run once when component mounts
+  }, []);
 
   if (metrics.length === 0) {
     return (
+        <div className="relative">
+        <span className="absolute right-0 -top-10 duration-300 hover:rotate-12"><img src="/gopher.svg" alt="Server" className="w-20 h-20" /></span>
+        <div className="flex z-10 flex-col bg-white border border-[#E7E7E7] p-3 px-5 px-4 py-2">
       <div className="text-sm space-y-2">
         <motion.div 
           className="flex items-center gap-2"
@@ -108,7 +111,7 @@ const ServerMetrics = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, ease: "easeIn" }}
         >
-          <div className="text-gray-500">Average Response Time:</div>
+          <div className="text-gray-600">Average Response Time:</div>
           <div className="font-medium text-gray-700">
             {metrics.length === 0 ? '--' : `${average}ms`}
           </div>
@@ -127,7 +130,7 @@ const ServerMetrics = () => {
                 {[...Array(25)].map((_, i) => (
                   <div 
                     key={i}
-                    className="w-[6px] h-full bg-gray-100 rounded-full"
+                    className="w-[6px] h-full bg-gray-200 rounded-full"
                   />
                 ))}
               </motion.div>
@@ -169,6 +172,8 @@ const ServerMetrics = () => {
           </AnimatePresence>
         </div>
       </div>
+    </div>
+        </div>
     );
   }
 
@@ -176,12 +181,17 @@ const ServerMetrics = () => {
   console.log('📊 Current max response time:', maxResponseTime + 'ms');
 
   return (
-    <div className="text-sm space-y-2">
-      <motion.div 
-        className="flex items-center gap-2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, ease: "easeIn" }}
+    <div className="relative">
+    <span className="absolute right-0 -top-10 duration-300 hover:rotate-12"><img src="/gopher.svg" alt="Server" className="w-20 h-20" /></span>
+    <div className="flex z-10 flex-col bg-white border border-[#E7E7E7] p-3 px-5 px-4 py-2">
+
+    <div className="flex z-10 flex-col bg-white border border-[#E7E7E7] p-3 px-5 px-4 py-2">
+      <div className="text-sm space-y-2">
+        <motion.div 
+          className="flex items-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, ease: "easeIn" }}
       >
         <div className="text-gray-500">Average Response Time:</div>
         <div className="font-medium text-gray-700">
@@ -243,6 +253,9 @@ const ServerMetrics = () => {
           )}
         </AnimatePresence>
       </div>
+    </div>
+    </div>
+    </div>
     </div>
   );
 };
