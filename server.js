@@ -48,8 +48,7 @@ app.post('/api/metrics', express.json(), async (req, res) => {
     const metric = {
       timestamp: now,
       responseTime: req.body.responseTime,
-      timeAgo: 'just now',
-      sessionId: req.body.sessionId
+      timeAgo: formatDistanceToNow(now, { addSuffix: true })
     };
 
     // Store in Redis with expiration
@@ -58,7 +57,7 @@ app.post('/api/metrics', express.json(), async (req, res) => {
       value: JSON.stringify(metric)
     });
 
-    // Trim to keep only latest 25 entries
+    // Trim to keep only latest 35 entries
     const count = await redis.zCard('response_metrics');
     if (count > MAX_METRICS) {
       await redis.zRemRangeByRank('response_metrics', 0, count - MAX_METRICS - 1);

@@ -34,18 +34,48 @@ const ServerMetrics = () => {
     }
   };
 
+  const measureAndSendResponseTime = async () => {
+    console.log('⏱️ Starting response time measurement...');
+    try {
+      const start = performance.now();
+      const response = await fetch('/api/health');
+      
+      if (response.ok) {
+        const end = performance.now();
+        const responseTime = Math.round(end - start);
+        console.log('⚡ Measured response time:', responseTime + 'ms');
+        
+        // Send measurement to server
+        await fetch('/api/metrics', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ responseTime })
+        });
+
+        // Fetch updated metrics immediately
+        await fetchMetrics();
+      }
+    } catch (error) {
+      console.error('❌ Response time measurement failed:', error);
+    }
+  };
+
   useEffect(() => {
     console.log('🚀 ServerMetrics component mounted');
     
-    // Initial fetch of metrics
-    fetchMetrics();
+    // Initial measurement and fetch
+    measureAndSendResponseTime();
     
-    // Set up polling interval
-    const interval = setInterval(fetchMetrics, 5000);
+    // Set up intervals
+    const measureInterval = setInterval(measureAndSendResponseTime, 30000);
+    const fetchInterval = setInterval(fetchMetrics, 5000);
     
     return () => {
       console.log('💤 Cleaning up interval');
-      clearInterval(interval);
+      clearInterval(measureInterval);
+      clearInterval(fetchInterval);
     };
   }, []);
 
