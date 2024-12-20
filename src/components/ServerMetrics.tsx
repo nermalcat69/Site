@@ -101,8 +101,19 @@ const ServerMetrics = () => {
 
   if (metrics.length === 0) {
     return (
-      <div className="space-y-4">
-        <div className="text-sm text-gray-500">Loading measurements...</div>
+      <div className="text-sm space-y-2">
+        <div className="flex items-center gap-2">
+          <div className="text-gray-500">Average Response Time:</div>
+          <div className="font-medium text-gray-700">--ms</div>
+        </div>
+        <div className="flex gap-1.5 h-8">
+          {[...Array(25)].map((_, i) => (
+            <div 
+              key={i}
+              className="w-[6px] h-full bg-gray-100 rounded-full"
+            />
+          ))}
+        </div>
       </div>
     );
   }
