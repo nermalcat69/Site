@@ -31,29 +31,48 @@ app.use(compression());
 // Serve static files
 app.use(base, sirv('dist/client', { dev: !isProduction }));
 
-const MAX_METRICS = 25;
-const MAX_AGE = 2 * 60 * 60; // 2 hours in seconds
+const MAX_METRICS = 30;
+const MAX_AGE = 24 * 60 * 60; // 24 hours in seconds
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
-  const start = process.hrtime();
-  // Do some processing...
-  const end = process.hrtime(start);
-  const responseTime = Math.round((end[0] * 1e9 + end[1]) / 1e6); // Convert to milliseconds
+app.get('/api/health', async (req, res) => {
+  const start = process.hrtime.bigint();
   
-  // Store the server-side processing time
-  const metric = {
-    timestamp: Date.now(),
-    responseTime,
-    timeAgo: 'just now'
-  };
+  // Simulate some minimal processing
+  await new Promise(resolve => setTimeout(resolve, 1));
   
-  redis.zAdd('response_metrics', {
-    score: Date.now(),
-    value: JSON.stringify(metric)
-  });
+  const end = process.hrtime.bigint();
+  const responseTime = Number(end - start) / 1_000_000; // Convert nanoseconds to milliseconds
+  
+  try {
+    const metric = {
+      timestamp: Date.now(),
+      responseTime: Math.round(responseTime),
+      timeAgo: 'just now'
+    };
+    
+    // Store in Redis
+    await redis.zAdd('response_metrics', {
+      score: Date.now(),
+      value: JSON.stringify(metric)
+    });
 
-  res.json({ status: 'ok' });
+    // Keep only latest 30 entries
+    const count = await redis.zCard('response_metrics');
+    if (count > MAX_METRICS) {
+      await redis.zRemRangeByRank('response_metrics', 0, count - MAX_METRICS - 1);
+    }
+
+    // Clean up old entries
+    const oldestAllowed = Date.now() - (MAX_AGE * 1000);
+    await redis.zRemRangeByScore('response_metrics', '-inf', oldestAllowed);
+
+    console.log('📊 Server processing time:', Math.round(responseTime) + 'ms');
+  } catch (error) {
+    console.error('❌ Error storing server metric:', error);
+  }
+
+  res.json({ status: 'ok', processingTime: Math.round(responseTime) });
 });
 
 // Store new metric
@@ -133,9 +152,29 @@ app.post('/api/latency', express.json(), async (req, res) => {
       timeAgo: 'just now'
     };
 
-    // Store in Redis with a different key for latency, using IP as identifier
     const userIP = req.ip;
     await redis.hSet('user_latencies', userIP, JSON.stringify(metric));
+    
+    // Keep only latest 30 entries
+    const keys = await redis.hKeys('user_latencies');
+    if (keys.length > MAX_METRICS) {
+      // Sort keys by timestamp and remove oldest
+      const allEntries = await Promise.all(
+        keys.map(async (key) => {
+          const value = await redis.hGet('user_latencies', key);
+          return { key, timestamp: JSON.parse(value).timestamp };
+        })
+      );
+      
+      const oldestKeys = allEntries
+        .sort((a, b) => a.timestamp - b.timestamp)
+        .slice(0, keys.length - MAX_METRICS)
+        .map(entry => entry.key);
+      
+      if (oldestKeys.length > 0) {
+        await redis.hDel('user_latencies', ...oldestKeys);
+      }
+    }
     
     console.log('📊 Latency metric stored for user:', userIP);
     res.json({ success: true });
