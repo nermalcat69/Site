@@ -41,7 +41,7 @@ body {
     scrollbar-width: none;
     overflow-x: hidden;
     max-width: 100%;
-    touch-action:none;
+    position: fixed;
 }
 
 ::selection {
