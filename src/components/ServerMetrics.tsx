@@ -125,8 +125,6 @@ const ServerMetrics = () => {
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                 {metric.responseTime}ms
                 <br />
-                {metric.url}
-                <br />
                 {metric.timeAgo}
               </div>
             </motion.div>
