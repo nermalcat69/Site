@@ -14,9 +14,8 @@ const ServerMetrics = () => {
   const [measuring, setMeasuring] = useState(false);
   const [currentMeasurement, setCurrentMeasurement] = useState(0);
 
-  const measureAndFetchMetrics = async () => {
+  const measureServerResponse = async () => {
     try {
-      // Start measuring animation
       setMeasuring(true);
       setCurrentMeasurement(0);
       
@@ -29,20 +28,19 @@ const ServerMetrics = () => {
       const end = performance.now();
       const responseTime = Math.round(end - start);
       
-      // Show final measurement
       setCurrentMeasurement(responseTime);
-      setTimeout(() => setMeasuring(false), 1000); // Keep showing for a second
+      setTimeout(() => setMeasuring(false), 1000);
 
       if (healthResponse.ok) {
         const data = await healthResponse.json();
-        console.log('New measurement taken:', data.processingTime + 'ms');
+        console.log('📊 Server response time:', data.processingTime + 'ms');
       }
 
-      // Then fetch all metrics
+      // Fetch latest metrics after measurement
       const metricsResponse = await fetch('/api/metrics');
       if (metricsResponse.ok) {
         const data = await metricsResponse.json() as Metric[];
-        setMetrics(data);
+        setMetrics(data.slice(0, 30)); // Keep only latest 30
         
         if (data.length > 0) {
           const avg = Math.round(
@@ -53,22 +51,27 @@ const ServerMetrics = () => {
         }
       }
     } catch (error) {
-      console.error('Failed to fetch metrics:', error);
+      console.error('Failed to measure server response:', error);
       setMeasuring(false);
     }
   };
 
   useEffect(() => {
-    console.log('🚀 Initializing ServerMetrics');
-    measureAndFetchMetrics();
-    const interval = setInterval(measureAndFetchMetrics, 30000);
+    console.log('🚀 Starting server metrics monitoring');
+    measureServerResponse(); // Initial measurement
+    
+    const interval = setInterval(() => {
+      console.log('📡 Taking new measurement...');
+      measureServerResponse();
+    }, 1000); // Measure every second
+    
     return () => {
-      console.log('Cleaning up ServerMetrics');
+      console.log('Cleaning up metrics monitoring');
       clearInterval(interval);
     };
   }, []);
 
-  const maxResponseTime = Math.max(...metrics.map(m => m.responseTime));
+  const maxResponseTime = Math.max(...metrics.map(m => m.responseTime), currentMeasurement);
 
   return (
     <div className="text-sm space-y-2">
