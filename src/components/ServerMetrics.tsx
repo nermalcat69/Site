@@ -36,7 +36,7 @@ const ServerMetrics = () => {
           }
           
           // Combine existing and new metrics
-          const updatedMetrics = [...prevMetrics, ...newMetrics].slice(-25);
+          const updatedMetrics = [...prevMetrics, ...newMetrics].slice(-35);
           console.log('📝 Total metrics after update:', updatedMetrics.length);
           return updatedMetrics;
         });
