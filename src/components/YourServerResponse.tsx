@@ -3,34 +3,13 @@ import { useState, useEffect } from 'react';
 interface Metric {
   timestamp: number;
   responseTime: number;
-  timeAgo: string;
 }
 
 const ServerMetrics = () => {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [average, setAverage] = useState<number | null>(null);
 
-  const fetchMetrics = async () => {
-    try {
-      const response = await fetch('/api/metrics');
-      if (response.ok) {
-        const data = await response.json();
-        setMetrics(data);
-        
-        // Calculate average
-        if (data.length > 0) {
-          const avg = Math.round(
-            data.reduce((sum: number, m: Metric) => sum + m.responseTime, 0) / data.length
-          );
-          setAverage(avg);
-        }
-      }
-    } catch (error) {
-      console.error('Failed to fetch metrics:', error);
-    }
-  };
-
-  const measureAndSendResponseTime = async () => {
+  const measureResponseTime = async () => {
     try {
       const start = performance.now();
       const response = await fetch('/api/health', {
@@ -43,17 +22,20 @@ const ServerMetrics = () => {
         const end = performance.now();
         const responseTime = Math.round(end - start);
         
-        // Send metric to server
-        await fetch('/api/metrics', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ responseTime })
+        setMetrics(prev => {
+          const newMetrics = [...prev, { 
+            timestamp: Date.now(),
+            responseTime 
+          }].slice(-5); // Keep last 5 measurements
+          
+          // Calculate new average
+          const avg = Math.round(
+            newMetrics.reduce((sum, m) => sum + m.responseTime, 0) / newMetrics.length
+          );
+          setAverage(avg);
+          
+          return newMetrics;
         });
-
-        // Fetch updated metrics
-        await fetchMetrics();
       }
     } catch (error) {
       console.error('Response time measurement failed:', error);
@@ -61,11 +43,11 @@ const ServerMetrics = () => {
   };
 
   useEffect(() => {
-    // Initial measurement and fetch
-    measureAndSendResponseTime();
+    // Initial measurement
+    measureResponseTime();
     
-    // Update every 30 seconds
-    const interval = setInterval(measureAndSendResponseTime, 30000);
+    // Update every 10 seconds
+    const interval = setInterval(measureResponseTime, 10000);
     return () => clearInterval(interval);
   }, []);
 
@@ -79,11 +61,11 @@ const ServerMetrics = () => {
         <div className="text-gray-500">Average Response Time:</div>
         <div className="font-medium text-gray-700">{average}ms</div>
       </div>
-      <div className="flex gap-1.5">
-        {metrics.map((metric) => (
+      <div className="flex gap-2">
+        {metrics.map((metric, i) => (
           <div 
             key={metric.timestamp}
-            className="h-8 w-1.5 bg-gray-200 rounded-full relative group"
+            className="h-8 w-2 bg-gray-200 rounded-full relative group"
           >
             <div 
               className="absolute bottom-0 left-0 right-0 bg-blue-500 rounded-full transition-all duration-300"
@@ -91,10 +73,8 @@ const ServerMetrics = () => {
                 height: `${(metric.responseTime / Math.max(...metrics.map(m => m.responseTime))) * 100}%`
               }}
             />
-            <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
               {metric.responseTime}ms
-              <br />
-              {metric.timeAgo}
             </div>
           </div>
         ))}
