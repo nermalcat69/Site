@@ -6,6 +6,7 @@ import sirv from 'sirv';
 import compression from 'compression';
 import { formatDistanceToNow } from 'date-fns';
 import { createClient } from 'redis';
+import { createServer as createViteServer } from 'vite';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProduction = process.env.NODE_ENV === 'production';
@@ -103,6 +104,15 @@ app.get('/api/metrics', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch metrics' });
   }
 });
+
+let vite;
+if (!isProduction) {
+  vite = await createViteServer({
+    server: { middlewareMode: true },
+    appType: 'custom'
+  });
+  app.use(vite.middlewares);
+}
 
 // Serve HTML
 app.use('*', async (req, res) => {
