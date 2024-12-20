@@ -39,7 +39,7 @@ body {
     background: #ffffff;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 ::selection {
