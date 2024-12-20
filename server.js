@@ -98,6 +98,35 @@ app.get('/api/metrics', async (req, res) => {
   }
 });
 
+// Add health check endpoint
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
+// Add latency logging endpoint
+app.post('/api/latency', express.json(), async (req, res) => {
+  try {
+    const { responseTime } = req.body;
+    const now = Date.now();
+    const metric = {
+      timestamp: now,
+      responseTime,
+      timeAgo: 'just now',
+      url: 'client-latency'
+    };
+    
+    await redis.zAdd('response_metrics', {
+      score: now,
+      value: JSON.stringify(metric)
+    });
+    
+    res.status(200).json({ status: 'ok' });
+  } catch (error) {
+    console.error('❌ Error logging latency:', error);
+    res.status(500).json({ error: 'Failed to log latency' });
+  }
+});
+
 // Serve static files in production
 if (isProduction) {
   app.use('*', (req, res) => {
