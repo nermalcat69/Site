@@ -9,29 +9,36 @@ interface Metric {
 
 const ServerMetrics = () => {
   const [metrics, setMetrics] = useState<Metric[]>([]);
-  const [visibleCount, setVisibleCount] = useState(0);
   const [average, setAverage] = useState<number | null>(null);
 
   const fetchMetrics = async () => {
+    console.log('🔄 Fetching metrics from server...');
     try {
       const response = await fetch('/api/metrics');
       if (response.ok) {
-        const data = await response.json();
-        setMetrics(data);
+        const data = await response.json() as Metric[];
+        console.log('📊 Received metrics:', data);
         
-        // Reset visible count when new data arrives
-        setVisibleCount(0);
-        
-        // Gradually show metrics
-        const interval = setInterval(() => {
-          setVisibleCount(prev => {
-            if (prev >= data.length) {
-              clearInterval(interval);
-              return prev;
-            }
-            return prev + 1;
-          });
-        }, 50); // Show new bar every 50ms
+        // Update metrics without resetting animations
+        setMetrics(prevMetrics => {
+          // Only animate new metrics by comparing timestamps
+          const newMetrics = data.filter((newMetric: Metric) => 
+            !prevMetrics.some((oldMetric: Metric) => oldMetric.timestamp === newMetric.timestamp)
+          );
+          
+          console.log('🆕 New metrics found:', newMetrics.length);
+          if (newMetrics.length > 0) {
+            console.log('📈 Latest measurement:', {
+              responseTime: newMetrics[newMetrics.length - 1].responseTime,
+              timeAgo: newMetrics[newMetrics.length - 1].timeAgo
+            });
+          }
+          
+          // Combine existing and new metrics
+          const updatedMetrics = [...prevMetrics, ...newMetrics].slice(-25);
+          console.log('📝 Total metrics after update:', updatedMetrics.length);
+          return updatedMetrics;
+        });
 
         // Calculate average
         if (data.length > 0) {
@@ -39,14 +46,16 @@ const ServerMetrics = () => {
             data.reduce((sum: number, m: Metric) => sum + m.responseTime, 0) / data.length
           );
           setAverage(avg);
+          console.log('📊 New average response time:', avg + 'ms');
         }
       }
     } catch (error) {
-      console.error('Failed to fetch metrics:', error);
+      console.error('❌ Failed to fetch metrics:', error);
     }
   };
 
   const measureAndSendResponseTime = async () => {
+    console.log('⏱️ Starting response time measurement...');
     try {
       const start = performance.now();
       const response = await fetch('/api/health', {
@@ -58,7 +67,9 @@ const ServerMetrics = () => {
       if (response.ok) {
         const end = performance.now();
         const responseTime = Math.round(end - start);
+        console.log('⚡ Measured response time:', responseTime + 'ms');
         
+        console.log('📤 Sending measurement to server...');
         await fetch('/api/metrics', {
           method: 'POST',
           headers: {
@@ -70,21 +81,28 @@ const ServerMetrics = () => {
         await fetchMetrics();
       }
     } catch (error) {
-      console.error('Response time measurement failed:', error);
+      console.error('❌ Response time measurement failed:', error);
     }
   };
 
   useEffect(() => {
+    console.log('🚀 ServerMetrics component mounted');
     measureAndSendResponseTime();
+    console.log('⏰ Setting up 30-second interval for measurements');
     const interval = setInterval(measureAndSendResponseTime, 30000);
-    return () => clearInterval(interval);
+    return () => {
+      console.log('💤 ServerMetrics component unmounting, clearing interval');
+      clearInterval(interval);
+    };
   }, []);
 
   if (metrics.length === 0) {
+    console.log('⏳ No metrics available yet');
     return <div className="text-sm text-gray-500">Measuring response times...</div>;
   }
 
   const maxResponseTime = Math.max(...metrics.map(m => m.responseTime));
+  console.log('📊 Current max response time:', maxResponseTime + 'ms');
 
   return (
     <div className="text-sm space-y-2">
@@ -93,32 +111,26 @@ const ServerMetrics = () => {
         <div className="font-medium text-gray-700">{average}ms</div>
       </div>
       <div className="flex gap-1.5 h-8">
-        <AnimatePresence>
-          {metrics.slice(0, visibleCount).map((metric, index) => (
+        <AnimatePresence mode="popLayout">
+          {metrics.map((metric) => (
             <motion.div 
               key={metric.timestamp}
               className="relative group"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ 
-                height: 32, // 8rem
-                opacity: 1 
-              }}
-              transition={{
-                duration: 0.3,
-                delay: index * 0.05
-              }}
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: 6, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onAnimationStart={() => console.log('🎭 Starting animation for metric:', metric.timestamp)}
+              onAnimationComplete={() => console.log('✨ Completed animation for metric:', metric.timestamp)}
             >
-              <div className="w-1.5 h-full bg-gray-200 rounded-full relative">
+              <div className="h-full bg-gray-200 rounded-full relative">
                 <motion.div 
                   className="absolute bottom-0 left-0 right-0 bg-blue-500 rounded-full"
                   initial={{ height: 0 }}
                   animate={{ 
                     height: `${(metric.responseTime / maxResponseTime) * 100}%`
                   }}
-                  transition={{
-                    duration: 0.5,
-                    delay: index * 0.05 + 0.2
-                  }}
+                  transition={{ duration: 0.5 }}
                 />
               </div>
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
