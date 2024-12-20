@@ -151,6 +151,9 @@ const ServerMetrics = () => {
             )}
           </AnimatePresence>
         </div>
+        <p className="text-xs text-neutral-400 text-nowrap">
+            Last {metrics.length} requests are used to calculate the average response time
+        </p>
       </div>
     </div>
         </div>
@@ -231,6 +234,9 @@ const ServerMetrics = () => {
           )}
         </AnimatePresence>
       </div>
+      <p className="text-xs text-neutral-400 text-nowrap">
+            Last {metrics.length} requests are used to calculate the average response time
+        </p>
     </div>
     </div>
     </div>
