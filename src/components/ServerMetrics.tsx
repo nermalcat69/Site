@@ -12,97 +12,35 @@ const ServerMetrics = () => {
   const [average, setAverage] = useState<number | null>(null);
 
   const fetchMetrics = async () => {
-    console.log('🔄 Fetching metrics from server...');
     try {
       const response = await fetch('/api/metrics');
       if (response.ok) {
         const data = await response.json() as Metric[];
-        console.log('📊 Received metrics:', data);
+        setMetrics(data);
         
-        // Update metrics without resetting animations
-        setMetrics(prevMetrics => {
-          // Only animate new metrics by comparing timestamps
-          const newMetrics = data.filter((newMetric: Metric) => 
-            !prevMetrics.some((oldMetric: Metric) => oldMetric.timestamp === newMetric.timestamp)
-          );
-          
-          console.log('🆕 New metrics found:', newMetrics.length);
-          if (newMetrics.length > 0) {
-            console.log('📈 Latest measurement:', {
-              responseTime: newMetrics[newMetrics.length - 1].responseTime,
-              timeAgo: newMetrics[newMetrics.length - 1].timeAgo
-            });
-          }
-          
-          // Combine existing and new metrics
-          const updatedMetrics = [...prevMetrics, ...newMetrics].slice(-25);
-          console.log('📝 Total metrics after update:', updatedMetrics.length);
-          return updatedMetrics;
-        });
-
-        // Calculate average
         if (data.length > 0) {
           const avg = Math.round(
             data.reduce((sum: number, m: Metric) => sum + m.responseTime, 0) / data.length
           );
           setAverage(avg);
-          console.log('📊 New average response time:', avg + 'ms');
         }
       }
     } catch (error) {
-      console.error('❌ Failed to fetch metrics:', error);
-    }
-  };
-
-  const measureAndSendResponseTime = async () => {
-    console.log('⏱️ Starting response time measurement...');
-    try {
-      const start = performance.now();
-      const response = await fetch('/api/health', {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-        cache: 'no-store'
-      });
-
-      if (response.ok) {
-        const end = performance.now();
-        const responseTime = Math.round(end - start);
-        console.log('⚡ Measured response time:', responseTime + 'ms');
-        
-        console.log('📤 Sending measurement to server...');
-        await fetch('/api/metrics', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ responseTime })
-        });
-
-        await fetchMetrics();
-      }
-    } catch (error) {
-      console.error('❌ Response time measurement failed:', error);
+      console.error('Failed to fetch metrics:', error);
     }
   };
 
   useEffect(() => {
-    console.log('🚀 ServerMetrics component mounted');
-    measureAndSendResponseTime();
-    console.log('⏰ Setting up 30-second interval for measurements');
-    const interval = setInterval(measureAndSendResponseTime, 30000);
-    return () => {
-      console.log('💤 ServerMetrics component unmounting, clearing interval');
-      clearInterval(interval);
-    };
+    fetchMetrics();
+    const interval = setInterval(fetchMetrics, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   if (metrics.length === 0) {
-    console.log('⏳ No metrics available yet');
     return <div className="text-sm text-gray-500">Measuring response times...</div>;
   }
 
   const maxResponseTime = Math.max(...metrics.map(m => m.responseTime));
-  console.log('📊 Current max response time:', maxResponseTime + 'ms');
 
   return (
     <div className="text-sm space-y-2">

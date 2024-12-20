@@ -36,6 +36,23 @@ const MAX_AGE = 2 * 60 * 60; // 2 hours in seconds
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
+  const start = process.hrtime();
+  // Do some processing...
+  const end = process.hrtime(start);
+  const responseTime = Math.round((end[0] * 1e9 + end[1]) / 1e6); // Convert to milliseconds
+  
+  // Store the server-side processing time
+  const metric = {
+    timestamp: Date.now(),
+    responseTime,
+    timeAgo: 'just now'
+  };
+  
+  redis.zAdd('response_metrics', {
+    score: Date.now(),
+    value: JSON.stringify(metric)
+  });
+
   res.json({ status: 'ok' });
 });
 
