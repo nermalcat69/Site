@@ -1,27 +1,26 @@
-import { readFile } from 'node:fs/promises';
 import express from 'express';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+import { readFile } from 'fs/promises';
+import sirv from 'sirv';
+import compression from 'compression';
 import { formatDistanceToNow } from 'date-fns';
 
-// Constants
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 3000;
 const base = process.env.BASE || '/';
 
-// Cached production assets
-const templateHtml = isProduction
-  ? await readFile('./dist/client/index.html', 'utf-8')
-  : '';
-const ssrManifest = isProduction
-  ? await readFile('./dist/client/.vite/ssr-manifest.json', 'utf-8')
-  : undefined;
-
-// Create http server
+// Create express app
 const app = express();
 
-// Add these imports at the top
-import { formatDistanceToNow } from 'date-fns';
+// Add compression
+app.use(compression());
 
-// Add this before your existing routes
+// Serve static files
+app.use(base, sirv('dist/client', { dev: !isProduction }));
+
+// Initialize metrics storage
 const responseMetrics = [];
 const MAX_METRICS = 25;
 const MAX_AGE = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
@@ -71,31 +70,6 @@ app.get('/api/metrics', (req, res) => {
   console.log('📤 Sending metrics to client:', metrics.length);
   res.json(metrics);
 });
-
-// Add Vite or respective production middlewares
-let vite;
-if (!isProduction) {
-  const { createServer } = await import('vite');
-  vite = await createServer({
-    server: { middlewareMode: true },
-    appType: 'custom',
-    base
-  });
-  app.use(vite.middlewares);
-} else {
-  const compression = (await import('compression')).default;
-  const sirv = (await import('sirv')).default;
-
-  // Disable caching for all files
-  app.use(base, sirv('./dist/client', {
-    extensions: [],
-    setHeaders: (res, path) => {
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-      res.setHeader('Pragma', 'no-cache');
-      res.setHeader('Expires', '0');
-    }
-  }));
-}
 
 // Serve HTML
 app.use('*', async (req, res) => {
