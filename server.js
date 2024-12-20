@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 const base = process.env.BASE || '/';
 
 const redis = createClient({
-  url: process.env.REDIS_URL || 'redis://localhost:6379'
+  url: process.env.REDIS_URL
 });
 
 redis.on('error', err => console.error('Redis Client Error', err));
@@ -134,11 +134,13 @@ app.get('/api/metrics', async (req, res) => {
     const now = Date.now();
     const oldestAllowed = now - (MAX_AGE * 1000);
 
-    // Get metrics sorted by timestamp (newest first)
-    const rawMetrics = await redis.zRevRangeByScore(
+    const rawMetrics = await redis.zRangeByScore(
       'response_metrics',
+      oldestAllowed,
       '+inf',
-      oldestAllowed
+      {
+        REV: true
+      }
     );
 
     const metrics = rawMetrics.map(raw => {
@@ -196,7 +198,7 @@ app.post('/api/latency', express.json(), async (req, res) => {
     console.log('📊 Latency metric stored for user:', userIP);
     res.json({ success: true });
   } catch (error) {
-    console.error('�� Error storing latency metric:', error);
+    console.error('❌ Error storing latency metric:', error);
     res.status(500).json({ error: 'Failed to store latency metric' });
   }
 });
