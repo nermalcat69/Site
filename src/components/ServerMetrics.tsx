@@ -86,7 +86,7 @@ const ServerMetrics = () => {
         <div className="flex z-10 flex-col bg-white border border-[#E7E7E7] p-3 px-5 px-4 py-2">
       <div className="text-sm space-y-2">
         <motion.div 
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 mb-5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, ease: "easeIn" }}
@@ -169,7 +169,7 @@ const ServerMetrics = () => {
     <div className="flex z-10 flex-col bg-white border border-[#E7E7E7] p-3 px-5 px-4 py-2">
       <div className="text-sm space-y-2">
         <motion.div 
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 mb-5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, ease: "easeIn" }}
