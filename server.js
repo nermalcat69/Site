@@ -42,6 +42,15 @@ if (!isProduction) {
   }));
 }
 
+app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+        const duration = Date.now() - start;
+        res.set('x-response-time', duration.toString());
+    });
+    next();
+});
+
 // Serve HTML
 app.use('*', async (req, res) => {
   try {

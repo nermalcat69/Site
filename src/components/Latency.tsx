@@ -1,32 +1,42 @@
 import { useState, useEffect } from 'react';
 
 const Latency = () => {
-    const [latency, setLatency] = useState<number | null>(null);
+    const [responseTime, setResponseTime] = useState<number | null>(null);
 
-    const measureLatency = async () => {
+    const measureResponseTime = async () => {
         try {
-            const start = performance.now();
-            const response = await fetch('https://api.github.com/'); // Using GitHub's API as an example
-            const end = performance.now();
+            const start = Date.now();
+            const response = await fetch('https://api.github.com/', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                }
+            });
             
             if (response.ok) {
-                setLatency(Math.round(end - start));
+                const timeHeader = response.headers.get('x-response-time') || 
+                                 response.headers.get('x-server-response-time') ||
+                                 (Date.now() - start).toString();
+                                 
+                setResponseTime(parseInt(timeHeader));
             }
         } catch (error) {
-            console.error('Failed to measure latency:', error);
+            console.error('Failed to measure response time:', error);
         }
     };
 
     useEffect(() => {
-        measureLatency();
-        const interval = setInterval(measureLatency, 5000); // Update every 5 seconds
+        measureResponseTime();
+        const interval = setInterval(measureResponseTime, 5000);
 
         return () => clearInterval(interval);
     }, []);
 
     return (
         <div className="text-sm text-gray-500">
-            {latency !== null ? `Latency: ${latency}ms` : 'Measuring latency...'}
+            {responseTime !== null 
+                ? `Server Response Time: ${responseTime}ms` 
+                : 'Measuring response time...'}
         </div>
     );
 };
