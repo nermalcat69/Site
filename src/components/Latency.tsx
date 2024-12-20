@@ -1,42 +1,63 @@
 import { useState, useEffect } from 'react';
 
 const Latency = () => {
-    const [responseTime, setResponseTime] = useState<number | null>(null);
+    const [metrics, setMetrics] = useState({
+        latency: null as number | null,
+        responseTime: null as number | null
+    });
 
-    const measureResponseTime = async () => {
+    const measureMetrics = async () => {
         try {
-            const start = Date.now();
+            const latencyStart = performance.now();
             const response = await fetch('https://api.github.com/', {
+                method: 'HEAD'
+            });
+            const latencyTime = Math.round(performance.now() - latencyStart);
+
+            const responseStart = performance.now();
+            const fullResponse = await fetch('https://api.github.com/', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                 }
             });
-            
-            if (response.ok) {
-                const timeHeader = response.headers.get('x-response-time') || 
-                                 response.headers.get('x-server-response-time') ||
-                                 (Date.now() - start).toString();
-                                 
-                setResponseTime(parseInt(timeHeader));
+            const responseTime = Math.round(performance.now() - responseStart);
+
+            if (response.ok && fullResponse.ok) {
+                setMetrics({
+                    latency: latencyTime,
+                    responseTime: responseTime
+                });
             }
         } catch (error) {
-            console.error('Failed to measure response time:', error);
+            console.error('Failed to measure metrics:', error);
         }
     };
 
     useEffect(() => {
-        measureResponseTime();
-        const interval = setInterval(measureResponseTime, 5000);
+        measureMetrics();
+        const interval = setInterval(measureMetrics, 5000);
 
         return () => clearInterval(interval);
     }, []);
 
     return (
-        <div className="text-sm text-gray-500">
-            {responseTime !== null 
-                ? `Server Response Time: ${responseTime}ms` 
-                : 'Measuring response time...'}
+        <div className="text-sm text-gray-500 space-y-1">
+            <div>
+                {metrics.latency !== null 
+                    ? `Network Latency: ${metrics.latency}ms` 
+                    : 'Measuring latency...'}
+            </div>
+            <div>
+                {metrics.responseTime !== null 
+                    ? `Total Response Time: ${metrics.responseTime}ms` 
+                    : 'Measuring response time...'}
+            </div>
+            {metrics.responseTime !== null && metrics.latency !== null && (
+                <div>
+                    Server Processing Time: ~{Math.max(0, metrics.responseTime - metrics.latency)}ms
+                </div>
+            )}
         </div>
     );
 };
