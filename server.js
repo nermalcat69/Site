@@ -6,6 +6,8 @@ import sirv from 'sirv';
 import compression from 'compression';
 import { formatDistanceToNow } from 'date-fns';
 import { createClient } from 'redis';
+import { WebSocketServer } from 'ws';
+import { createServer } from 'http';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProduction = process.env.NODE_ENV === 'production';
@@ -142,7 +144,55 @@ process.on('SIGTERM', async () => {
   process.exit(0);
 });
 
-// Start http server
-app.listen(port, () => {
+const server = createServer(app);
+const wss = new WebSocketServer({ server });
+
+// Handle WebSocket connections
+wss.on('connection', (ws) => {
+  console.log('🔌 New WebSocket client connected');
+  
+  ws.on('close', () => {
+    console.log('🔌 Client disconnected');
+  });
+});
+
+// Broadcast metrics to all connected clients
+function broadcastMetrics(metric) {
+  wss.clients.forEach(client => {
+    client.send(JSON.stringify({
+      type: 'new_metric',
+      data: metric
+    }));
+  });
+}
+
+// Modify the POST metrics endpoint
+app.post('/api/metrics', express.json(), async (req, res) => {
+  try {
+    const now = Date.now();
+    const metric = {
+      timestamp: now,
+      responseTime: req.body.responseTime,
+      timeAgo: 'just now'
+    };
+
+    // Store in Redis
+    await redis.zAdd('response_metrics', {
+      score: now,
+      value: JSON.stringify(metric)
+    });
+    
+    // Broadcast to all clients
+    broadcastMetrics(metric);
+    
+    // ... rest of the code ...
+  } catch (error) {
+    console.error('❌ Error storing metric:', error);
+    res.status(500).json({ error: 'Failed to store metric' });
+  }
+});
+
+// Use server.listen instead of app.listen
+server.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
 });

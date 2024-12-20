@@ -10,6 +10,7 @@ interface Metric {
 const ServerMetrics = () => {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [average, setAverage] = useState<number | null>(null);
+  const [ws, setWs] = useState<WebSocket | null>(null);
 
   const fetchMetrics = async () => {
     console.log('🔄 Fetching metrics from server...');
@@ -87,14 +88,43 @@ const ServerMetrics = () => {
 
   useEffect(() => {
     console.log('🚀 ServerMetrics component mounted');
-    // Measure response time immediately when component mounts
-    measureAndSendResponseTime();
     
-    // Set up interval for subsequent measurements
+    // Initial fetch of metrics
+    fetchMetrics();
+    
+    // Set up WebSocket connection
+    const wsClient = new WebSocket(`ws://${window.location.host}`);
+    
+    wsClient.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      if (message.type === 'new_metric') {
+        setMetrics(prevMetrics => {
+          const newMetric = message.data;
+          const updatedMetrics = [...prevMetrics, newMetric].slice(-35);
+          
+          // Update average
+          const avg = Math.round(
+            updatedMetrics.reduce((sum, m) => sum + m.responseTime, 0) / updatedMetrics.length
+          );
+          setAverage(avg);
+          
+          return updatedMetrics;
+        });
+      }
+    };
+    
+    wsClient.onopen = () => {
+      console.log('📡 WebSocket connected');
+    };
+    
+    setWs(wsClient);
+    
+    // Measure response time periodically
     const interval = setInterval(measureAndSendResponseTime, 30000);
     
     return () => {
-      console.log('💤 Clearing measurement interval');
+      console.log('💤 Cleaning up WebSocket and interval');
+      wsClient.close();
       clearInterval(interval);
     };
   }, []);
