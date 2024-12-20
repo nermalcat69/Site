@@ -184,8 +184,6 @@ const ServerMetrics = () => {
     <div className="relative">
     <span className="absolute right-0 -top-10 duration-300 hover:rotate-12"><img src="/gopher.svg" alt="Server" className="w-20 h-20" /></span>
     <div className="flex z-10 flex-col bg-white border border-[#E7E7E7] p-3 px-5 px-4 py-2">
-
-    <div className="flex z-10 flex-col bg-white border border-[#E7E7E7] p-3 px-5 px-4 py-2">
       <div className="text-sm space-y-2">
         <motion.div 
           className="flex items-center gap-2"
@@ -253,7 +251,6 @@ const ServerMetrics = () => {
           )}
         </AnimatePresence>
       </div>
-    </div>
     </div>
     </div>
     </div>
