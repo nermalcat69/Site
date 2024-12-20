@@ -32,12 +32,13 @@ const MAX_METRICS = 30;
 const MAX_AGE = 24 * 60 * 60;
 const METRIC_INTERVAL = 30000; // 30 seconds
 
-// Add a function to measure server health
+// Add a function to measure server health with actual HTTP request
 async function measureServerHealth() {
   const start = process.hrtime.bigint();
   
   try {
-    // Simulate an actual health check by making a self-request
+    // Make an actual HTTP request to self to measure real response time
+    const healthCheck = await fetch(`http://localhost:${port}/health`);
     const end = process.hrtime.bigint();
     const responseTime = Number(end - start) / 1_000_000;
     
@@ -45,30 +46,34 @@ async function measureServerHealth() {
     const metric = {
       timestamp: now,
       responseTime: Math.round(responseTime),
-      timeAgo: 'just now',
-      url: 'server-health'
+      timeAgo: 'just now'
     };
     
     // Store in Redis
-    await redis.zAdd('response_metrics', {
+    await redis.zAdd('server_metrics', {
       score: now,
       value: JSON.stringify(metric)
     });
 
     // Cleanup old metrics
-    const count = await redis.zCard('response_metrics');
+    const count = await redis.zCard('server_metrics');
     if (count > MAX_METRICS) {
-      await redis.zRemRangeByRank('response_metrics', 0, count - MAX_METRICS - 1);
+      await redis.zRemRangeByRank('server_metrics', 0, count - MAX_METRICS - 1);
     }
 
     const oldestAllowed = now - (MAX_AGE * 1000);
-    await redis.zRemRangeByScore('response_metrics', '-inf', oldestAllowed);
+    await redis.zRemRangeByScore('server_metrics', '-inf', oldestAllowed);
 
     console.log('📊 Server health measured:', Math.round(responseTime) + 'ms');
   } catch (error) {
     console.error('❌ Error measuring server health:', error);
   }
 }
+
+// Simple health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
 
 // Get metrics endpoint
 app.get('/api/metrics', async (req, res) => {
@@ -77,7 +82,7 @@ app.get('/api/metrics', async (req, res) => {
     const oldestAllowed = now - (MAX_AGE * 1000);
 
     const rawMetrics = await redis.zRangeByScore(
-      'response_metrics',
+      'server_metrics',
       oldestAllowed,
       '+inf',
       {
@@ -100,43 +105,46 @@ app.get('/api/metrics', async (req, res) => {
   }
 });
 
-// Add latency logging endpoint
-app.post('/api/latency', express.json(), async (req, res) => {
-  try {
-    const { responseTime } = req.body;
-    const now = Date.now();
-    const metric = {
-      timestamp: now,
-      responseTime,
-      timeAgo: 'just now',
-      url: 'client-latency'
-    };
-    
-    await redis.zAdd('response_metrics', {
-      score: now,
-      value: JSON.stringify(metric)
-    });
-    
-    res.status(200).json({ status: 'ok' });
-  } catch (error) {
-    console.error('❌ Error logging latency:', error);
-    res.status(500).json({ error: 'Failed to log latency' });
-  }
-});
+// Initialize server monitoring
+let measurementInterval;
 
-// Serve static files in production
-if (isProduction) {
-  app.use('*', (req, res) => {
-    res.sendFile(resolve(__dirname, 'dist/client/index.html'));
-  });
+async function startMonitoring() {
+  try {
+    // Check if we already have a monitoring process running
+    const isRunning = await redis.get('monitoring_active');
+    
+    if (!isRunning) {
+      await redis.set('monitoring_active', 'true', {
+        EX: 60 // Expire after 60 seconds if server crashes
+      });
+      
+      console.log('🚀 Starting server monitoring');
+      await measureServerHealth(); // Initial measurement
+      measurementInterval = setInterval(measureServerHealth, METRIC_INTERVAL);
+    }
+  } catch (error) {
+    console.error('Error starting monitoring:', error);
+  }
 }
 
-// Start the automatic measurements when the server starts
-let measurementInterval;
-app.listen(port, () => {
+// Refresh monitoring active status
+async function keepMonitoringAlive() {
+  try {
+    await redis.set('monitoring_active', 'true', {
+      EX: 60
+    });
+  } catch (error) {
+    console.error('Error refreshing monitoring status:', error);
+  }
+}
+
+// Start the server and monitoring
+app.listen(port, async () => {
   console.log(`Server started at http://localhost:${port}`);
-  measureServerHealth(); // Initial measurement
-  measurementInterval = setInterval(measureServerHealth, METRIC_INTERVAL);
+  await startMonitoring();
+  
+  // Keep monitoring status alive
+  setInterval(keepMonitoringAlive, 30000);
 });
 
 // Graceful shutdown
@@ -144,6 +152,7 @@ process.on('SIGTERM', async () => {
   if (measurementInterval) {
     clearInterval(measurementInterval);
   }
+  await redis.del('monitoring_active');
   await redis.quit();
   process.exit(0);
 });
