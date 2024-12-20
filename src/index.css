@@ -40,6 +40,7 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
     overflow-x: hidden;
+    max-width: 100%;
 }
 
 ::selection {
