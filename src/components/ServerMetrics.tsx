@@ -16,13 +16,20 @@ const ServerMetrics = () => {
       const response = await fetch('/api/metrics');
       if (response.ok) {
         const data = await response.json() as Metric[];
-        setMetrics(data);
+        console.log('📊 Received server metrics:', data.length, 'entries');
+        console.log('Latest response time:', data[0]?.responseTime + 'ms');
         
-        if (data.length > 0) {
+        // Sort by timestamp to ensure newest first
+        const sortedData = data.sort((a, b) => b.timestamp - a.timestamp);
+        setMetrics(sortedData);
+        
+        if (sortedData.length > 0) {
           const avg = Math.round(
-            data.reduce((sum: number, m: Metric) => sum + m.responseTime, 0) / data.length
+            sortedData.reduce((sum: number, m: Metric) => sum + m.responseTime, 0) / 
+            sortedData.length
           );
           setAverage(avg);
+          console.log('Average response time:', avg + 'ms');
         }
       }
     } catch (error) {
@@ -31,13 +38,18 @@ const ServerMetrics = () => {
   };
 
   useEffect(() => {
+    console.log('🚀 Initializing ServerMetrics');
     fetchMetrics();
-    const interval = setInterval(fetchMetrics, 30000);
-    return () => clearInterval(interval);
+    // Update more frequently (every 5 seconds) to see real-time changes
+    const interval = setInterval(fetchMetrics, 5000);
+    return () => {
+      console.log('Cleaning up ServerMetrics');
+      clearInterval(interval);
+    };
   }, []);
 
   if (metrics.length === 0) {
-    return <div className="text-sm text-gray-500">Measuring response times...</div>;
+    return <div className="text-sm text-gray-500">Measuring server response times...</div>;
   }
 
   const maxResponseTime = Math.max(...metrics.map(m => m.responseTime));
@@ -45,7 +57,7 @@ const ServerMetrics = () => {
   return (
     <div className="text-sm space-y-2">
       <div className="flex items-center gap-2">
-        <div className="text-gray-500">Average Response Time:</div>
+        <div className="text-gray-500">Server Response Time:</div>
         <div className="font-medium text-gray-700">{average}ms</div>
       </div>
       <div className="flex gap-1.5 h-8">
@@ -58,8 +70,6 @@ const ServerMetrics = () => {
               animate={{ width: 6, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              onAnimationStart={() => console.log('🎭 Starting animation for metric:', metric.timestamp)}
-              onAnimationComplete={() => console.log('✨ Completed animation for metric:', metric.timestamp)}
             >
               <div className="h-full bg-gray-200 rounded-full relative">
                 <motion.div 

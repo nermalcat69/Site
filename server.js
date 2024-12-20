@@ -38,41 +38,61 @@ const MAX_AGE = 24 * 60 * 60; // 24 hours in seconds
 app.get('/api/health', async (req, res) => {
   const start = process.hrtime.bigint();
   
-  // Simulate some minimal processing
-  await new Promise(resolve => setTimeout(resolve, 1));
-  
-  const end = process.hrtime.bigint();
-  const responseTime = Number(end - start) / 1_000_000; // Convert nanoseconds to milliseconds
-  
   try {
+    // Simulate actual component generation/processing
+    const template = await readFile('./index.html', 'utf-8');
+    const url = req.originalUrl;
+    
+    // Do some actual processing
+    if (!isProduction) {
+      await vite.transformIndexHtml(url, template);
+      await vite.ssrLoadModule('/src/entry-server.tsx');
+    } else {
+      await import('./dist/server/entry-server.js');
+    }
+    
+    const end = process.hrtime.bigint();
+    const responseTime = Number(end - start) / 1_000_000; // Convert to ms
+    
     const metric = {
       timestamp: Date.now(),
       responseTime: Math.round(responseTime),
       timeAgo: 'just now'
     };
     
-    // Store in Redis
+    // Store in Redis with automatic cleanup
+    const now = Date.now();
     await redis.zAdd('response_metrics', {
-      score: Date.now(),
+      score: now,
       value: JSON.stringify(metric)
     });
 
     // Keep only latest 30 entries
     const count = await redis.zCard('response_metrics');
     if (count > MAX_METRICS) {
+      // Remove oldest entries beyond our limit
       await redis.zRemRangeByRank('response_metrics', 0, count - MAX_METRICS - 1);
     }
 
-    // Clean up old entries
-    const oldestAllowed = Date.now() - (MAX_AGE * 1000);
+    // Remove entries older than 24 hours
+    const oldestAllowed = now - (MAX_AGE * 1000);
     await redis.zRemRangeByScore('response_metrics', '-inf', oldestAllowed);
 
-    console.log('📊 Server processing time:', Math.round(responseTime) + 'ms');
+    console.log('📊 Real server processing time:', Math.round(responseTime) + 'ms');
+    res.json({ 
+      status: 'ok', 
+      processingTime: Math.round(responseTime),
+      timestamp: now
+    });
   } catch (error) {
-    console.error('❌ Error storing server metric:', error);
+    console.error('❌ Error in health check:', error);
+    const end = process.hrtime.bigint();
+    const responseTime = Number(end - start) / 1_000_000;
+    res.status(500).json({ 
+      error: 'Server processing failed',
+      processingTime: Math.round(responseTime)
+    });
   }
-
-  res.json({ status: 'ok', processingTime: Math.round(responseTime) });
 });
 
 // Store new metric
@@ -117,11 +137,11 @@ app.get('/api/metrics', async (req, res) => {
     const now = Date.now();
     const oldestAllowed = now - (MAX_AGE * 1000);
 
-    // Get all valid metrics
-    const rawMetrics = await redis.zRangeByScore(
+    // Get metrics sorted by timestamp (newest first)
+    const rawMetrics = await redis.zRevRangeByScore(
       'response_metrics',
-      oldestAllowed,
-      '+inf'
+      '+inf',
+      oldestAllowed
     );
 
     const metrics = rawMetrics.map(raw => {
@@ -133,7 +153,7 @@ app.get('/api/metrics', async (req, res) => {
     });
     
     console.log('📤 Sending metrics to client:', metrics.length);
-    res.json(metrics);
+    res.json(metrics.slice(0, MAX_METRICS)); // Ensure we only send latest 30
   } catch (error) {
     console.error('❌ Error fetching metrics:', error);
     res.status(500).json({ error: 'Failed to fetch metrics' });
