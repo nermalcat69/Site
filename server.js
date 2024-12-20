@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import express from 'express';
+import { formatDistanceToNow } from 'date-fns';
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production';
@@ -16,6 +17,45 @@ const ssrManifest = isProduction
 
 // Create http server
 const app = express();
+
+// Add these imports at the top
+import { formatDistanceToNow } from 'date-fns';
+
+// Add this before your existing routes
+const responseMetrics = [];
+const MAX_METRICS = 25;
+const MAX_AGE = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+// Store new metric
+app.post('/api/metrics', express.json(), (req, res) => {
+  const now = Date.now();
+  console.log('📥 Received new metric:', req.body);
+  
+  // Clean old metrics
+  const validTime = now - MAX_AGE;
+  while (responseMetrics.length > 0 && responseMetrics[0].timestamp < validTime) {
+    responseMetrics.shift();
+  }
+  
+  // Add new metric
+  responseMetrics.push({
+    timestamp: now,
+    responseTime: req.body.responseTime,
+    timeAgo: formatDistanceToNow(now, { addSuffix: true })
+  });
+  
+  // Keep only last 25 entries
+  if (responseMetrics.length > MAX_METRICS) {
+    responseMetrics.splice(0, responseMetrics.length - MAX_METRICS);
+  }
+  
+  res.json({ status: 'ok' });
+});
 
 // Add Vite or respective production middlewares
 let vite;
