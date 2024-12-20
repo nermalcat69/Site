@@ -10,7 +10,6 @@ interface Metric {
 const ServerMetrics = () => {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [average, setAverage] = useState<number | null>(null);
-  const [ws, setWs] = useState<WebSocket | null>(null);
 
   const fetchMetrics = async () => {
     console.log('🔄 Fetching metrics from server...');
@@ -19,27 +18,7 @@ const ServerMetrics = () => {
       if (response.ok) {
         const data = await response.json() as Metric[];
         console.log('📊 Received metrics:', data);
-        
-        // Update metrics without resetting animations
-        setMetrics(prevMetrics => {
-          // Only animate new metrics by comparing timestamps
-          const newMetrics = data.filter((newMetric: Metric) => 
-            !prevMetrics.some((oldMetric: Metric) => oldMetric.timestamp === newMetric.timestamp)
-          );
-          
-          console.log('🆕 New metrics found:', newMetrics.length);
-          if (newMetrics.length > 0) {
-            console.log('📈 Latest measurement:', {
-              responseTime: newMetrics[newMetrics.length - 1].responseTime,
-              timeAgo: newMetrics[newMetrics.length - 1].timeAgo
-            });
-          }
-          
-          // Combine existing and new metrics
-          const updatedMetrics = [...prevMetrics, ...newMetrics].slice(-35);
-          console.log('📝 Total metrics after update:', updatedMetrics.length);
-          return updatedMetrics;
-        });
+        setMetrics(data.slice(-35));
 
         // Calculate average
         if (data.length > 0) {
@@ -55,76 +34,17 @@ const ServerMetrics = () => {
     }
   };
 
-  const measureAndSendResponseTime = async () => {
-    console.log('⏱️ Starting response time measurement...');
-    try {
-      const start = performance.now();
-      const response = await fetch('/api/health', {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-        cache: 'no-store'
-      });
-
-      if (response.ok) {
-        const end = performance.now();
-        const responseTime = Math.round(end - start);
-        console.log('⚡ Measured response time:', responseTime + 'ms');
-        
-        console.log('📤 Sending measurement to server...');
-        await fetch('/api/metrics', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ responseTime })
-        });
-
-        await fetchMetrics();
-      }
-    } catch (error) {
-      console.error('❌ Response time measurement failed:', error);
-    }
-  };
-
   useEffect(() => {
     console.log('🚀 ServerMetrics component mounted');
     
     // Initial fetch of metrics
     fetchMetrics();
     
-    // Set up WebSocket connection
-    const wsClient = new WebSocket(`ws://${window.location.host}`);
-    
-    wsClient.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      if (message.type === 'new_metric') {
-        setMetrics(prevMetrics => {
-          const newMetric = message.data;
-          const updatedMetrics = [...prevMetrics, newMetric].slice(-35);
-          
-          // Update average
-          const avg = Math.round(
-            updatedMetrics.reduce((sum, m) => sum + m.responseTime, 0) / updatedMetrics.length
-          );
-          setAverage(avg);
-          
-          return updatedMetrics;
-        });
-      }
-    };
-    
-    wsClient.onopen = () => {
-      console.log('📡 WebSocket connected');
-    };
-    
-    setWs(wsClient);
-    
-    // Measure response time periodically
-    const interval = setInterval(measureAndSendResponseTime, 30000);
+    // Set up polling interval
+    const interval = setInterval(fetchMetrics, 5000);
     
     return () => {
-      console.log('💤 Cleaning up WebSocket and interval');
-      wsClient.close();
+      console.log('💤 Cleaning up interval');
       clearInterval(interval);
     };
   }, []);
