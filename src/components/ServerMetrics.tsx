@@ -108,9 +108,16 @@ const ServerMetrics = () => {
         </div>
         <div className="flex gap-1.5 h-8">
           {[...Array(25)].map((_, i) => (
-            <div 
+            <motion.div 
               key={i}
               className="w-[6px] h-full bg-gray-100 rounded-full"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: '100%' }}
+              transition={{ 
+                duration: 0.4,
+                delay: i * 0.02, // Stagger the animations
+                ease: "easeOut"
+              }}
             />
           ))}
         </div>
@@ -123,10 +130,15 @@ const ServerMetrics = () => {
 
   return (
     <div className="text-sm space-y-2">
-      <div className="flex items-center gap-2">
+      <motion.div 
+        className="flex items-center gap-2"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+      >
         <div className="text-gray-500">Average Response Time:</div>
         <div className="font-medium text-gray-700">{average}ms</div>
-      </div>
+      </motion.div>
       <div className="flex gap-1.5 h-8">
         <AnimatePresence mode="popLayout">
           {metrics.map((metric) => (
@@ -136,7 +148,10 @@ const ServerMetrics = () => {
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: 6, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ 
+                duration: 0.4,
+                ease: "easeOut"
+              }}
               onAnimationStart={() => console.log('🎭 Starting animation for metric:', metric.timestamp)}
               onAnimationComplete={() => console.log('✨ Completed animation for metric:', metric.timestamp)}
             >
@@ -147,7 +162,10 @@ const ServerMetrics = () => {
                   animate={{ 
                     height: `${(metric.responseTime / maxResponseTime) * 100}%`
                   }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ 
+                    duration: 0.6,
+                    ease: "easeOut"
+                  }}
                 />
               </div>
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
