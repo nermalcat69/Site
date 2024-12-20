@@ -31,38 +31,32 @@ app.use(base, sirv('dist/client', { dev: !isProduction }));
 
 const MAX_METRICS = 30;
 const MAX_AGE = 24 * 60 * 60;
+const METRIC_INTERVAL = 30000; // 30 seconds
 
-// Health check endpoint
-app.get('/api/health', async (req, res) => {
+// Add a function to measure server health
+async function measureServerHealth() {
   const start = process.hrtime.bigint();
   
   try {
     const template = await readFile('./dist/client/index.html', 'utf-8');
-    const fullUrl = `arjunaditya.xyz${req.originalUrl}`;
-    
-    if (!isProduction) {
-      await vite.transformIndexHtml(fullUrl, template);
-      await vite.ssrLoadModule('/src/entry-server.tsx');
-    } else {
-      await import('./dist/server/entry-server.js');
-    }
     
     const end = process.hrtime.bigint();
     const responseTime = Number(end - start) / 1_000_000;
     
+    const now = Date.now();
     const metric = {
-      timestamp: Date.now(),
+      timestamp: now,
       responseTime: Math.round(responseTime),
       timeAgo: 'just now',
-      url: fullUrl
+      url: '/api/health'
     };
     
-    const now = Date.now();
     await redis.zAdd('response_metrics', {
       score: now,
       value: JSON.stringify(metric)
     });
 
+    // Maintain only the latest metrics
     const count = await redis.zCard('response_metrics');
     if (count > MAX_METRICS) {
       await redis.zRemRangeByRank('response_metrics', 0, count - MAX_METRICS - 1);
@@ -71,23 +65,27 @@ app.get('/api/health', async (req, res) => {
     const oldestAllowed = now - (MAX_AGE * 1000);
     await redis.zRemRangeByScore('response_metrics', '-inf', oldestAllowed);
 
-    console.log('📊 Server processing time:', Math.round(responseTime) + 'ms', 'for', fullUrl);
-    res.json({ 
-      status: 'ok', 
-      processingTime: Math.round(responseTime),
-      timestamp: now,
-      url: fullUrl
-    });
+    console.log('📊 Auto-measured server response time:', Math.round(responseTime) + 'ms');
   } catch (error) {
-    console.error('❌ Error in health check:', error);
-    const end = process.hrtime.bigint();
-    const responseTime = Number(end - start) / 1_000_000;
-    res.status(500).json({ 
-      error: 'Server processing failed',
-      processingTime: Math.round(responseTime),
-      url: `arjunaditya.xyz${req.originalUrl}`
-    });
+    console.error('❌ Error in auto-measurement:', error);
   }
+}
+
+// Start the automatic measurements when the server starts
+let measurementInterval;
+app.listen(port, () => {
+  console.log(`Server started at http://localhost:${port}`);
+  measureServerHealth(); // Initial measurement
+  measurementInterval = setInterval(measureServerHealth, METRIC_INTERVAL);
+});
+
+// Update the graceful shutdown
+process.on('SIGTERM', async () => {
+  if (measurementInterval) {
+    clearInterval(measurementInterval);
+  }
+  await redis.quit();
+  process.exit(0);
 });
 
 // Store new metric
@@ -251,15 +249,4 @@ app.use('*', async (req, res) => {
     console.log(e.stack);
     res.status(500).end(e.stack);
   }
-});
-
-// Graceful shutdown
-process.on('SIGTERM', async () => {
-  await redis.quit();
-  process.exit(0);
-});
-
-// Start http server
-app.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`);
 });

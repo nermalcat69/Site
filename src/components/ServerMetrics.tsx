@@ -13,17 +13,14 @@ const INTERVAL_TIME = 30000; // 30 seconds in milliseconds
 const ServerMetrics = () => {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [average, setAverage] = useState<number | null>(null);
-  const [measuring, setMeasuring] = useState(false);
-  const [currentMeasurement, setCurrentMeasurement] = useState(0);
   const [nextUpdate, setNextUpdate] = useState(Date.now() + INTERVAL_TIME);
+  const [timeLeft, setTimeLeft] = useState(INTERVAL_TIME);
 
   const measureServerResponse = async () => {
     try {
       const now = Date.now();
       if (now < nextUpdate) return;
 
-      setMeasuring(true);
-      setCurrentMeasurement(0);
       setNextUpdate(now + INTERVAL_TIME);
       
       const start = performance.now();
@@ -32,12 +29,9 @@ const ServerMetrics = () => {
         headers: { 'Accept': 'application/json' },
         cache: 'no-store'
       });
-      const end = performance.now();
-      const responseTime = Math.round(end - start);
       
       if (healthResponse.ok) {
         const data = await healthResponse.json();
-        setCurrentMeasurement(data.processingTime);
         console.log('📊 New measurement:', data.processingTime + 'ms');
         
         // Fetch updated metrics
@@ -56,15 +50,21 @@ const ServerMetrics = () => {
             setAverage(avg);
           }
         }
-
-        // Keep measuring indicator visible briefly
-        setTimeout(() => setMeasuring(false), 2000);
       }
     } catch (error) {
       console.error('Failed to measure server response:', error);
-      setMeasuring(false);
     }
   };
+
+  // Update countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const remaining = Math.max(0, nextUpdate - Date.now());
+      setTimeLeft(remaining);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [nextUpdate]);
 
   useEffect(() => {
     console.log('🚀 Starting server metrics monitoring');
@@ -78,7 +78,7 @@ const ServerMetrics = () => {
     };
   }, []);
 
-  const maxResponseTime = Math.max(...metrics.map(m => m.responseTime), currentMeasurement || 0);
+  const maxResponseTime = Math.max(...metrics.map(m => m.responseTime), 0);
 
   return (
     <div className="text-sm space-y-2">
@@ -86,7 +86,7 @@ const ServerMetrics = () => {
         <div className="text-gray-500">Server Response Time:</div>
         <div className="font-medium text-gray-700">{average}ms</div>
         <div className="text-xs text-gray-400">
-          Next update in {Math.ceil((nextUpdate - Date.now()) / 1000)}s
+          Next update in {Math.ceil(timeLeft / 1000)}s
         </div>
       </div>
       <div className="flex gap-1.5 h-8">
@@ -128,36 +128,6 @@ const ServerMetrics = () => {
             )
           ))}
         </AnimatePresence>
-        {measuring && (
-          <motion.div 
-            className="relative group"
-            initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 6, opacity: 1 }}
-            transition={{ 
-              duration: 1.5,
-              ease: "easeInOut"
-            }}
-          >
-            <div className="h-full bg-gray-200 rounded-full relative">
-              <motion.div 
-                className="absolute bottom-0 left-0 right-0 bg-green-500 rounded-full"
-                initial={{ height: '0%' }}
-                animate={{ height: '100%' }}
-                transition={{ 
-                  duration: 2,
-                  ease: "easeInOut",
-                  repeat: Infinity,
-                  repeatType: "reverse"
-                }}
-              />
-            </div>
-            <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-              Measuring...
-              <br />
-              {currentMeasurement}ms
-            </div>
-          </motion.div>
-        )}
       </div>
     </div>
   );
