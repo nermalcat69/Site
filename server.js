@@ -46,15 +46,30 @@ app.post('/api/metrics', express.json(), (req, res) => {
   responseMetrics.push({
     timestamp: now,
     responseTime: req.body.responseTime,
-    timeAgo: formatDistanceToNow(now, { addSuffix: true })
+    timeAgo: 'just now'
   });
   
   // Keep only last 25 entries
   if (responseMetrics.length > MAX_METRICS) {
-    responseMetrics.splice(0, responseMetrics.length - MAX_METRICS);
+    responseMetrics.shift();
   }
   
-  res.json({ status: 'ok' });
+  console.log('📊 Current metrics count:', responseMetrics.length);
+  res.json({ success: true });
+});
+
+// Get metrics
+app.get('/api/metrics', (req, res) => {
+  const now = Date.now();
+  const metrics = responseMetrics
+    .filter(m => (now - m.timestamp) <= MAX_AGE)
+    .map(m => ({
+      ...m,
+      timeAgo: formatDistanceToNow(m.timestamp, { addSuffix: true })
+    }));
+  
+  console.log('📤 Sending metrics to client:', metrics.length);
+  res.json(metrics);
 });
 
 // Add Vite or respective production middlewares
