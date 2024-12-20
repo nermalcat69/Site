@@ -44,10 +44,19 @@ if (!isProduction) {
 
 app.use((req, res, next) => {
     const start = Date.now();
-    res.on('finish', () => {
+    
+    // Using res.once to ensure the listener is only added once
+    res.once('finish', () => {
         const duration = Date.now() - start;
-        res.set('x-response-time', duration.toString());
+        try {
+            if (!res.headersSent) {
+                res.set('x-response-time', duration.toString());
+            }
+        } catch (error) {
+            console.error('Error setting response time header:', error);
+        }
     });
+    
     next();
 });
 
@@ -86,3 +95,5 @@ app.use('*', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server started at http://localhost:${port}`);
 });
+
+export default app;
