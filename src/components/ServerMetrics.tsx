@@ -10,7 +10,6 @@ interface Metric {
 const ServerMetrics = () => {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [average, setAverage] = useState<number | null>(null);
-  const [isActive, setIsActive] = useState(false);
 
   const fetchMetrics = async () => {
     console.log('🔄 Fetching metrics from server...');
@@ -86,42 +85,24 @@ const ServerMetrics = () => {
     }
   };
 
-  const startMonitoring = () => {
-    setIsActive(true);
-    measureAndSendResponseTime();
-  };
-
-  const stopMonitoring = () => {
-    setIsActive(false);
-  };
-
   useEffect(() => {
     console.log('🚀 ServerMetrics component mounted');
+    // Measure response time immediately when component mounts
+    measureAndSendResponseTime();
     
-    let interval: NodeJS.Timeout;
-    if (isActive) {
-      console.log('⏰ Setting up 30-second interval for measurements');
-      interval = setInterval(measureAndSendResponseTime, 30000);
-    }
+    // Set up interval for subsequent measurements
+    const interval = setInterval(measureAndSendResponseTime, 30000);
     
     return () => {
-      if (interval) {
-        console.log('💤 Clearing measurement interval');
-        clearInterval(interval);
-      }
+      console.log('💤 Clearing measurement interval');
+      clearInterval(interval);
     };
-  }, [isActive]);
+  }, []); // Run once when component mounts
 
   if (metrics.length === 0) {
     return (
       <div className="space-y-4">
-        <div className="text-sm text-gray-500">No measurements yet</div>
-        <button 
-          onClick={startMonitoring}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Start Monitoring
-        </button>
+        <div className="text-sm text-gray-500">Loading measurements...</div>
       </div>
     );
   }
@@ -166,19 +147,6 @@ const ServerMetrics = () => {
             </motion.div>
           ))}
         </AnimatePresence>
-      </div>
-      
-      <div className="mt-4">
-        <button 
-          onClick={isActive ? stopMonitoring : startMonitoring}
-          className={`px-4 py-2 rounded ${
-            isActive 
-              ? 'bg-red-500 hover:bg-red-600' 
-              : 'bg-blue-500 hover:bg-blue-600'
-          } text-white`}
-        >
-          {isActive ? 'Stop Monitoring' : 'Resume Monitoring'}
-        </button>
       </div>
     </div>
   );
