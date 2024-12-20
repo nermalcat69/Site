@@ -37,13 +37,11 @@ app.get('/api/health', async (req, res) => {
   const start = process.hrtime.bigint();
   
   try {
-    // Simulate actual component generation/processing
-    const template = await readFile('./index.html', 'utf-8');
-    const url = req.originalUrl;
+    const template = await readFile('./dist/client/index.html', 'utf-8');
+    const fullUrl = `arjunaditya.xyz${req.originalUrl}`;
     
-    // Do some actual processing
     if (!isProduction) {
-      await vite.transformIndexHtml(url, template);
+      await vite.transformIndexHtml(fullUrl, template);
       await vite.ssrLoadModule('/src/entry-server.tsx');
     } else {
       await import('./dist/server/entry-server.js');
@@ -55,31 +53,30 @@ app.get('/api/health', async (req, res) => {
     const metric = {
       timestamp: Date.now(),
       responseTime: Math.round(responseTime),
-      timeAgo: 'just now'
+      timeAgo: 'just now',
+      url: fullUrl
     };
     
-    // Store in Redis with automatic cleanup
     const now = Date.now();
     await redis.zAdd('response_metrics', {
       score: now,
       value: JSON.stringify(metric)
     });
 
-    // Keep only latest 30 entries
     const count = await redis.zCard('response_metrics');
     if (count > MAX_METRICS) {
       await redis.zRemRangeByRank('response_metrics', 0, count - MAX_METRICS - 1);
     }
 
-    // Remove entries older than 24 hours
     const oldestAllowed = now - (MAX_AGE * 1000);
     await redis.zRemRangeByScore('response_metrics', '-inf', oldestAllowed);
 
-    console.log('📊 Real server processing time:', Math.round(responseTime) + 'ms');
+    console.log('📊 Server processing time:', Math.round(responseTime) + 'ms', 'for', fullUrl);
     res.json({ 
       status: 'ok', 
       processingTime: Math.round(responseTime),
-      timestamp: now
+      timestamp: now,
+      url: fullUrl
     });
   } catch (error) {
     console.error('❌ Error in health check:', error);
@@ -87,7 +84,8 @@ app.get('/api/health', async (req, res) => {
     const responseTime = Number(end - start) / 1_000_000;
     res.status(500).json({ 
       error: 'Server processing failed',
-      processingTime: Math.round(responseTime)
+      processingTime: Math.round(responseTime),
+      url: `arjunaditya.xyz${req.originalUrl}`
     });
   }
 });
