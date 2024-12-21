@@ -79,14 +79,14 @@ app.post('/api/metrics', express.json(), async (req, res) => {
 // Get metrics
 app.get('/api/metrics', async (req, res) => {
   try {
-    const now = Date.now();
-    const oldestAllowed = now - (MAX_AGE * 1000);
-
-    // Get all valid metrics
-    const rawMetrics = await redis.zRangeByScore(
+    // Get the latest 35 metrics, sorted by timestamp (score)
+    const rawMetrics = await redis.zRange(
       'response_metrics',
-      oldestAllowed,
-      '+inf'
+      -MAX_METRICS,    // Start from the end
+      -1,             // Up to the last item
+      {
+        REV: true     // Reverse order to get newest first
+      }
     );
 
     const metrics = rawMetrics.map(raw => {
@@ -95,7 +95,7 @@ app.get('/api/metrics', async (req, res) => {
         ...metric,
         timeAgo: formatDistanceToNow(metric.timestamp, { addSuffix: true })
       };
-    });
+    }).reverse(); // Reverse back to show oldest to newest
     
     console.log('📤 Sending metrics to client:', metrics.length);
     res.json(metrics);
