@@ -18,7 +18,7 @@ const ServerMetrics = () => {
       if (response.ok) {
         const data = await response.json() as Metric[];
         console.log('📊 Received metrics:', data);
-        setMetrics(data.slice(-35));
+        setMetrics(data);
 
         // Calculate average
         if (data.length > 0) {
@@ -122,7 +122,7 @@ const ServerMetrics = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, ease: "easeIn" }}
               >
-                {metrics.map((metric) => (
+                {metrics.map((metric, index) => (
                   <motion.div 
                     key={metric.timestamp}
                     className="relative group w-[6px]"
@@ -143,7 +143,7 @@ const ServerMetrics = () => {
                     <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                       {metric.responseTime}ms
                       <br />
-                      {metric.timeAgo}
+                      {index === metrics.length - 1 ? 'Your request' : metric.timeAgo}
                     </div>
                   </motion.div>
                 ))}
@@ -205,7 +205,7 @@ const ServerMetrics = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3, ease: "easeIn" }}
             >
-              {metrics.map((metric) => (
+              {metrics.map((metric, index) => (
                 <motion.div 
                   key={metric.timestamp}
                   className="relative group w-[6px]"
@@ -226,7 +226,7 @@ const ServerMetrics = () => {
                   <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                     {metric.responseTime}ms
                     <br />
-                    {metric.timeAgo}
+                    {index === metrics.length - 1 ? 'Your request' : metric.timeAgo}
                   </div>
                 </motion.div>
               ))}
