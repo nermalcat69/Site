@@ -52,7 +52,7 @@ app.post('/api/metrics', express.json(), async (req, res) => {
       timeAgo: formatDistanceToNow(now, { addSuffix: true })
     };
 
-    // Store in Redis with expiration
+    // Store in Redis
     await redis.zAdd('response_metrics', {
       score: now,
       value: JSON.stringify(metric)
@@ -63,10 +63,6 @@ app.post('/api/metrics', express.json(), async (req, res) => {
     if (count > MAX_METRICS) {
       await redis.zRemRangeByRank('response_metrics', 0, count - MAX_METRICS - 1);
     }
-
-    // Remove entries older than 2 hours
-    const oldestAllowed = now - (MAX_AGE * 1000);
-    await redis.zRemRangeByScore('response_metrics', '-inf', oldestAllowed);
     
     console.log('📊 Metric stored in Redis');
     res.json({ success: true });
@@ -82,10 +78,10 @@ app.get('/api/metrics', async (req, res) => {
     // Get the latest 35 metrics, sorted by timestamp (score)
     const rawMetrics = await redis.zRange(
       'response_metrics',
-      -MAX_METRICS,    // Start from the end
-      -1,             // Up to the last item
+      -MAX_METRICS,
+      -1,
       {
-        REV: true     // Reverse order to get newest first
+        REV: true
       }
     );
 
