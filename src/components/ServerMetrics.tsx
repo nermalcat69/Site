@@ -177,19 +177,19 @@ const ServerMetrics = () => {
 
   return (
     <div className="relative">
-    <span className="absolute right-0 -top-10 group">
-        <img 
-            draggable="false" 
-            src="/gopher.svg" 
-            alt="Server" 
-            className="w-20 h-20 duration-300 hover:rotate-12" 
-        />
-        <div className="absolute bottom-full right-0 mb-2 invisible group-hover:visible">
-            <div className="bg-gray-800 text-white text-xs rounded py-1 px-4 w-50">
-                Response time depends mainly on your internet speed
+        <span className="absolute right-0 -top-10 group">
+            <img 
+                draggable="false" 
+                src="/gopher.svg" 
+                alt="Server" 
+                className="w-20 h-20 duration-300 hover:rotate-12" 
+            />
+            <div className="absolute bottom-full left-10 mb-2 invisible group-hover:visible w-[260px]">
+                <div className="bg-white border border-gray-200 text-gray-800 text-xs text-center rounded py-1.5 px-1.5">
+                    Response time relies on the user's internet speed, processing time by the server and the user's distance to the server.
+                </div>
             </div>
-        </div>
-    </span>
+        </span>
     <div className="flex z-10 flex-col bg-white border border-[#E7E7E7] p-3 px-5 px-4 py-4 mb-5 sm:mb-10">
       <div className="text-sm space-y-2">
         <motion.div 
