@@ -96,7 +96,7 @@ const ServerMetrics = () => {
             </div>
         </span>
         <div className="flex z-10 flex-col bg-white border border-[#E7E7E7] p-3 px-5 px-4 py-4 mb-5 sm:mb-10">
-      <div className="text-sm space-y-3">
+      <div className="text-sm space-y-2">
         <motion.div 
           className="flex items-center gap-2 mb-5"
           initial={{ opacity: 0 }}
