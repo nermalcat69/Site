@@ -86,7 +86,7 @@ h3 {
 }
 
 .section {
-    @apply py-5 md:py-6;
+    @apply py-2 md:py-3;
 }
 
 a {
