@@ -1,27 +1,27 @@
-import express from 'express';
-import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
-import { readFile } from 'fs/promises';
-import sirv from 'sirv';
-import compression from 'compression';
-import { formatDistanceToNow } from 'date-fns';
-import { createClient } from 'redis';
-import { createServer as createViteServer } from 'vite';
+import express from "express";
+import { fileURLToPath } from "url";
+import { dirname, resolve } from "path";
+import { readFile } from "fs/promises";
+import sirv from "sirv";
+import compression from "compression";
+import { formatDistanceToNow } from "date-fns";
+import { createClient } from "redis";
+import { createServer as createViteServer } from "vite";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 const port = process.env.PORT || 3000;
-const base = process.env.BASE || '/';
+const base = process.env.BASE || "/";
 
 // Create Redis client
 const redis = createClient({
-  url: process.env.REDIS_URL || 'redis://localhost:6379'
+  url: process.env.REDIS_URL || "redis://localhost:6379",
 });
 
-redis.on('error', err => console.error('Redis Client Error', err));
+redis.on("error", (err) => console.error("Redis Client Error", err));
 await redis.connect();
 
-console.log('📌 Connected to Redis');
+console.log("📌 Connected to Redis");
 
 // Create express app
 const app = express();
@@ -30,74 +30,80 @@ const app = express();
 app.use(compression());
 
 // Serve static files
-app.use(base, sirv('dist/client', { dev: !isProduction }));
+app.use(base, sirv("dist/client", { dev: !isProduction }));
 
 const MAX_METRICS = 35;
 const MAX_AGE = 2 * 60 * 60; // 2 hours in seconds
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' });
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok" });
 });
 
 // Store new metric
-app.post('/api/metrics', express.json(), async (req, res) => {
+app.post("/api/metrics", express.json(), async (req, res) => {
   try {
     const now = Date.now();
-    console.log('📥 Received new metric:', req.body);
-    
+    console.log("📥 Received new metric:", req.body);
+
     const metric = {
       timestamp: now,
       responseTime: req.body.responseTime,
-      timeAgo: formatDistanceToNow(now, { addSuffix: true })
+      timeAgo: formatDistanceToNow(now, { addSuffix: true }),
     };
 
     // Store in Redis
-    await redis.zAdd('response_metrics', {
+    await redis.zAdd("response_metrics", {
       score: now,
-      value: JSON.stringify(metric)
+      value: JSON.stringify(metric),
     });
 
     // Trim to keep only latest 35 entries
-    const count = await redis.zCard('response_metrics');
+    const count = await redis.zCard("response_metrics");
     if (count > MAX_METRICS) {
-      await redis.zRemRangeByRank('response_metrics', 0, count - MAX_METRICS - 1);
+      await redis.zRemRangeByRank(
+        "response_metrics",
+        0,
+        count - MAX_METRICS - 1,
+      );
     }
-    
-    console.log('📊 Metric stored in Redis');
+
+    console.log("📊 Metric stored in Redis");
     res.json({ success: true });
   } catch (error) {
-    console.error('❌ Error storing metric:', error);
-    res.status(500).json({ error: 'Failed to store metric' });
+    console.error("❌ Error storing metric:", error);
+    res.status(500).json({ error: "Failed to store metric" });
   }
 });
 
 // Get metrics
-app.get('/api/metrics', async (req, res) => {
+app.get("/api/metrics", async (req, res) => {
   try {
     // Get the latest 35 metrics, sorted by timestamp (score)
     const rawMetrics = await redis.zRange(
-      'response_metrics',
+      "response_metrics",
       -MAX_METRICS,
       -1,
       {
-        REV: true
-      }
+        REV: true,
+      },
     );
 
-    const metrics = rawMetrics.map(raw => {
-      const metric = JSON.parse(raw);
-      return {
-        ...metric,
-        timeAgo: formatDistanceToNow(metric.timestamp, { addSuffix: true })
-      };
-    }).reverse(); // Reverse back to show oldest to newest
-    
-    console.log('📤 Sending metrics to client:', metrics.length);
+    const metrics = rawMetrics
+      .map((raw) => {
+        const metric = JSON.parse(raw);
+        return {
+          ...metric,
+          timeAgo: formatDistanceToNow(metric.timestamp, { addSuffix: true }),
+        };
+      })
+      .reverse(); // Reverse back to show oldest to newest
+
+    console.log("📤 Sending metrics to client:", metrics.length);
     res.json(metrics);
   } catch (error) {
-    console.error('❌ Error fetching metrics:', error);
-    res.status(500).json({ error: 'Failed to fetch metrics' });
+    console.error("❌ Error fetching metrics:", error);
+    res.status(500).json({ error: "Failed to fetch metrics" });
   }
 });
 
@@ -105,35 +111,35 @@ let vite;
 if (!isProduction) {
   vite = await createViteServer({
     server: { middlewareMode: true },
-    appType: 'custom'
+    appType: "custom",
   });
   app.use(vite.middlewares);
 }
 
 // Serve HTML
-app.use('*', async (req, res) => {
+app.use("*", async (req, res) => {
   try {
-    const url = req.originalUrl.replace(base, '');
+    const url = req.originalUrl.replace(base, "");
 
     let template;
     let render;
     if (!isProduction) {
       // Always read fresh template in development
-      template = await readFile('./index.html', 'utf-8');
+      template = await readFile("./index.html", "utf-8");
       template = await vite.transformIndexHtml(url, template);
-      render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
+      render = (await vite.ssrLoadModule("/src/entry-server.tsx")).render;
     } else {
       template = templateHtml;
-      render = (await import('./dist/server/entry-server.js')).render;
+      render = (await import("./dist/server/entry-server.js")).render;
     }
 
     const rendered = await render(url, ssrManifest);
 
     const html = template
-      .replace(`<!--app-head-->`, rendered.head ?? '')
-      .replace(`<!--app-html-->`, rendered.html ?? '');
+      .replace(`<!--app-head-->`, rendered.head ?? "")
+      .replace(`<!--app-html-->`, rendered.html ?? "");
 
-    res.status(200).set({ 'Content-Type': 'text/html' }).send(html);
+    res.status(200).set({ "Content-Type": "text/html" }).send(html);
   } catch (e) {
     vite?.ssrFixStacktrace(e);
     console.log(e.stack);
@@ -142,7 +148,7 @@ app.use('*', async (req, res) => {
 });
 
 // Graceful shutdown
-process.on('SIGTERM', async () => {
+process.on("SIGTERM", async () => {
   await redis.quit();
   process.exit(0);
 });

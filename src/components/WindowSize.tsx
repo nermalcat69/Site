@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 const WindowSize = () => {
   const [width, setWidth] = React.useState<number>(0);
@@ -28,4 +28,3 @@ const WindowSize = () => {
 };
 
 export default WindowSize;
-

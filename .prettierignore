@@ -1,0 +1,30 @@
+# Dependencies and build output
+node_modules
+dist
+build
+coverage
+
+# Version control
+.git
+.gitignore
+
+# Cache and logs
+.cache
+.temp
+*.log
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Environment and config files
+.env
+.env.*
+*.config.js
+
+# Other
+.DS_Store
+package-lock.json
+yarn.lock
