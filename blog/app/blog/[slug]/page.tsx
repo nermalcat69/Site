@@ -82,6 +82,7 @@ export default function Blog({ params }) {
           }),
         }}
       />
+      <p className='Underlined mb-4'>Back to <a href="/blog">Blog</a></p>
       <h1 className="title font-semibold text-2xl tracking-tighter">
         {post.metadata.title}
       </h1>

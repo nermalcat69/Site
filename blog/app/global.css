@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 ::selection {
-  background-color: #47a3f3;
+  background-color: #3f3f3f;
   color: #fefefe;
 }
 
@@ -147,4 +147,8 @@ table {
 
 .title {
   text-wrap: balance;
+}
+
+.Underlined {
+  @apply underline;
 }
