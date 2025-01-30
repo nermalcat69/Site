@@ -17,8 +17,8 @@ function ArrowIcon() {
 
 export default function Footer() {
   return (
-    <footer className="mb-16">
-      <ul className="font-sm mt-8 flex flex-col space-x-0 space-y-2 text-neutral-600 md:flex-row md:space-x-4 md:space-y-0 dark:text-neutral-300">
+    <footer className="mb-16 mt-5 flex flex-wrap gap-5 xl:justify-center">
+      <ul className="font-sm flex flex-col space-x-0 space-y-2 text-neutral-600 md:flex-row md:space-x-4 md:space-y-0 dark:text-neutral-300">
         <li>
           <a
             className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
@@ -55,24 +55,21 @@ export default function Footer() {
             className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
             rel="noopener noreferrer"
             target="_blank"
-            href="mailto:meow@nermalcat69.dev"
+            href="https://zerops.io"
           >
             <ArrowIcon />
-            <p className="ml-2 h-7">meow@nermalcat69.dev</p>
+            <p className="ml-2 h-7">Deployed on Zerops</p>
           </a>
         </li>
       </ul>
-      <ul className="font-sm mt-8 flex flex-col space-x-0 space-y-2 text-neutral-600 md:flex-row md:space-x-4 md:space-y-0 dark:text-neutral-300">
+      <ul className="font-sm  flex flex-col space-x-0 space-y-2 text-neutral-600 md:flex-row md:space-x-4 md:space-y-0 dark:text-neutral-300">
         <li>
-          <a
-            className="flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
-            rel="noopener noreferrer"
-            target="_blank"
-            href="/dev"
+          <p
+            className="flex cursor-not-allowed items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
           >
             <ArrowIcon />
-            <p className="ml-2 h-7">dev</p>
-          </a>
+            <span className="ml-2 h-7 cursor-not-allowed">dev</span>
+          </p>
         </li>
         <li>
           <a

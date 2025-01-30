@@ -59,7 +59,7 @@ export default function Blog({ params }) {
   }
 
   return (
-    <section>
+    <section className="max-w-2xl flex flex-col xl:mx-auto">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -82,16 +82,24 @@ export default function Blog({ params }) {
           }),
         }}
       />
-      <p className='Underlined mb-4'>Back to <a href="/blog">Blog</a></p>
-      <h1 className="title font-semibold text-2xl tracking-tighter">
+      <p className='Underlined mb-4'>
+        <a href="/blog" className="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+            <path d="m12 19-7-7 7-7"/>
+            <path d="M19 12H5"/>
+          </svg>
+          Back to Blog
+        </a>
+      </p>
+      <h1 className="title font-semibold text-3xl tracking-tighter">
         {post.metadata.title}
       </h1>
       <div className="flex justify-between items-center mt-2 mb-8 text-sm">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+        <p className="text-md text-neutral-600 dark:text-neutral-400">
           {formatDate(post.metadata.publishedAt)}
         </p>
       </div>
-      <article className="prose">
+      <article className="prose -mt-5 mb-5">
         <CustomMDX source={post.content} />
       </article>
     </section>

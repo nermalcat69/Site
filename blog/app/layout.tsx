@@ -52,7 +52,7 @@ export default function RootLayout({
       )}
     >
       <body className="antialiased  mx-12 mt-8 ">
-        <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+        <main className="flex min-w-0 mt-6 flex flex-col px-2 md:px-0">
           {children}
           <Footer />
           <Analytics />
