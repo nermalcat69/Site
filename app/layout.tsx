@@ -2,8 +2,6 @@ import './global.css'
 import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
 import { baseUrl } from './sitemap'
 
@@ -51,12 +49,10 @@ export default function RootLayout({
         GeistMono.variable
       )}
     >
-      <body className="antialiased  mx-12 mt-8 ">
+      <body className="antialiased  mx-12 pt-12 ">
         <main className="flex min-w-0 mt-6 flex flex-col px-2 md:px-0">
           {children}
           <Footer />
-          <Analytics />
-          <SpeedInsights />
         </main>
       </body>
     </html>
