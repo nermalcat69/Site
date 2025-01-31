@@ -1,3 +1,6 @@
+import Image from 'next/image'
+import Badge from 'app/components/Badge'
+
 export const metadata = {
   title: 'Work',
   description: 'My work experience.',
@@ -35,7 +38,7 @@ function WorkItem({ company, title, period, description, link }: {
   link: string | null;
 }) {
   return (
-    <div className="mb-8">
+    <div className="mb-8 group">
       <h2 className="font-medium text-xl mb-1 text-neutral-800 dark:text-neutral-100">
         {link ? (
           <a href={link} target="_blank" rel="noopener noreferrer" className="hover:underline">
@@ -59,13 +62,57 @@ function WorkItem({ company, title, period, description, link }: {
 
 export default function WorkPage() {
   return (
-    <section>
-      <h1 className="font-semibold text-2xl mb-8 tracking-tighter">My Work Experience</h1>
-      
-      <div className="prose prose-neutral dark:prose-invert">
-        {workExperience.map((work, index) => (
-          <WorkItem key={index} {...work} />
-        ))}
+    <section className="relative">
+      <div className="absolute -z-10 top-0 right-0">
+        <Image 
+          src="/grid.svg" 
+          width={300} 
+          height={300} 
+          alt="Decorative grid"
+          className="opacity-10 dark:opacity-5"
+          draggable={false}
+        />
+      </div>
+      <div className="absolute hidden xl:block -z-10 bottom-0 left-0">
+        <Image 
+          src="/seaweed.svg" 
+          width={200} 
+          height={200} 
+          alt="Decorative circles"
+          className="opacity-40 dark:opacity-90"
+          draggable={false}
+        />
+      </div>
+
+      {/* Main content */}
+      <div className="max-w-2xl xl:mx-auto">
+        <div className="flex items-center justify-between mb-12">
+          <div>
+            <h1 className="hex-title text-2xl md:text-3xl">Work</h1>
+            <p className="hex-text mt-2 text-neutral-600 dark:text-neutral-400 text-sm">
+              My professional journey
+            </p>
+          </div>
+          <div className="hidden md:block">
+            <Image 
+              src="/cube.svg" 
+              width={40} 
+              height={40} 
+              priority
+              className="dark:invert" 
+              alt="Decorative cube"
+              draggable={false}
+            />
+          </div>
+        </div>
+
+        <div className="prose prose-neutral dark:prose-invert">
+          {workExperience.map((work, index) => (
+            <WorkItem key={index} {...work} />
+          ))}
+        </div>
+
+        <Badge />
       </div>
     </section>
   )

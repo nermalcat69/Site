@@ -1,5 +1,6 @@
 import { BlogPosts } from 'app/components/posts'
 import Link from 'next/link'
+import SomeComponent from 'app/components/SomeComponent'
 import Image from 'next/image'
 
 const shimmer = (w: number, h: number) => `
@@ -57,9 +58,10 @@ export default function Page() {
         <p className="mb-4 text-xl md:text-2xl opacity-80 dark:opacity-90">
           Checkout my <Link href="/work" className='Underlined'>Work</Link>, <a href="https://x.com/arjvnz" target="_blank" className='Underlined'>Twitter</a>, <a href="https://github.com/nermalcat69" target="_blank" className='Underlined'>Github</a>, <a href="https://instagram.com/nermalcat69" target="_blank" className='Underlined'>Instagram</a>, <a href="https://bento.me/arjunaditya" target="_blank" className='Underlined' >Bento</a>, and more.
         </p>
-        <div className="my-8">
+        <SomeComponent />
+        {/* <div className="my-8">
           <BlogPosts />
-        </div>
+        </div> */}
       </div>
 
       <div className="hidden lg:block flex-shrink-0">

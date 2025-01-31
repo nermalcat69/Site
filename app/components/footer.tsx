@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import * as Tooltip from '@radix-ui/react-tooltip'
 
 type FooterLinkProps = {
   href: string
@@ -29,39 +30,50 @@ function ArrowIcon() {
 function FooterLink({ href, children, external, tooltip, disabled }: FooterLinkProps) {
   const baseClassName = "flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
   
+  const content = (
+    <div className={disabled ? `${baseClassName} cursor-not-allowed` : baseClassName}>
+      <ArrowIcon />
+      <span className={`ml-2 h-7 ${disabled ? 'cursor-not-allowed' : ''}`}>{children}</span>
+    </div>
+  )
+
   if (disabled) {
-    return (
-      <p className={`${baseClassName} cursor-not-allowed`}>
-        <ArrowIcon />
-        <span className="ml-2 h-7 cursor-not-allowed">{children}</span>
-      </p>
-    )
+    return content
   }
 
-  const linkProps = external ? {
-    rel: "noopener noreferrer",
-    target: "_blank"
-  } : {}
-
-  const content = (
-    <a href={href} className={baseClassName} {...linkProps}>
-      <ArrowIcon />
-      <p className="ml-2 h-7">{children}</p>
+  const linkContent = (
+    <a 
+      href={href} 
+      {...(external ? { rel: "noopener noreferrer", target: "_blank" } : {})}
+    >
+      {content}
     </a>
   )
 
   if (tooltip) {
     return (
-      <div className="group relative inline-block">
-        {content}
-        <div className="absolute left-0 top-full z-50 mt-2 hidden w-64 rounded-md border border-neutral-200 bg-white p-2 text-sm text-neutral-800 transition-opacity group-hover:block dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200">
-          {tooltip}
-        </div>
-      </div>
+      <Tooltip.Provider>
+        <Tooltip.Root>
+          <Tooltip.Trigger asChild>
+            {linkContent}
+          </Tooltip.Trigger>
+          <Tooltip.Portal>
+            <Tooltip.Content
+              className="rounded-md bg-neutral-800 px-4 py-2 text-sm text-white shadow-md"
+              sideOffset={5}
+              side="top"
+              align="center"
+            >
+              {tooltip}
+              <Tooltip.Arrow className="fill-neutral-800" />
+            </Tooltip.Content>
+          </Tooltip.Portal>
+        </Tooltip.Root>
+      </Tooltip.Provider>
     )
   }
 
-  return content
+  return linkContent
 }
 
 const navigationLinks = [
