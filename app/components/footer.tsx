@@ -67,16 +67,17 @@ function FooterLink({ href, children, external, tooltip, disabled }: FooterLinkP
 const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/blog", label: "Blog", external: false },
+  { href: "/work", label: "Work", external: false },
   { href: "/side-table", label: "Side Table", external: false },
   { href: "https://zerops.io", label: "Deployed on Zerops", external: true },
 ]
 
 const additionalLinks = [
-  { 
-    label: "dev", 
-    href: "#", 
-    disabled: true 
-  },
+  // { 
+  //   label: "dev", 
+  //   href: "https://nermalcat69.dev/", 
+  //   disabled: true 
+  // },
   { 
     href: "/colophon", 
     label: "Colophon", 
@@ -90,7 +91,7 @@ const additionalLinks = [
   },
   {
     href: "mailto:meow@nermalcat69.dev",
-    label: "meow@nermalcat69.dev(dev only)",
+    label: "meow@nermalcat69.dev",
     external: true,
     tooltip: "For development and technical inquiries only"
   }

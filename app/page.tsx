@@ -16,7 +16,7 @@ const shimmer = (w: number, h: number) => `
   <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
 </svg>`
 
-const darkShimmer = (w: number, h: number) => `
+export const darkShimmer = (w: number, h: number) => `
 <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
     <linearGradient id="g">
@@ -30,7 +30,7 @@ const darkShimmer = (w: number, h: number) => `
   <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
 </svg>`
 
-const toBase64 = (str: string) =>
+export const toBase64 = (str: string) =>
   typeof window === 'undefined'
     ? Buffer.from(str).toString('base64')
     : window.btoa(str)
@@ -39,7 +39,7 @@ export default function Page() {
   return (
     <section className="flex flex-col xl:justify-center md:flex-row">
       <div className="flex flex-col max-w-xl">
-        <h1 className="mb-3 font-semibold text-2xl md:text-3xl">
+        <h1 className="mb-8 font-semibold text-2xl md:text-4xl">
           Arjun Aditya
         </h1>
         <p className="mb-4 text-xl md:text-2xl">

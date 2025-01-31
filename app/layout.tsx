@@ -7,6 +7,7 @@ import Footer from './components/footer'
 import { baseUrl } from './sitemap'
 import WindowSize from './components/WindowSize'
 
+// Regular HEX Font Family
 const hexFont = localFont({
   src: [
     {
@@ -36,6 +37,72 @@ const hexFont = localFont({
     },
   ],
   variable: '--font-hex',
+  display: 'swap',
+})
+
+// Condensed HEX Font Family
+const hexFontCondensed = localFont({
+  src: [
+    {
+      path: '../app/fonts/HEX-Franklin-v02-Condensed-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../app/fonts/HEX-Franklin-v02-Condensed-Medium.ttf',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../app/fonts/HEX-Franklin-v02-Condensed-Sem-Bold.ttf',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../app/fonts/HEX-Franklin-v02-Condensed-Bold.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../app/fonts/HEX-Franklin-v02-Condensed-Extra-Bold.ttf',
+      weight: '800',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-hex-condensed',
+  display: 'swap',
+})
+
+// Narrow HEX Font Family
+const hexFontNarrow = localFont({
+  src: [
+    {
+      path: '../app/fonts/HEX-Franklin-v02-Narrow-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../app/fonts/HEX-Franklin-v02-Narrow-Medium.ttf',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../app/fonts/HEX-Franklin-v02-Narrow-Semibold.ttf',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../app/fonts/HEX-Franklin-v02-Narrow-Bold.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../app/fonts/HEX-Franklin-v02-Narrow-Extra-Bold.ttf',
+      weight: '800',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-hex-narrow',
   display: 'swap',
 })
 
@@ -81,7 +148,9 @@ export default function RootLayout({
         'text-black bg-white dark:text-white dark:bg-black',
         GeistSans.variable,
         GeistMono.variable,
-        hexFont.variable
+        hexFont.variable,
+        hexFontCondensed.variable,
+        hexFontNarrow.variable
       )}
     >
       <body className="antialiased  mx-12 pt-12 ">

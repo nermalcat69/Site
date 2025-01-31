@@ -90,16 +90,18 @@ html {
 
 .prose p {
   @apply my-4 text-lg text-neutral-800 dark:text-neutral-200;
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-regular);
 }
 
 .prose h1 {
-  @apply text-4xl tracking-tight mt-6 mb-2;
+  @apply text-4xl mt-6 mb-2;
   font-family: var(--font-hex);
   font-weight: var(--font-hex-bold);
 }
 
 .prose h2 {
-  @apply text-2xl tracking-tight mt-6 mb-2;
+  @apply text-2xl mt-6 mb-2;
   font-family: var(--font-hex);
   font-weight: var(--font-hex-semibold);
 }
@@ -166,11 +168,19 @@ table {
 h1, .h1 {
   font-family: var(--font-hex);
   font-weight: var(--font-hex-bold);
+  @apply tracking-tight;
 }
 
 h2, .h2 {
   font-family: var(--font-hex);
   font-weight: var(--font-hex-semibold);
+  @apply tracking-tight;
+}
+
+h3, .h3 {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-medium);
+  @apply tracking-tight;
 }
 
 /* Utility classes for HEX font weights */
@@ -202,4 +212,190 @@ h2, .h2 {
 /* Condensed variants */
 .hex-condensed {
   font-family: var(--font-hex-condensed);
+}
+
+/* Global Typography */
+h1, .h1 {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-bold);
+  @apply tracking-tight;
+}
+
+h2, .h2 {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-semibold);
+  @apply tracking-tight;
+}
+
+h3, .h3 {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-medium);
+  @apply tracking-tight;
+}
+
+p {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-regular);
+}
+
+/* Blog specific styles */
+.prose h1 {
+  @apply text-4xl mt-6 mb-2;
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-bold);
+}
+
+.prose h2 {
+  @apply text-2xl mt-6 mb-2;
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-semibold);
+}
+
+.prose h3 {
+  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+}
+
+.prose h4 {
+  @apply text-lg font-medium tracking-tight mt-6 mb-2;
+}
+
+.prose strong {
+  @apply font-medium;
+}
+
+.prose ul {
+  @apply list-disc pl-6;
+}
+
+.prose ol {
+  @apply list-decimal pl-6;
+}
+
+.prose > :first-child {
+  /* Override removing top margin, causing layout shift */
+  margin-top: 1.25em !important;
+  margin-bottom: 1.25em !important;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+}
+
+pre {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Remove Safari input shadow on mobile */
+input[type='text'],
+input[type='email'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+table {
+  display: block;
+  max-width: fit-content;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.title {
+  text-wrap: balance;
+}
+
+.Underlined {
+  @apply underline;
+}
+
+/* Navigation and UI elements */
+.nav-link {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-medium);
+}
+
+/* Footer styles */
+footer {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-regular);
+}
+
+/* Utility classes */
+.hex-title {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-bold);
+  @apply tracking-tight;
+}
+
+.hex-subtitle {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-medium);
+  @apply tracking-tight;
+}
+
+.hex-text {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-regular);
+}
+
+/* Font Family Variants */
+.hex-condensed {
+  font-family: var(--font-hex-condensed);
+}
+
+.hex-narrow {
+  font-family: var(--font-hex-narrow);
+}
+
+/* Condensed Utilities */
+.hex-condensed-regular {
+  font-family: var(--font-hex-condensed);
+  font-weight: var(--font-hex-regular);
+}
+
+.hex-condensed-medium {
+  font-family: var(--font-hex-condensed);
+  font-weight: var(--font-hex-medium);
+}
+
+.hex-condensed-semibold {
+  font-family: var(--font-hex-condensed);
+  font-weight: var(--font-hex-semibold);
+}
+
+.hex-condensed-bold {
+  font-family: var(--font-hex-condensed);
+  font-weight: var(--font-hex-bold);
+}
+
+.hex-condensed-extrabold {
+  font-family: var(--font-hex-condensed);
+  font-weight: var(--font-hex-extrabold);
+}
+
+/* Narrow Utilities */
+.hex-narrow-regular {
+  font-family: var(--font-hex-narrow);
+  font-weight: var(--font-hex-regular);
+}
+
+.hex-narrow-medium {
+  font-family: var(--font-hex-narrow);
+  font-weight: var(--font-hex-medium);
+}
+
+.hex-narrow-semibold {
+  font-family: var(--font-hex-narrow);
+  font-weight: var(--font-hex-semibold);
+}
+
+.hex-narrow-bold {
+  font-family: var(--font-hex-narrow);
+  font-weight: var(--font-hex-bold);
+}
+
+.hex-narrow-extrabold {
+  font-family: var(--font-hex-narrow);
+  font-weight: var(--font-hex-extrabold);
 }

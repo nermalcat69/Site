@@ -82,7 +82,7 @@ export default function Blog({ params }) {
           }),
         }}
       />
-      <p className='Underlined mb-4'>
+      <p className='Underlined mb-4 hex-text'>
         <a href="/blog" className="flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
             <path d="m12 19-7-7 7-7"/>
@@ -91,15 +91,15 @@ export default function Blog({ params }) {
           Back to Blog
         </a>
       </p>
-      <h1 className="title font-semibold text-3xl tracking-tighter">
+      <h1 className="hex-title text-3xl mb-2">
         {post.metadata.title}
       </h1>
       <div className="flex justify-between items-center mt-2 mb-8 text-sm">
-        <p className="text-md text-neutral-600 dark:text-neutral-400">
+        <p className="hex-text text-neutral-600 dark:text-neutral-400">
           {formatDate(post.metadata.publishedAt)}
         </p>
       </div>
-      <article className="prose -mt-5 mb-5">
+      <article className="prose">
         <CustomMDX source={post.content} />
       </article>
     </section>
