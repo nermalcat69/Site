@@ -19,8 +19,8 @@ const WindowSize = () => {
   return (
     <>
       <motion.div>
-        <p className="z-20 md:bg-[#fff] md:p-1 lg:bg-none md:visible bottom-8 left-8 fixed hidden sm:block font-mono text-xs text-neutral-400">
-          {width} X {height} • Deployed on Zerops
+        <p className="z-20 md:bg-white dark:md:bg-black md:p-1 lg:bg-none md:visible bottom-8 right-8 fixed hidden sm:block font-mono text-xs text-neutral-400">
+          {width} X {height} • Giggle a bit
         </p>
       </motion.div>
     </>

@@ -98,7 +98,7 @@ const additionalLinks = [
 
 export default function Footer() {
   return (
-    <footer className="mb-16 mt-5 flex  flex-wrap gap-5 xl:justify-center">
+    <footer className="mb-16 md:mt-5 flex  flex-wrap gap-5 xl:justify-center">
       <nav aria-label="Primary footer navigation" className="w-full xl:w-auto">
         <ul className="font-sm flex flex-col space-x-0 space-y-2 text-neutral-600 md:flex-row md:space-x-4 md:space-y-0 dark:text-neutral-300">
           {navigationLinks.map(({ href, label, external }) => (

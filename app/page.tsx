@@ -39,13 +39,22 @@ export default function Page() {
   return (
     <section className="flex flex-col xl:justify-center md:flex-row">
       <div className="flex flex-col max-w-xl">
-        <h1 className="mb-3 text-2xl">
+        <h1 className="mb-3 font-semibold text-2xl md:text-3xl">
           Arjun Aditya
         </h1>
-        <p className="mb-4 text-2xl">
-          {`I'm a person who does almost everything. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`}
+        <p className="mb-4 text-xl md:text-2xl">
+          A Mix of Design, Programming, Financial Markets, and Philosophy.
         </p>
-        <p className="mb-4 text-2xl opacity-80 dark:opacity-90">
+        <p className="mb-4 text-xl md:text-2xl">
+          Started my journey with Computers in 2015 at age 9 with a Computer with no Internet.
+        </p>
+        <p className="mb-4 text-xl md:text-2xl">
+          Started programming and video editing in 2017. Explored Web Development and Financial Markets in 2021, followed by freelance work with WordPress and <a href="https://ghost.org" target="_blank" className="Underlined">Ghost</a> in 2022.
+        </p>
+        <p className="mb-4 text-xl md:text-2xl opacity-80 dark:opacity-90">
+          Currently working at <a href="https://zerops.io" target="_blank" className='Underlined'> Zerops</a> where i started contributing in April 2024.
+        </p>
+        <p className="mb-4 text-xl md:text-2xl opacity-80 dark:opacity-90">
           Checkout my <Link href="/work" className='Underlined'>Work</Link>, <a href="https://x.com/arjvnz" target="_blank" className='Underlined'>Twitter</a>, <a href="https://github.com/nermalcat69" target="_blank" className='Underlined'>Github</a>, <a href="https://instagram.com/nermalcat69" target="_blank" className='Underlined'>Instagram</a>, <a href="https://bento.me/arjunaditya" target="_blank" className='Underlined' >Bento</a>, and more.
         </p>
         <div className="my-8">
@@ -96,7 +105,7 @@ export default function Page() {
             />
           </div>
         </div>
-        <div className="flex justify-center max-w-lg pt-8">
+        <div className="flex ml-10 justify-center max-w-lg pt-8">
           <div className="aspect-video relative w-[400px]">
             <Image 
               src="/sunset.JPEG" 

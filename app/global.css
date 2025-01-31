@@ -15,6 +15,11 @@
   --sh-jsxliterals: #6266d1;
   --sh-property: #e25a1c;
   --sh-entity: #e25a1c;
+  --font-hex-regular: 400;
+  --font-hex-medium: 500;
+  --font-hex-semibold: 600;
+  --font-hex-bold: 700;
+  --font-hex-extrabold: 800;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -88,11 +93,15 @@ html {
 }
 
 .prose h1 {
-  @apply text-4xl font-medium tracking-tight mt-6 mb-2;
+  @apply text-4xl tracking-tight mt-6 mb-2;
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-bold);
 }
 
 .prose h2 {
-  @apply text-2xl font-medium tracking-tight mt-6 mb-2;
+  @apply text-2xl tracking-tight mt-6 mb-2;
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-semibold);
 }
 
 .prose h3 {
@@ -151,4 +160,46 @@ table {
 
 .Underlined {
   @apply underline;
+}
+
+/* For non-prose h1 and h2 tags */
+h1, .h1 {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-bold);
+}
+
+h2, .h2 {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-semibold);
+}
+
+/* Utility classes for HEX font weights */
+.hex-regular {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-regular);
+}
+
+.hex-medium {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-medium);
+}
+
+.hex-semibold {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-semibold);
+}
+
+.hex-bold {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-bold);
+}
+
+.hex-extrabold {
+  font-family: var(--font-hex);
+  font-weight: var(--font-hex-extrabold);
+}
+
+/* Condensed variants */
+.hex-condensed {
+  font-family: var(--font-hex-condensed);
 }
