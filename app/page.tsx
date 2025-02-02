@@ -44,7 +44,7 @@ export default function Page() {
           Arjun Aditya
         </h1>
         <p className="mb-4 text-xl md:text-2xl">
-          A Mix of Design, Programming, Financial Markets, and Philosophy.
+          A Mix of Design, Programming, Financial Markets, Economics,  and Philosophy.
         </p>
         <p className="mb-4 text-xl md:text-2xl">
           Started my journey with Computers in 2015 at age 9 with a Computer with no Internet.
@@ -52,10 +52,11 @@ export default function Page() {
         <p className="mb-4 text-xl md:text-2xl">
           Started programming and video editing in 2017. Explored Web Development and Financial Markets in 2021, followed by freelance work with WordPress and <a href="https://ghost.org" target="_blank" className="Underlined">Ghost</a> in 2022.
         </p>
-        <p className="mb-4 text-xl md:text-2xl opacity-80 dark:opacity-90">
+        <p className="mb-4 text-xl italic md:text-2xl text-teal-800 dark:text-teal-300">
           Currently working at <a href="https://zerops.io" target="_blank" className='Underlined'> Zerops</a> where i started contributing in April 2024.
+
         </p>
-        <p className="mb-4 text-xl md:text-2xl opacity-80 dark:opacity-90">
+        <p className="mb-4 text-xl md:text-2xl opacity-100 dark:opacity-90">
           Checkout my <Link href="/work" className='Underlined'>Work</Link>, <a href="https://x.com/arjvnz" target="_blank" className='Underlined'>Twitter</a>, <a href="https://github.com/nermalcat69" target="_blank" className='Underlined'>Github</a>, <a href="https://instagram.com/nermalcat69" target="_blank" className='Underlined'>Instagram</a>, <a href="https://bento.me/arjunaditya" target="_blank" className='Underlined' >Bento</a>, and more.
         </p>
         <SomeComponent />
