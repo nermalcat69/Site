@@ -36,6 +36,8 @@
 
 html {
   min-width: 360px;
+  @apply antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 .prose .anchor {
@@ -52,8 +54,20 @@ html {
   @apply visible;
 }
 
+a {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+a:hover {
+  @apply font-semibold;
+}
+
 .prose a {
-  @apply underline transition-all decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 decoration-[0.1em];
+  @apply underline transition-all font-medium decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 decoration-[0.1em];
+}
+
+.prose a:hover {
+  @apply font-bold;
 }
 
 .prose .anchor:after {

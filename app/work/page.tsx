@@ -10,22 +10,22 @@ const workExperience = [
   {
     company: 'Zerops',
     title: 'Full Stack Developer',
-    period: '2023 - Present',
-    description: 'Working on cloud infrastructure and developer tools. Building modern web applications using Next.js, TypeScript, and Tailwind CSS.',
+    period: '2024 - Present',
+    description: 'Working on cloud infrastructure and developer tools. Building modern web applications using TypeScript, PostgresSQL, Redis, and more.',
     link: 'https://zerops.io'
   },
-  {
-    company: 'Gluo',
-    title: 'Frontend Developer',
-    period: '2022 - 2023',
-    description: 'Developed responsive web applications using React and modern frontend technologies. Implemented UI/UX designs and improved application performance.',
-    link: 'https://gluo.xyz'
-  },
+  // {
+  //   company: 'Gluo',
+  //   title: 'Frontend Developer',
+  //   period: '2022 - 2023',
+  //   description: 'Designed in Figma and Rewrote a bit of it in Svelte.',
+  //   link: 'https://gluo.xyz'
+  // },
   {
     company: 'Freelance',
     title: 'Web Developer',
-    period: '2021 - 2022',
-    description: 'Worked with various clients to build custom websites and web applications. Focused on creating clean, efficient, and maintainable code.',
+    period: '2020 - 2024',
+    description: 'Built custom static sites and full stack web applications. Worked with WordPress and Ghost.',
     link: null
   }
 ];
@@ -63,15 +63,10 @@ function WorkItem({ company, title, period, description, link }: {
 export default function WorkPage() {
   return (
     <section className="relative">
-      <div className="absolute -z-10 top-0 right-0">
-        <Image 
-          src="/grid.svg" 
-          width={300} 
-          height={300} 
-          alt="Decorative grid"
-          className="opacity-10 dark:opacity-5"
-          draggable={false}
-        />
+      <div className="absolute z-10 top-0 right-0">
+      <p className="hidden sm:block text-md italic md:text-lg max-w-md">
+          Started programming and video editing in 2017. Explored Web Development and Financial Markets in 2021, followed by freelance work with WordPress and <a href="https://ghost.org" target="_blank" className="Underlined">Ghost</a> in 2022.
+        </p>
       </div>
       <div className="absolute hidden xl:block -z-10 bottom-0 left-0">
         <Image 
@@ -93,7 +88,7 @@ export default function WorkPage() {
               My professional journey
             </p>
           </div>
-          <div className="hidden md:block">
+          {/* <div className="hidden md:block">
             <Image 
               src="/cube.svg" 
               width={40} 
@@ -103,7 +98,7 @@ export default function WorkPage() {
               alt="Decorative cube"
               draggable={false}
             />
-          </div>
+          </div> */}
         </div>
 
         <div className="prose prose-neutral dark:prose-invert">

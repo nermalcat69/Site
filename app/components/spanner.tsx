@@ -10,7 +10,7 @@ export default function Spanner({ className, ...props }: SpannerProps) {
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 189.125 189.125"
 			fill="currentColor"
-			className={className}
+			className={`hover-scale ${className}`}
 			{...props}
 		>
 			<g>

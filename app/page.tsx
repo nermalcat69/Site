@@ -2,6 +2,7 @@ import { BlogPosts } from 'app/components/posts'
 import Link from 'next/link'
 import SomeComponent from 'app/components/SomeComponent'
 import Image from 'next/image'
+import Spanner from "./components/Spanner"
 
 const shimmer = (w: number, h: number) => `
 <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -49,12 +50,9 @@ export default function Page() {
         <p className="mb-4 text-xl md:text-2xl">
           Started my journey with Computers in 2015 at age 9 with a Computer with no Internet.
         </p>
-        <p className="mb-4 text-xl md:text-2xl">
-          Started programming and video editing in 2017. Explored Web Development and Financial Markets in 2021, followed by freelance work with WordPress and <a href="https://ghost.org" target="_blank" className="Underlined">Ghost</a> in 2022.
-        </p>
-        <p className="mb-4 text-xl italic md:text-2xl text-teal-800 dark:text-teal-300">
-          Currently working at <a href="https://zerops.io" target="_blank" className='Underlined'> Zerops</a> where i started contributing in April 2024.
-
+        <p className="mb-4 text-xl md:text-2xl opacity-100 dark:opacity-90">
+          Currently working at <a href="https://zerops.io" target="_blank" className='Underlined'> Zerops</a> where i started contributing in April 2024
+            <Spanner className='w-7 mb-2 h-7 ml-2 inline-block' />
         </p>
         <p className="mb-4 text-xl md:text-2xl opacity-100 dark:opacity-90">
           Checkout my <Link href="/work" className='Underlined'>Work</Link>, <a href="https://x.com/arjvnz" target="_blank" className='Underlined'>Twitter</a>, <a href="https://github.com/nermalcat69" target="_blank" className='Underlined'>Github</a>, <a href="https://instagram.com/nermalcat69" target="_blank" className='Underlined'>Instagram</a>, <a href="https://bento.me/arjunaditya" target="_blank" className='Underlined' >Bento</a>, and more.
