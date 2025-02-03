@@ -2,7 +2,8 @@ import { BlogPosts } from 'app/components/posts'
 import Link from 'next/link'
 import SomeComponent from 'app/components/SomeComponent'
 import Image from 'next/image'
-import Spanner from "./components/Spanner"
+import Spanner from "./components/spanner"
+import { getBlogPosts, formatDate } from 'app/blog/utils'
 
 const shimmer = (w: number, h: number) => `
 <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -38,6 +39,15 @@ export const toBase64 = (str: string) =>
     : window.btoa(str)
 
 export default function Page() {
+  const latestPosts = getBlogPosts()
+    .sort((a, b) => {
+      if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {
+        return -1
+      }
+      return 1
+    })
+    .slice(0, 3)
+
   return (
     <section className="flex flex-col xl:justify-center md:flex-row">
       <div className="flex flex-col max-w-xl">
@@ -50,17 +60,41 @@ export default function Page() {
         <p className="mb-4 text-xl md:text-2xl">
           Started my journey with Computers in 2015 at age 9 with a Computer with no Internet.
         </p>
-        <p className="mb-4 text-xl md:text-2xl opacity-100 dark:opacity-90">
-          Currently working at <a href="https://zerops.io" target="_blank" className='Underlined'> Zerops</a> where i started contributing in April 2024
-            <Spanner className='w-7 mb-2 h-7 ml-2 inline-block' />
+        <p className="mb-4 text-xl md:text-2xl">
+          Currently working at <a href="https://zerops.io" target="_blank" className='Underlined'> Zerops</a> where i started contributing in April 2024.
         </p>
+        <div className="pb-6 pt-2">
+          <div className="space-y-5">
+            {latestPosts.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                className="block group"
+              >
+                <div className="flex justify-between items-center gap-8">
+                  <p className="tracking-tight hover:underline hover:text-black dark:hover:text-neutral-100 text-neutral-900 dark:text-neutral-100 text-xl flex-1">
+                    {post.metadata.title}
+                  </p>
+                  <p className="hex-text text-sm text-neutral-600 dark:text-neutral-400 whitespace-nowrap">
+                    {formatDate(post.metadata.publishedAt)}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="pt-4">
+            <Link 
+              href="/blog" 
+              className="tracking-tight hover:underline text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100"
+            >
+              Read all posts →
+            </Link>
+          </div>
+        </div>
         <p className="mb-4 text-xl md:text-2xl opacity-100 dark:opacity-90">
           Checkout my <Link href="/work" className='Underlined'>Work</Link>, <a href="https://x.com/arjvnz" target="_blank" className='Underlined'>Twitter</a>, <a href="https://github.com/nermalcat69" target="_blank" className='Underlined'>Github</a>, <a href="https://instagram.com/nermalcat69" target="_blank" className='Underlined'>Instagram</a>, <a href="https://bento.me/arjunaditya" target="_blank" className='Underlined' >Bento</a>, and more.
         </p>
-        <SomeComponent />
-        {/* <div className="my-8">
-          <BlogPosts />
-        </div> */}
+        {/* <SomeComponent /> */}
       </div>
 
       <div className="hidden lg:block flex-shrink-0">

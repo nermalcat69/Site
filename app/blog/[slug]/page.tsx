@@ -88,7 +88,7 @@ export default function Blog({ params }) {
             <path d="m12 19-7-7 7-7"/>
             <path d="M19 12H5"/>
           </svg>
-          Back to Blog
+          Go to Blog
         </a>
       </p>
       <h1 className="hex-title text-3xl mb-2">

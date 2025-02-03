@@ -22,7 +22,7 @@ export function BlogPosts() {
             href={`/blog/${post.slug}`}
           >
             <div className="w-full flex flex-col md:flex-row space-x-0 md:space-x-2">
-              <p className="hex-subtitle text-neutral-900 text-xl md:text-2xl dark:text-neutral-100">
+              <p className="hex-subtitle text-neutral-900 text-xl md:text-2xl max-w-md dark:text-neutral-100">
                 {post.metadata.title}
               </p>
               <p className="hex-text text-neutral-600 text-xs md:text-sm md:mt-2 dark:text-neutral-400 tabular-nums">

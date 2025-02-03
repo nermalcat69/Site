@@ -1,6 +1,6 @@
-import { BlogPosts } from 'app/components/posts'
-import { toBase64, darkShimmer } from 'app/page'
-import Image from 'next/image'
+import { BlogPosts } from 'app/components/posts';
+import { toBase64, darkShimmer } from 'app/page';
+import Image from 'next/image';
 
 export const metadata = {
   title: 'Blog',
