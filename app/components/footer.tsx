@@ -31,14 +31,18 @@ function FooterLink({ href, children, external, tooltip, disabled }: FooterLinkP
   const baseClassName = "flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
   
   const content = (
-    <div className={disabled ? `${baseClassName} cursor-not-allowed` : baseClassName}>
+    <div className={`${baseClassName} ${disabled ? 'cursor-not-allowed opacity-50 pointer-events-none' : ''}`}>
       <ArrowIcon />
       <span className={`ml-2 h-7 ${disabled ? 'cursor-not-allowed' : ''}`}>{children}</span>
     </div>
   )
 
   if (disabled) {
-    return content
+    return (
+      <div className="text-neutral-400">
+        {content}
+      </div>
+    )
   }
 
   const linkContent = (
@@ -78,9 +82,9 @@ function FooterLink({ href, children, external, tooltip, disabled }: FooterLinkP
 
 const navigationLinks = [
   { href: "/", label: "Home" },
-  { href: "/blog", label: "Blog", external: false },
-  { href: "/work", label: "Work", external: false },
-  { href: "/side-table", label: "Side Table", external: false },
+  { href: "/", label: "Blog", external: false },
+  { href: "/", label: "Work", external: false },
+  { href: "/", label: "Side Table", external: false },
   { href: "https://zerops.io", label: "Deployed on Zerops", external: true },
 ]
 
