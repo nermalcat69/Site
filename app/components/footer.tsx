@@ -31,18 +31,14 @@ function FooterLink({ href, children, external, tooltip, disabled }: FooterLinkP
   const baseClassName = "flex items-center transition-all hover:text-neutral-800 dark:hover:text-neutral-100"
   
   const content = (
-    <div className={`${baseClassName} ${disabled ? 'cursor-not-allowed opacity-50 pointer-events-none' : ''}`}>
+    <div className={disabled ? `${baseClassName} cursor-not-allowed` : baseClassName}>
       <ArrowIcon />
       <span className={`ml-2 h-7 ${disabled ? 'cursor-not-allowed' : ''}`}>{children}</span>
     </div>
   )
 
   if (disabled) {
-    return (
-      <div className="text-neutral-400">
-        {content}
-      </div>
-    )
+    return content
   }
 
   const linkContent = (
@@ -80,7 +76,19 @@ function FooterLink({ href, children, external, tooltip, disabled }: FooterLinkP
   return linkContent
 }
 
-const navigationLinks = [
+// Add type for the link items
+type NavigationLink = {
+  href: string
+  label: string
+  external?: boolean
+}
+
+type AdditionalLink = NavigationLink & {
+  tooltip?: string
+  disabled?: boolean
+}
+
+const navigationLinks: NavigationLink[] = [
   { href: "/", label: "Home" },
   { href: "/", label: "Blog", external: false },
   { href: "/", label: "Work", external: false },
@@ -88,14 +96,14 @@ const navigationLinks = [
   { href: "https://zerops.io", label: "Deployed on Zerops", external: true },
 ]
 
-const additionalLinks = [
+const additionalLinks: AdditionalLink[] = [
   // { 
   //   label: "dev", 
   //   href: "https://nermalcat69.dev/", 
   //   disabled: true 
   // },
   { 
-    href: "/colophon", 
+    href: "/", 
     label: "Colophon", 
     external: false 
   },
