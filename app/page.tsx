@@ -61,7 +61,7 @@ export default function Page() {
           Started my journey with Computers in 2015 at age 9 with a Computer with no Internet.
         </p>
         <p className="mb-4 text-xl md:text-2xl">
-          Currently working at <a href="https://zerops.io" target="_blank" className='Underlined'> Zerops</a> where i started contributing in April 2024.
+          Currently working at <a href="https://zerops.io" target="_blank" className='Underlined'> Zerops</a>.
         </p>
         {/* <div className="pb-6 pt-2">
           <div className="space-y-5 ">
