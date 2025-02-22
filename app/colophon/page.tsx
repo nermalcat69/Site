@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
 
 export const metadata = {
   title: 'Colophon',
@@ -17,14 +16,13 @@ export default function Page() {
           </p>
         </div>
         <div className="hidden md:block">
-          <Image 
+          <img 
             src="/lemon.svg" 
-            width={30} 
-            height={30} 
-            priority
+            width="30"
+            height="30"
             className="dark:invert" 
             alt="Decorative lemon"
-            draggable={false}
+            draggable="false"
           />
         </div>
       </div>

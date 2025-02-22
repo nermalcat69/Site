@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import Cranberries from "app/components/cranberries"
 
@@ -98,14 +97,13 @@ export default function SideTablePage() {
           </p>
         </div>
         <div className="hidden md:block">
-          <Image 
+          <img 
             src="/orange.svg" 
-            width={40} 
-            height={40} 
-            priority
+            width="40"
+            height="40"
             className="dark:invert" 
             alt="Decorative orange"
-            draggable={false}
+            draggable="false"
           />
         </div>
       </div>

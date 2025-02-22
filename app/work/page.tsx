@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Badge from 'app/components/Badge'
 
 export const metadata = {
@@ -69,13 +68,13 @@ export default function WorkPage() {
         </p>
       </div>
       <div className="absolute hidden xl:block -z-10 bottom-0 left-0">
-        <Image 
+        <img 
           src="/seaweed.svg" 
-          width={200} 
-          height={200} 
+          width="200"
+          height="200"
           alt="Decorative circles"
           className="opacity-40 dark:opacity-90"
-          draggable={false}
+          draggable="false"
         />
       </div>
 
@@ -89,14 +88,13 @@ export default function WorkPage() {
             </p>
           </div>
           {/* <div className="hidden md:block">
-            <Image 
+            <img 
               src="/cube.svg" 
-              width={40} 
-              height={40} 
-              priority
+              width="40"
+              height="40"
               className="dark:invert" 
               alt="Decorative cube"
-              draggable={false}
+              draggable="false"
             />
           </div> */}
         </div>
