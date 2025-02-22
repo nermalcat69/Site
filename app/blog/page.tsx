@@ -27,7 +27,7 @@ export default function Page() {
             />
           </div>
           <Image 
-            src="/mcleod.jpg" 
+            src="/IMG_4.webp"
             width={200}
             height={300}
             draggable={false}
