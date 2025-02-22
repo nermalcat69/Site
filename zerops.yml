@@ -1,55 +1,14 @@
 zerops:
-  - setup: nodejs0
-    # ==== how to build your application ====
+  - setup: site
     build:
-        os: alpine
-        base: 
-            - nodejs@22
-            - python@3.12
-        prepareCommands:
-            - sudo apk add make gcc g++
-        envVariables:
-            SUPABASE_URL:
-            SUPABASE_KEY:
-            REDDIT_CLIENT_ID:
-            REDDIT_SECRET:
-            REDDIT_USERNAME:
-            REDDIT_PASSWORD:
-            REDDIT_USER_AGENT:
-            EMAIL_PORT:
-            EMAIL_SENDER:
-            EMAIL_PASS:
-            EMAIL_CLIENT_ID:
-            EMAIL_CLIENT_SECRET:
-            EMAIL_REFRESH_TOKEN:
-            EMAIL_REDIRECT_URI:
-        buildCommands:
-            - npm install
-        deployFiles:
-            - package.json
-            - package-lock.json
-            - index.js
-            - utils/
-            - node_modules/
+      base: nodejs@20
+      buildCommands:
+        - pnpm i
+        - pnpm run build
+      deployFiles: ./
     run:
-        os: alpine
-        base: nodejs@22
-        envVariables:
-            SUPABASE_URL:
-            SUPABASE_KEY:
-            REDDIT_CLIENT_ID:
-            REDDIT_SECRET:
-            REDDIT_USERNAME:
-            REDDIT_PASSWORD:
-            REDDIT_USER_AGENT:
-            EMAIL_PORT:
-            EMAIL_SENDER:
-            EMAIL_PASS:
-            EMAIL_CLIENT_ID:
-            EMAIL_CLIENT_SECRET:
-            EMAIL_REFRESH_TOKEN:
-            EMAIL_REDIRECT_URI:           
-        ports:
-            - port: 4000
-              httpSupport: true
-        start: npm run dev
+      base: nodejs@20
+      ports:
+        - port: 3000
+          httpSupport: true
+      start: pnpm start

@@ -23,8 +23,10 @@ export function generateMetadata({ params }) {
     summary: description,
     image,
   } = post.metadata
-  let ogImage = image
-    ? image
+
+  // Use custom image if provided, fallback to generated OG
+  let ogImage = image 
+    ? `${baseUrl}${image}`
     : `${baseUrl}/og?title=${encodeURIComponent(title)}`
 
   return {
@@ -83,7 +85,7 @@ export default function Blog({ params }) {
         }}
       />
       <p className='Underlined mb-4 hex-text'>
-        <a href="/blog" className="flex items-center">
+        <a href="/blog" className="inline-flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
             <path d="m12 19-7-7 7-7"/>
             <path d="M19 12H5"/>
