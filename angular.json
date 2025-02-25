@@ -29,6 +29,9 @@
             "styles": [
               "src/styles.css"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles"]
+            },
             "scripts": [],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -62,6 +65,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "allowedHosts": ["patient-afghanistan-constraints-organizing.trycloudflare.com"]
+          },
           "configurations": {
             "production": {
               "buildTarget": "arjunaditya.xyz:build:production"
