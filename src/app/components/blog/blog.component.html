@@ -1,0 +1,14 @@
+<div class="blog-section mt-20">
+  <h2 class="text-2xl font-medium mb-8">Recent Writing</h2>
+  <div class="blog-posts space-y-8">
+    @for (post of blogPosts; track post.title) {
+      <div class="blog-post">
+        <div class="flex justify-between items-baseline">
+          <a [routerLink]="post.link" class="text-lg hover:text-gray-600 transition-colors">{{ post.title }}</a>
+          <span class="text-sm text-gray-500">{{ post.date }}</span>
+        </div>
+        <p class="text-gray-600 mt-2">{{ post.description }}</p>
+      </div>
+    }
+  </div>
+</div>

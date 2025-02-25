@@ -1,0 +1,14 @@
+<div class="work-experience-section mt-20">
+  <h2 class="text-2xl font-medium mb-8">Work Experience</h2>
+  <div class="experiences space-y-12">
+    @for (exp of experiences; track exp.company) {
+      <div class="experience">
+        <div class="flex justify-between items-baseline mb-2">
+          <h3 class="text-xl font-medium">{{ exp.company }}</h3>
+          <span class="text-sm text-gray-500">{{ exp.period }}</span>
+        </div>
+        <h4 class="text-lg text-gray-700 mb-2">{{ exp.position }}</h4>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div 
+  class="fixed inset-x-0 bottom-0 z-50 bg-white border-t border-gray-200"
+  [@drawerAnimation]="isOpen ? 'open' : 'closed'"
+  *ngIf="isOpen"
+>
+  <div class="max-w-4xl mx-auto px-4 py-6">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-medium">Articles</h2>
+      <button 
+        (click)="close()"
+        class="p-2 hover:bg-gray-100 cursor-pointer rounded-full transition-colors"
+        aria-label="Close drawer"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="space-y-6 max-h-[70vh] overflow-y-auto">
+      @for (post of blogPosts; track post.slug) {
+        <article class="border-b border-gray-100 pb-6 last:border-0">
+          <div class="flex justify-between items-baseline mb-2">
+            <a [routerLink]="['/blog', post.slug]" 
+               (click)="close()"
+               class="text-lg font-medium hover:text-gray-600 transition-colors">
+              {{ post.title }}
+            </a>
+            <span class="text-sm text-gray-500">{{ post.date }}</span>
+          </div>
+          <p class="text-gray-600">{{ post.description }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</div>
