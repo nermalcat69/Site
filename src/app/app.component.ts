@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject, Renderer2 } from '@a
 import { RouterOutlet, RouterModule } from '@angular/router';
 import { CommonModule, isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { BlogService, BlogPost } from './services/blog.service';
+import { ToastService } from './services/toast.service';
 import { trigger, transition, style, animate, state, group, query, sequence } from '@angular/animations';
 
 @Component({
@@ -48,7 +49,7 @@ import { trigger, transition, style, animate, state, group, query, sequence } fr
         animate('400ms ease-in', style({ opacity: 1 }))
       ]),
       transition(':leave', [
-        animate('300ms ease-out', style({ opacity: 0 }))
+        animate('400ms ease-out', style({ opacity: 0 }))
       ])
     ]),
     trigger('contentAnimation', [
@@ -68,6 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
   
   constructor(
     private blogService: BlogService,
+    private toastService: ToastService,
     @Inject(PLATFORM_ID) platformId: Object,
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2
@@ -124,7 +126,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.isBrowser) {
       setTimeout(() => {
         this.selectedArticle = null;
-      }, 400); // Match the leave animation duration
+      }, 10); // Match the leave animation duration
     } else {
       this.selectedArticle = null;
     }
@@ -134,8 +136,9 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.isBrowser && this.selectedArticle) {
       const url = `${window.location.origin}/blog/${this.selectedArticle.slug}`;
       navigator.clipboard.writeText(url).then(() => {
-        // You could add a toast notification here
-        console.log('Link copied to clipboard!');
+        this.toastService.show('Link copied to clipboard');
+      }).catch(() => {
+        this.toastService.show('Failed to copy link', 3000);
       });
     }
   }
