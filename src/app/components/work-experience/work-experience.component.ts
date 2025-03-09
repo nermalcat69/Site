@@ -18,7 +18,7 @@ export class WorkExperienceComponent {
   experiences: WorkExperience[] = [
     {
       company: 'Currently at Zerops',
-      position: 'Software Engineer',
+      position: 'Developer',
       period: 'July 2024 - Present',
     },
   ];
