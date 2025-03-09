@@ -90,7 +90,7 @@ type AdditionalLink = NavigationLink & {
 
 const navigationLinks: NavigationLink[] = [
   { href: "/", label: "Home" },
-  { href: "/", label: "Blog", external: false },
+  { href: "/blog", label: "Blog", external: false },
   { href: "/", label: "Work", external: false },
   { href: "/", label: "Side Table", external: false },
   { href: "https://zerops.io", label: "Deployed on Zerops", external: true },
