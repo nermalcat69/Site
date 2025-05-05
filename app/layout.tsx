@@ -1,164 +1,48 @@
-import './global.css'
-import type { Metadata } from 'next'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
-import localFont from 'next/font/local'
-import Footer from './components/footer'
-import { baseUrl } from './sitemap'
-import WindowSize from './components/WindowSize'
+import type { Metadata, Viewport } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+import './globals.css'
+import { Header } from './header'
+import { Footer } from './footer'
 
-// Regular HEX Font Family
-const hexFont = localFont({
-  src: [
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Regular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Medium.ttf',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Semibold.ttf',
-      weight: '600',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Bold.ttf',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Extrabold.ttf',
-      weight: '800',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-hex',
-  display: 'swap',
-})
-
-// Condensed HEX Font Family
-const hexFontCondensed = localFont({
-  src: [
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Condensed-Regular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Condensed-Medium.ttf',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Condensed-Sem-Bold.ttf',
-      weight: '600',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Condensed-Bold.ttf',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Condensed-Extra-Bold.ttf',
-      weight: '800',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-hex-condensed',
-  display: 'swap',
-})
-
-// Narrow HEX Font Family
-const hexFontNarrow = localFont({
-  src: [
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Narrow-Regular.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Narrow-Medium.ttf',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Narrow-Semibold.ttf',
-      weight: '600',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Narrow-Bold.ttf',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: '../app/fonts/HEX-Franklin-v02-Narrow-Extra-Bold.ttf',
-      weight: '800',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-hex-narrow',
-  display: 'swap',
-})
-
-export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
-  title: {
-    default: 'Arjun Aditya',
-    template: '%s | Arjun Aditya',
-  },
-  description: 'This is my portfolio.',
-  openGraph: {
-    title: 'Arjun Aditya',
-    description: 'This is my portfolio.',
-    url: baseUrl,
-    siteName: 'Arjun Aditya',
-    locale: 'en_US',
-    type: 'website',
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#ffffff',
 }
 
-const cx = (...classes) => classes.filter(Boolean).join(' ')
+export const metadata: Metadata = {
+  title: 'Nim - Personal website template',
+  description:
+    'Nim is a free and open-source personal website template built with Next.js 15, React 19 and Motion-Primitives.',
+}
+
+const geist = Geist({
+  variable: '--font-geist',
+  subsets: ['latin'],
+})
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
-    <html
-      lang="en"
-      className={cx(
-        'text-black bg-white dark:text-white dark:bg-black',
-        GeistSans.variable,
-        GeistMono.variable,
-        hexFont.variable,
-        hexFontCondensed.variable,
-        hexFontNarrow.variable
-      )}
-    >
-      <body className="antialiased  mx-12 pt-12 ">
-        <WindowSize />
-        <main className="flex min-w-0 mt-6 flex flex-col px-2 md:px-0">
-          {children}
-          <Footer />
-        </main>
+    <html lang="en">
+      <body
+        className={`${geist.variable} ${geistMono.variable} bg-white tracking-tight antialiased`}
+      >
+        <div className="flex min-h-screen w-full flex-col font-[family-name:var(--font-inter-tight)]">
+          <div className="relative mx-auto w-full max-w-screen-sm flex-1 px-4 pt-20">
+            <Header />
+            {children}
+            <Footer />
+          </div>
+        </div>
       </body>
     </html>
   )
