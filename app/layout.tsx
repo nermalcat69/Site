@@ -7,6 +7,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
 import { baseUrl } from './sitemap'
+import { Levitate } from './components/levitating'
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -57,6 +58,7 @@ export default function RootLayout({
           <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
             <Navbar />
             {children}
+            <Levitate />
             <Analytics />
             <SpeedInsights />
           </main>
