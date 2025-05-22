@@ -9,13 +9,13 @@ const navItems: Record<string, NavItem> = {
   '/': {
     name: 'Home',
   },
-  '/blog': {
-    name: 'Blog',
-  },
-  'https://nermalcat69.dev': {
-    name: 'My Dev Side',
-    targetBlank: true,
-  },
+  // '/blog': {
+  //   name: 'Blog',
+  // },
+  // 'https://nermalcat69.dev': {
+  //   name: 'My Dev Side',
+  //   targetBlank: true,
+  // },
 }
 
 export function Navbar() {

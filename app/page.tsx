@@ -1,10 +1,12 @@
 import { BlogPosts } from 'app/components/posts'
+import Image from 'next/image'
 
 export default function Page() {
   return (
     <section>
       <div className="mb-8 ">
-        <h1 className="text-4xl font-semibold tracking-tighter">Arjun Aditya</h1>
+      <Image src="/kid.avif" alt="kid profile photo" width={100} height={100} className="rounded-full backdrop-hue-rotate-180 backdrop-saturate-125 mb-2" draggable={false} />
+      <h1 className="text-4xl font-semibold tracking-tighter">Arjun Aditya</h1>
         <p className='opacity-50'>Based in Delhi, India</p>
       </div>
       <p className="mb-4 text-lg">
@@ -26,7 +28,7 @@ export default function Page() {
         {`I Love Sharp Corners, Running and Talking ~ People think I'm High when I'm talking.`}
       </p>
       <div className="my-8">
-        <BlogPosts />
+        {/* <BlogPosts /> */}
       </div>
       <div>
         <p className="mb-4 text-lg">

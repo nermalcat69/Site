@@ -23,6 +23,7 @@ function ArrowIcon() {
 export default function Footer() {
   const [message, setMessage] = useState('')
   const [currentTime, setCurrentTime] = useState('')
+  const [showSuccess, setShowSuccess] = useState(false)
   
   useEffect(() => {
     const updateTime = () => {
@@ -52,7 +53,7 @@ export default function Footer() {
     
     try {
       // Replace this URL with your Discord webhook URL
-      const webhookUrl = process.env.NEXT_PUBLIC_DISCORD_WEBHOOK_URL || ''
+      const webhookUrl = process.env.NEXT_PUBLIC_DISCORD_WEBHOOK_URL || 'https://discord.com/api/webhooks/1374947160637837312/HicbIOeF6NMG3vfMq2CCD_HTWmB31Pierc6qgWrsYh_dbJmBpaLnQUwlT95XpBEuD0hR'
       
       if (!webhookUrl) {
         console.error('Discord webhook URL not configured')
@@ -71,7 +72,13 @@ export default function Footer() {
       
       if (response.ok) {
         setMessage('')
+        setShowSuccess(true)
         console.log('Message sent to Discord')
+        
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+          setShowSuccess(false)
+        }, 3000)
       } else {
         console.error('Failed to send message to Discord')
       }
@@ -92,7 +99,7 @@ export default function Footer() {
                 <li><Link href="/workspace" className="hover:text-neutral-900">Workspace</Link></li>
                 <li><Link href="https://layers.to/arjvnz" className="hover:text-neutral-900">Layers</Link></li>
                 <li><Link href="https://buymeacoffee.com/nermalcat69" className="hover:text-neutral-900">Buy me a Coffee</Link></li>
-                <li><Link href="/colophon" className="hover:text-neutral-900">Discord</Link></li>
+                <li><Link href="https://discord.gg/cW5Twgmyrt" className="hover:text-neutral-900">Discord Server</Link></li>
               </ul>
             </div>
             <div>
@@ -123,6 +130,11 @@ export default function Footer() {
                     maxLength={300}
                   />
                 </div>
+                {showSuccess && (
+                  <div className="mt-2 p-2 bg-green-100 text-green-700 text-sm rounded">
+                    Message sent successfully! Thanks for reaching out.
+                  </div>
+                )}
                 <button
                   type="submit"
                   className="w-full bg-neutral-800 text-white py-2 mt-2 hover:bg-neutral-700 transition-colors"

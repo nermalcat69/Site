@@ -7,18 +7,18 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
 import { baseUrl } from './sitemap'
-import { Levitate } from './components/levitating'
+// import { Levitate } from './components/levitating'
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'Next.js Portfolio Starter',
-    template: '%s | Next.js Portfolio Starter',
+    default: 'Arjun Aditya',
+    template: '%s | Arjun Aditya',
   },
-  description: 'This is my portfolio.',
+  description: "I'm Arjun Aditya who codes and designs.",
   openGraph: {
     title: 'Arjun Aditya',
-    description: 'This is my portfolio.',
+    description: "I'm Arjun Aditya who codes and designs.",
     url: baseUrl,
     siteName: 'Arjun Aditya',
     locale: 'en_US',
@@ -58,7 +58,7 @@ export default function RootLayout({
           <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
             <Navbar />
             {children}
-            <Levitate />
+            {/* <Levitate /> */}
             <Analytics />
             <SpeedInsights />
           </main>
