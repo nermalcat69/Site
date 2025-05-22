@@ -87,12 +87,12 @@ export default function Footer() {
           <div>
           <div className="grid grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold mb-4 text-neutral-900">🍉 Know More</h3>
+              <h3 className="font-semibold mb-4 text-neutral-900">🍉 Other Links</h3>
               <ul className="space-y-2 underline text-neutral-600 font-medium">
-                <li><Link href="/webrings" className="hover:text-neutral-900">Webrings</Link></li>
-                <li><Link href="/guestbook" className="hover:text-neutral-900">Guestbook</Link></li>
-                <li><Link href="/rss" className="hover:text-neutral-900">RSS</Link></li>
-                <li><Link href="/colophon" className="hover:text-neutral-900">Colophon</Link></li>
+                <li><Link href="/workspace" className="hover:text-neutral-900">Workspace</Link></li>
+                <li><Link href="https://layers.to/arjvnz" className="hover:text-neutral-900">Layers</Link></li>
+                <li><Link href="https://buymeacoffee.com/nermalcat69" className="hover:text-neutral-900">Buy me a Coffee</Link></li>
+                <li><Link href="/colophon" className="hover:text-neutral-900">Discord</Link></li>
               </ul>
             </div>
             <div>

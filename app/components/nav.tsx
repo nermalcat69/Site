@@ -1,15 +1,20 @@
 import Link from 'next/link'
 
-const navItems = {
+type NavItem = {
+  name: string;
+  targetBlank?: boolean;
+}
+
+const navItems: Record<string, NavItem> = {
   '/': {
     name: 'Home',
   },
   '/blog': {
     name: 'Blog',
   },
-  '': {
+  'https://nermalcat69.dev': {
     name: 'My Dev Side',
-
+    targetBlank: true,
   },
 }
 
@@ -22,11 +27,13 @@ export function Navbar() {
           id="nav"
         >
           <div className="flex flex-row space-x-0 pr-10">
-            {Object.entries(navItems).map(([path, { name }]) => {
+            {Object.entries(navItems).map(([path, { name, targetBlank }]) => {
               return (
                 <Link
                   key={path}
                   href={path}
+                  target={targetBlank ? '_blank' : undefined}
+                  rel={targetBlank ? 'noopener noreferrer' : undefined}
                   className="transition-all hover:underline hover:text-neutral-800 flex align-middle relative py-1 px-2 m-1"
                 >
                   {name}

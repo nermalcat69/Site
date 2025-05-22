@@ -8,7 +8,7 @@ export default function Page() {
         <p className='opacity-50'>Based in Delhi, India</p>
       </div>
       <p className="mb-4 text-lg">
-        {`I'm a Chronically Online Programmer / Designer who started interacting with computers in 2015 at age 9 before that I used to Mini Militia on a LAN. I love philosophy, photography and making random video diaries(which i dont post).`}
+        {`I'm a Chronically Online Programmer / Designer who started interacting with computers in 2015 at age 9 before that I used to play Mini Militia on LAN. I love philosophy, photography and making random video diaries(which i dont post).`}
       </p>
       <p className="mb-4 text-lg">
         {`I'm lucky to say that I got the exposure in web3 before it was cool ~ currently trying to play around with solana.`}
