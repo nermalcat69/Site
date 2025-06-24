@@ -21,7 +21,7 @@ const navItems: Record<string, NavItem> = {
 export function Navbar() {
   return (
     <aside className="-ml-[8px] mb-16 tracking-tight">
-      <div className="lg:sticky lg:top-20 border border-r-5 border-r-neutral-500 border-neutral-300">
+      <div className="lg:sticky lg:top-20 border border-r-5 border-r-neutral-500 dark:border-r-neutral-400 border-neutral-300 dark:border-neutral-600">
         <nav
           className="flex flex-row items-start relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative"
           id="nav"
@@ -34,7 +34,7 @@ export function Navbar() {
                   href={path}
                   target={targetBlank ? '_blank' : undefined}
                   rel={targetBlank ? 'noopener noreferrer' : undefined}
-                  className="transition-all hover:underline hover:text-neutral-800 flex align-middle relative py-1 px-2 m-1"
+                  className="transition-all hover:underline hover:text-neutral-800 dark:hover:text-neutral-200 text-neutral-700 dark:text-neutral-300 flex align-middle relative py-1 px-2 m-1"
                 >
                   {name}
                 </Link>
