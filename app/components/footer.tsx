@@ -21,46 +21,6 @@ function ArrowIcon() {
 }
 
 export default function Footer() {
-  const [message, setMessage] = useState('')
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!message.trim()) return
-    
-    try {
-      const webhookUrl = process.env.NEXT_PUBLIC_DISCORD_WEBHOOK_URL || 'https://discord.com/api/webhooks/1374947160637837312/HicbIOeF6NMG3vfMq2CCD_HTWmB31Pierc6qgWrsYh_dbJmBpaLnQUwlT95XpBEuD0hR'
-      
-      if (!webhookUrl) {
-        console.error('Discord webhook URL not configured')
-        return
-      }
-      
-      const response = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          content: message
-        }),
-      })
-      
-      if (response.ok) {
-        setMessage('')
-        setShowSuccess(true)
-        console.log('Message sent to Discord')
-        
-        setTimeout(() => {
-          setShowSuccess(false)
-        }, 3000)
-      } else {
-        console.error('Failed to send message to Discord')
-      }
-    } catch (error) {
-      console.error('Error sending message:', error)
-    }
-  }
 
   return (
     <footer className=" py-16 mt-24">
