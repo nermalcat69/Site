@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og.png',
+        url: 'https://arjunaditya.xyz/og.png',
         width: 1200,
         height: 630,
         alt: 'Arjun Aditya',
