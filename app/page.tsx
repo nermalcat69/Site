@@ -27,6 +27,9 @@ export default function Page() {
       <p className="mb-4 text-xl text-neutral-800 dark:text-neutral-200 font-medium">
         {`I Love Sharp Corners, Running and Talking ~ People think I'm High when I'm talking.`}
       </p>
+      <p className="mb-4 text-xl text-neutral-800 dark:text-neutral-200 font-medium">
+        Previously worked at <a href="https://zerops.io" target='_blank' className='underline underline-offset-4 relative hover:text-neutral-600 cursor-alias dark:hover:text-neutral-400 transition-colors'>Zerops</a>, a startup that provides a platform for developers to deploy their apps.
+      </p>
       {/* <div className="my-8"> */}
         {/* <BlogPosts /> */}
       {/* </div> */}
